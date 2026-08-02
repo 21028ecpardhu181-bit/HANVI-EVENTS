@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #FCF9F5;
+    --surface: #F5ECDD;
+    --text-primary: #34281F;
+    --accent-gold: #B88A44;
+    --accent-olive: #59624C;
+    --accent-rose: #C68F87;
+    --border-color: #E8DDCD;
+
+    /* Mobile Design Tokens — Luxury Editorial Spacing */
+    --app-header-h: 56px;
+    --app-bottom-nav-h: 56px;
+    --app-section-gap: 20px;
+    --app-card-radius: 12px;
+    --app-card-padding: 16px;
+    --app-icon-size: 24px;
+    --app-touch-min: 48px;
+    --app-gutter: 16px;
+  }
+
+  html, body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-manrope), sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Typography Utility Classes */
+.font-serif-editorial {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+.font-sans-narrative {
+  font-family: var(--font-manrope), sans-serif;
+}
+
+.font-sans-ui {
+  font-family: var(--font-inter), sans-serif;
+}
+
+.font-script-accent {
+  font-family: var(--font-allura), cursive;
+}
+
+/* ═══════════════════════════════════════════════════
+   MOBILE APP-LIKE RESPONSIVE UTILITIES
+   All mobile-specific styles below 768px
+   ═══════════════════════════════════════════════════ */
+
+/* Mobile/Desktop visibility toggles — CSS-first approach (no JS hydration issues) */
+.mobile-only {
+  display: block;
+}
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none !important;
+  }
+  .desktop-only {
+    display: block;
+  }
+}
+
+/* Hide scrollbar for horizontal carousels on mobile */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile carousel scroll-snap */
+.snap-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  gap: 12px;
+  padding-bottom: 8px;
+}
+.snap-carousel::-webkit-scrollbar {
+  display: none;
+}
+.snap-carousel > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* Mobile compact section spacing */
+@media (max-width: 767px) {
+  .section-mobile-compact {
+    padding-top: var(--app-section-gap) !important;
+    padding-bottom: var(--app-section-gap) !important;
+  }
+
+  /* iOS safe area support for bottom navigation */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Ensure all interactive elements meet 48px touch target */
+  button,
+  a,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent buttons inside compact grids from inflating */
+  .compact-touch button,
+  .compact-touch a {
+    min-height: unset;
+    min-width: unset;
+  }
+
+  /* Mobile text truncation utilities */
+  .line-clamp-2-mobile {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3-mobile {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Body scroll lock for mobile drawers */
+.body-scroll-locked {
+  overflow: hidden !important;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+/* Custom Scrollbar (Desktop only) */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent-gold);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-primary);
+  }
+}
+
+/* Editorial Link Hover Effect */
+.editorial-link {
+  position: relative;
+}
+
+.editorial-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: currentColor;
+  transition: width 0.3s ease;
+}
+
+.editorial-link:hover::after {
+  width: 100%;
+}
+
+/* Mobile accordion transition for footer */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+.accordion-content.accordion-open {
+  max-height: 500px;
+}
