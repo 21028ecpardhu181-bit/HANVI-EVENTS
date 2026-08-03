@@ -2,6 +2,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { storyCaseStudies } from '@/lib/data/stories';
+import { getSanityStories } from '@/lib/sanity/fetch';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { EditorialBadge } from '@/components/ui/EditorialBadge';
 import { EditorialButton } from '@/components/ui/EditorialButton';
@@ -12,7 +13,9 @@ export default async function StoryDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const story = storyCaseStudies.find((s) => s.slug === slug);
+  const sanityStories = await getSanityStories();
+  const allStories = sanityStories && sanityStories.length > 0 ? sanityStories : storyCaseStudies;
+  const story = allStories.find((s) => s.slug === slug || s.slug === decodeURIComponent(slug));
 
   if (!story) {
     notFound();

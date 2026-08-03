@@ -1,16 +1,16 @@
-'use client';
-
-import React, { use } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { journalArticles } from '@/lib/data/journal';
+import { getSanityJournalArticles, getSanityJournalArticleBySlug } from '@/lib/sanity/fetch';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { EditorialBadge } from '@/components/ui/EditorialBadge';
 
-export default function JournalArticlePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
-  const article = journalArticles.find((a) => a.slug === slug) || journalArticles[0];
+export default async function JournalArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const sanityArticle = await getSanityJournalArticleBySlug(slug);
+  const article = sanityArticle || journalArticles.find((a) => a.slug === slug) || journalArticles[0];
 
   if (!article) {
     notFound();

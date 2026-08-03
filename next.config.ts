@@ -10,10 +10,13 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+        port: '',
+        pathname: '/**',
+      },
     ],
-  },
-  turbopack: {
-    root: path.resolve(__dirname),
   },
 };
 

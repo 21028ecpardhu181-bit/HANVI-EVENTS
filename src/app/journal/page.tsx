@@ -2,11 +2,15 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { journalArticles } from '@/lib/data/journal';
+import { getSanityJournalArticles } from '@/lib/sanity/fetch';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { EditorialBadge } from '@/components/ui/EditorialBadge';
 
-export default function JournalPage() {
+export default async function JournalPage() {
+  const sanityArticles = await getSanityJournalArticles();
+  const articles = sanityArticles && sanityArticles.length > 0 ? sanityArticles : journalArticles;
+
   return (
     <div className="pt-28 pb-24 bg-[#FCF9F5]">
       <div className="max-w-[1280px] mx-auto px-4 md:px-8">
@@ -18,7 +22,7 @@ export default function JournalPage() {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-          {journalArticles.map((article) => (
+          {articles.map((article) => (
             <div key={article.id} className="group bg-[#F5ECDD]/40 border border-[#E8DDCD] rounded-3xl overflow-hidden shadow-subtle hover:shadow-hover transition-all duration-500 flex flex-col">
               <div className="relative w-full aspect-[16/9] overflow-hidden">
                 <ImageWithSkeleton src={article.heroImage} alt={article.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />

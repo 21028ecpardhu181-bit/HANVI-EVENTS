@@ -27,6 +27,7 @@ import { DEFAULT_WIZARD_CONFIG, WizardConfig } from '../data/wizardConfig';
 import { ServiceCategory, StoryCaseStudy, Testimonial, JournalArticle } from '../types';
 import { siteConfig } from '../data/site';
 import { packageTiers } from '../data/packages';
+import { weddingExperienceTypes } from '../data/celebrations';
 
 /**
  * Convert Sanity image field or string URL into a usable image URL string
@@ -54,11 +55,18 @@ function slugify(text: string): string {
 }
 
 /**
+ * Centralized fetcher with revalidate: 0 to bypass Next.js static caching
+ */
+async function fetchSanity<T = any>(query: string, params: Record<string, any> = {}): Promise<T> {
+  return sanityClient.fetch<T>(query, params, { next: { revalidate: 0 } });
+}
+
+/**
  * 1. Services Fetcher (EXISTING SERVICES COLLECTION - UNCHANGED)
  */
 export async function getSanityServices(): Promise<ServiceCategory[]> {
   try {
-    const rawServices: any[] = await sanityClient.fetch(servicesQuery);
+    const rawServices: any[] = await fetchSanity(servicesQuery);
     if (!rawServices || rawServices.length === 0) return servicesData;
 
     return rawServices.map((s, idx) => {
@@ -135,7 +143,7 @@ export async function getSanityServiceBySlug(slug: string): Promise<ServiceCateg
  */
 export async function getSanityHomeData(): Promise<any> {
   try {
-    const data = await sanityClient.fetch(homeQuery);
+    const data = await fetchSanity(homeQuery);
     if (!data) return null;
     return {
       ...data,
@@ -155,7 +163,7 @@ export async function getSanityHomeData(): Promise<any> {
  */
 export async function getSanityEventWizardData(): Promise<WizardConfig> {
   try {
-    const raw = await sanityClient.fetch(eventWizardQuery);
+    const raw = await fetchSanity(eventWizardQuery);
     if (!raw) return DEFAULT_WIZARD_CONFIG;
 
     return {
@@ -176,14 +184,21 @@ export async function getSanityEventWizardData(): Promise<WizardConfig> {
  */
 export async function getSanityWeddingTraditions(): Promise<any[]> {
   try {
-    const raw: any[] = await sanityClient.fetch(weddingTraditionsQuery);
-    if (!raw || raw.length === 0) return [];
+    const raw: any[] = await fetchSanity(weddingTraditionsQuery);
+    if (!raw || raw.length === 0) return weddingExperienceTypes;
     return raw.map((t, idx) => ({
-      id: t._id || `tradition-${idx}`,
-      traditionTitle: t.traditionTitle || '',
+      id: t._id || `tradition-${t.slug || idx}`,
+      title: t.traditionTitle || t.title || weddingExperienceTypes[idx % weddingExperienceTypes.length]?.title || 'Wedding Experience',
+      shortTitle: t.shortTitle || t.region || 'South Indian',
       slug: t.slug || `tradition-${idx}`,
+      subtitle: t.subtitle || t.region || 'Bespoke Ceremony',
       region: t.region || 'South Indian',
       description: t.description || '',
+      heroImage: resolveImageUrl(
+        t.coverImage || t.heroImage,
+        weddingExperienceTypes[idx % weddingExperienceTypes.length]?.heroImage ||
+          'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop'
+      ),
       coverImage: resolveImageUrl(t.coverImage, 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop'),
       galleryImages: Array.isArray(t.galleryImages)
         ? t.galleryImages.map((img: any) => resolveImageUrl(img, ''))
@@ -193,7 +208,7 @@ export async function getSanityWeddingTraditions(): Promise<any[]> {
     }));
   } catch (err) {
     console.warn('Sanity wedding traditions fetch warning:', err);
-    return [];
+    return weddingExperienceTypes;
   }
 }
 
@@ -202,7 +217,7 @@ export async function getSanityWeddingTraditions(): Promise<any[]> {
  */
 export async function getSanityStories(): Promise<StoryCaseStudy[]> {
   try {
-    const rawStories: any[] = await sanityClient.fetch(storiesQuery);
+    const rawStories: any[] = await fetchSanity(storiesQuery);
     if (!rawStories || rawStories.length === 0) return storyCaseStudies;
 
     return rawStories.map((st, idx) => {
@@ -239,7 +254,7 @@ export async function getSanityStories(): Promise<StoryCaseStudy[]> {
  */
 export async function getSanityGalleryMedia(): Promise<MediaItem[]> {
   try {
-    const rawMedia: any[] = await sanityClient.fetch(galleryMediaQuery);
+    const rawMedia: any[] = await fetchSanity(galleryMediaQuery);
     if (!rawMedia || rawMedia.length === 0) return defaultMediaItems;
 
     return rawMedia.map((m, idx) => ({
@@ -266,18 +281,24 @@ export async function getSanityGalleryMedia(): Promise<MediaItem[]> {
  */
 export async function getSanityPackages(): Promise<any[]> {
   try {
-    const raw: any[] = await sanityClient.fetch(packagesQuery);
+    const raw: any[] = await fetchSanity(packagesQuery);
     if (!raw || raw.length === 0) return packageTiers;
 
     return raw.map((p, idx) => ({
       id: p._id || `pkg-${idx}`,
-      name: p.packageName || 'Event Package',
-      subtitle: p.packageSubtitle || '',
-      startingPrice: p.price || '₹1,50,000',
-      description: p.includedServices ? p.includedServices.join(', ') : '',
+      title: p.packageName || p.title || 'Event Package',
+      name: p.packageName || p.name || 'Event Package',
+      subtitle: p.packageSubtitle || p.subtitle || '',
+      price: p.price || p.startingPrice || '₹1,50,000',
+      startingPrice: p.price || p.startingPrice || '₹1,50,000',
+      tagline: p.packageSubtitle || p.tagline || 'Comprehensive Event Planning',
+      description: p.includedServices ? p.includedServices.join(', ') : p.description || '',
+      features: Array.isArray(p.features) ? p.features : [],
       highlights: Array.isArray(p.features) ? p.features : [],
       packageImage: resolveImageUrl(p.packageImage, 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop'),
+      isPopular: Boolean(p.featuredPackage || p.isPopular),
       featured: Boolean(p.featuredPackage),
+      badge: p.featuredPackage ? 'Most Popular' : undefined,
     }));
   } catch (err) {
     console.warn('Sanity packages fetch warning:', err);
@@ -290,7 +311,7 @@ export async function getSanityPackages(): Promise<any[]> {
  */
 export async function getSanityJournalArticles(): Promise<JournalArticle[]> {
   try {
-    const raw: any[] = await sanityClient.fetch(articlesQuery);
+    const raw: any[] = await fetchSanity(articlesQuery);
     if (!raw || raw.length === 0) return journalArticles;
 
     return raw.map((a, idx) => ({
@@ -333,7 +354,7 @@ export async function getSanityJournalArticleBySlug(slug: string): Promise<Journ
  */
 export async function getSanityTestimonials(): Promise<Testimonial[]> {
   try {
-    const raw: any[] = await sanityClient.fetch(testimonialsQuery);
+    const raw: any[] = await fetchSanity(testimonialsQuery);
     if (!raw || raw.length === 0) return testimonials;
 
     return raw.map((t, idx) => ({
@@ -360,7 +381,7 @@ export async function getSanityTestimonials(): Promise<Testimonial[]> {
  */
 export async function getSanityFaqs(): Promise<Array<{ question: string; answer: string; category?: string }>> {
   try {
-    const raw: any[] = await sanityClient.fetch(faqsQuery);
+    const raw: any[] = await fetchSanity(faqsQuery);
     if (!raw || raw.length === 0) return [];
     return raw.map((f) => ({
       question: f.question || '',
@@ -378,7 +399,7 @@ export async function getSanityFaqs(): Promise<Array<{ question: string; answer:
  */
 export async function getSanityTeamMembers(): Promise<any[]> {
   try {
-    const raw: any[] = await sanityClient.fetch(teamMembersQuery);
+    const raw: any[] = await fetchSanity(teamMembersQuery);
     if (!raw || raw.length === 0) return [];
     return raw.map((m, idx) => ({
       id: m._id || `team-${idx}`,
@@ -400,7 +421,7 @@ export async function getSanityTeamMembers(): Promise<any[]> {
  */
 export async function getSanityStudioLeadership(): Promise<any[]> {
   try {
-    const raw: any[] = await sanityClient.fetch(studioLeadershipQuery);
+    const raw: any[] = await fetchSanity(studioLeadershipQuery);
     if (!raw || raw.length === 0) return [];
     return raw.map((l, idx) => ({
       id: l._id || `lead-${idx}`,
@@ -422,7 +443,7 @@ export async function getSanityStudioLeadership(): Promise<any[]> {
  */
 export async function getSanityVenues(): Promise<any[]> {
   try {
-    const raw: any[] = await sanityClient.fetch(venuesQuery);
+    const raw: any[] = await fetchSanity(venuesQuery);
     if (!raw || raw.length === 0) return [];
     return raw.map((v, idx) => ({
       id: v._id || `venue-${idx}`,
@@ -445,7 +466,7 @@ export async function getSanityVenues(): Promise<any[]> {
  */
 export async function getSanityContactPage(): Promise<any> {
   try {
-    const data = await sanityClient.fetch(contactPageQuery);
+    const data = await fetchSanity(contactPageQuery);
     if (!data) return siteConfig;
     return {
       officeAddress: data.officeAddress || siteConfig.address,
@@ -466,7 +487,7 @@ export async function getSanityContactPage(): Promise<any> {
  */
 export async function getSanitySiteSettings(): Promise<any> {
   try {
-    const data = await sanityClient.fetch(siteSettingsQuery);
+    const data = await fetchSanity(siteSettingsQuery);
     if (!data) return null;
     return {
       ...data,
@@ -483,7 +504,7 @@ export async function getSanitySiteSettings(): Promise<any> {
  */
 export async function getSanityPortfolio(): Promise<any[]> {
   try {
-    const raw: any[] = await sanityClient.fetch(portfolioQuery);
+    const raw: any[] = await fetchSanity(portfolioQuery);
     if (!raw || raw.length === 0) return [];
     return raw.map((p, idx) => ({
       id: p._id || `port-${idx}`,

@@ -9,8 +9,23 @@ import { FeaturedStoriesSection } from '@/components/sections/FeaturedStoriesSec
 import { OurCraftSection } from '@/components/sections/OurCraftSection';
 import { LatestMomentsSection } from '@/components/sections/LatestMomentsSection';
 import { EmotionalCtaSection } from '@/components/sections/EmotionalCtaSection';
+import {
+  getSanityWeddingTraditions,
+  getSanityStories,
+  getSanityGalleryMedia,
+  getSanityPackages,
+  getSanityTestimonials,
+} from '@/lib/sanity/fetch';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [weddingTraditions, stories, galleryMedia, packages, testimonials] = await Promise.all([
+    getSanityWeddingTraditions(),
+    getSanityStories(),
+    getSanityGalleryMedia(),
+    getSanityPackages(),
+    getSanityTestimonials(),
+  ]);
+
   return (
     <div className="flex flex-col w-full relative pb-12 sm:pb-0">
       {/* 1. Opening Scene: Emotional Cinema Hero */}
@@ -28,15 +43,15 @@ export default function HomePage() {
       {/* 5. Interactive Planner: Early Pricing & Budget Estimator */}
       <CelebrationPlannerSection />
 
-      {/* 6. Tradition Discovery: Choose Your Wedding Tradition (3 Apple-style Cards) */}
-      <WeddingTypesSection />
+      {/* 6. Tradition Discovery: Choose Your Wedding Tradition */}
+      <WeddingTypesSection items={weddingTraditions} />
 
       {/* 7. Inspiration & Crafted Fine Art */}
-      <FeaturedStoriesSection />
+      <FeaturedStoriesSection stories={stories} />
       <OurCraftSection />
 
       {/* 8. Merged Media: Latest Moments (Instagram Reels + YouTube Cinema Films) */}
-      <LatestMomentsSection />
+      <LatestMomentsSection items={galleryMedia} />
 
       {/* 9. Final Studio Consultation CTA */}
       <EmotionalCtaSection />

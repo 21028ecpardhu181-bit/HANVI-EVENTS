@@ -1,11 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
 import { storyCaseStudies } from '@/lib/data/stories';
+import { getSanityStories } from '@/lib/sanity/fetch';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { EditorialBadge } from '@/components/ui/EditorialBadge';
 
-export default function StoriesPage() {
+export default async function StoriesPage() {
+  const sanityStories = await getSanityStories();
+  const stories = sanityStories && sanityStories.length > 0 ? sanityStories : storyCaseStudies;
+
   return (
     <div className="pt-28 pb-24 bg-[#FCF9F5]">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8">
@@ -18,7 +22,7 @@ export default function StoriesPage() {
         />
 
         <div className="space-y-12 mt-12">
-          {storyCaseStudies.map((story, idx) => (
+          {stories.map((story, idx) => (
             <div
               key={story.id}
               className={`grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#F5ECDD]/30 border border-[#E8DDCD] rounded-3xl p-6 md:p-8 ${

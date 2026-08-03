@@ -1,17 +1,47 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Phone, Mail, MapPin, MessageCircle, Calendar, CheckCircle2, Clock, AlertCircle, Loader2 } from 'lucide-react';
 import { siteConfig } from '@/lib/data/site';
+import { getSanityContactPage } from '@/lib/sanity/fetch';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { EditorialButton } from '@/components/ui/EditorialButton';
 import { EditorialBadge } from '@/components/ui/EditorialBadge';
+
+const MapPinIcon = MapPin as React.ComponentType<{ className?: string }>;
+const PhoneIcon = Phone as React.ComponentType<{ className?: string }>;
+const MessageCircleIcon = MessageCircle as React.ComponentType<{ className?: string }>;
+const MailIcon = Mail as React.ComponentType<{ className?: string }>;
+const AlertCircleIcon = AlertCircle as React.ComponentType<{ className?: string }>;
+const Loader2Icon = Loader2 as React.ComponentType<{ className?: string }>;
+const CheckCircle2Icon = CheckCircle2 as React.ComponentType<{ className?: string }>;
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [mapsModalOpen, setMapsModalOpen] = useState(false);
+  const [contactInfo, setContactInfo] = useState(siteConfig);
+
+  useEffect(() => {
+    async function loadContact() {
+      try {
+        const sanityContact = await getSanityContactPage();
+        if (sanityContact) {
+          setContactInfo((prev) => ({
+            ...prev,
+            address: sanityContact.officeAddress || prev.address,
+            phone: (sanityContact.phoneNumbers && sanityContact.phoneNumbers[0]) || prev.phone,
+            whatsapp: sanityContact.whatsappNumber || prev.whatsapp,
+            email: sanityContact.email || prev.email,
+          }));
+        }
+      } catch (err) {
+        console.warn('Contact page fetch error:', err);
+      }
+    }
+    loadContact();
+  }, []);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -78,10 +108,10 @@ export default function ContactPage() {
 
             <div className="space-y-4 text-xs font-sans-narrative text-[#34281F]">
               <div className="flex items-start space-x-3 p-4 bg-[#FCF9F5] border border-[#E8DDCD] rounded-2xl">
-                <MapPin className="w-5 h-5 text-[#B88A44] shrink-0 mt-0.5" />
+                <MapPinIcon className="w-5 h-5 text-[#B88A44] shrink-0 mt-0.5" />
                 <div>
                   <span className="font-sans-ui text-[10px] uppercase tracking-wider text-[#B88A44] font-semibold block">Studio Address</span>
-                  <span className="font-medium text-sm block mt-0.5">{siteConfig.address}</span>
+                  <span className="font-medium text-sm block mt-0.5">{contactInfo.address}</span>
                   <button
                     onClick={() => setMapsModalOpen(true)}
                     className="text-[11px] text-[#B88A44] font-semibold underline mt-1 block cursor-pointer"
@@ -92,7 +122,7 @@ export default function ContactPage() {
               </div>
 
               <div className="flex items-start space-x-3 p-4 bg-[#FCF9F5] border border-[#E8DDCD] rounded-2xl">
-                <Phone className="w-5 h-5 text-[#B88A44] shrink-0 mt-0.5" />
+                <PhoneIcon className="w-5 h-5 text-[#B88A44] shrink-0 mt-0.5" />
                 <div>
                   <span className="font-sans-ui text-[10px] uppercase tracking-wider text-[#B88A44] font-semibold block">Phone Lines</span>
                   <div className="flex flex-col space-y-1 mt-0.5">
@@ -107,7 +137,7 @@ export default function ContactPage() {
               </div>
 
               <div className="flex items-start space-x-3 p-4 bg-[#FCF9F5] border border-[#E8DDCD] rounded-2xl">
-                <MessageCircle className="w-5 h-5 text-[#59624C] shrink-0 mt-0.5" />
+                <MessageCircleIcon className="w-5 h-5 text-[#59624C] shrink-0 mt-0.5" />
                 <div>
                   <span className="font-sans-ui text-[10px] uppercase tracking-wider text-[#59624C] font-semibold block">WhatsApp Direct</span>
                   <a href={siteConfig.social.whatsappUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-sm hover:underline">
@@ -117,11 +147,11 @@ export default function ContactPage() {
               </div>
 
               <div className="flex items-start space-x-3 p-4 bg-[#FCF9F5] border border-[#E8DDCD] rounded-2xl">
-                <Mail className="w-5 h-5 text-[#B88A44] shrink-0 mt-0.5" />
+                <MailIcon className="w-5 h-5 text-[#B88A44] shrink-0 mt-0.5" />
                 <div>
                   <span className="font-sans-ui text-[10px] uppercase tracking-wider text-[#B88A44] font-semibold block">Email Studio</span>
-                  <a href={`mailto:${siteConfig.email}`} className="font-medium text-sm hover:text-[#B88A44]">
-                    {siteConfig.email}
+                  <a href={`mailto:${contactInfo.email}`} className="font-medium text-sm hover:text-[#B88A44]">
+                    {contactInfo.email}
                   </a>
                 </div>
               </div>
@@ -138,7 +168,7 @@ export default function ContactPage() {
 
                 {errorMessage && (
                   <div className="p-4 bg-red-50 border border-red-200 rounded-2xl font-sans-narrative text-xs text-red-600 flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <AlertCircleIcon className="w-4 h-4 shrink-0" />
                     <span>{errorMessage}</span>
                   </div>
                 )}
@@ -150,7 +180,7 @@ export default function ContactPage() {
                       type="text"
                       required
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="e.g. Swathi Varma"
                       className="w-full px-4 py-3 bg-[#F5ECDD]/40 border border-[#E8DDCD] rounded-xl font-sans-narrative text-sm text-[#34281F] focus:outline-none focus:border-[#B88A44]"
                     />
@@ -161,7 +191,7 @@ export default function ContactPage() {
                       type="tel"
                       required
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="+91 97009 29650"
                       className="w-full px-4 py-3 bg-[#F5ECDD]/40 border border-[#E8DDCD] rounded-xl font-sans-narrative text-sm text-[#34281F] focus:outline-none focus:border-[#B88A44]"
                     />
@@ -174,7 +204,7 @@ export default function ContactPage() {
                     <input
                       type="email"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="swathi@example.com"
                       className="w-full px-4 py-3 bg-[#F5ECDD]/40 border border-[#E8DDCD] rounded-xl font-sans-narrative text-sm text-[#34281F] focus:outline-none focus:border-[#B88A44]"
                     />
@@ -183,7 +213,7 @@ export default function ContactPage() {
                     <label className="block font-sans-ui text-[11px] uppercase tracking-wider text-[#34281F] mb-1.5 font-medium">Celebration Type</label>
                     <select
                       value={formData.celebrationType}
-                      onChange={(e) => setFormData({ ...formData, celebrationType: e.target.value })}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, celebrationType: e.target.value })}
                       className="w-full px-4 py-3 bg-[#F5ECDD]/40 border border-[#E8DDCD] rounded-xl font-sans-narrative text-sm text-[#34281F] focus:outline-none focus:border-[#B88A44]"
                     >
                       <option value="Weddings">Weddings & Mandap</option>
@@ -203,7 +233,7 @@ export default function ContactPage() {
                   <input
                     type="date"
                     value={formData.eventDate}
-                    onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, eventDate: e.target.value })}
                     className="w-full px-4 py-3 bg-[#F5ECDD]/40 border border-[#E8DDCD] rounded-xl font-sans-narrative text-sm text-[#34281F] focus:outline-none focus:border-[#B88A44]"
                   />
                 </div>
@@ -213,7 +243,7 @@ export default function ContactPage() {
                   <textarea
                     rows={4}
                     value={formData.notes}
-                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, notes: e.target.value })}
                     placeholder="Tell us about preferred venue location in Kakinada/Vizag/AP, guest count, and decor theme..."
                     className="w-full px-4 py-3 bg-[#F5ECDD]/40 border border-[#E8DDCD] rounded-xl font-sans-narrative text-sm text-[#34281F] focus:outline-none focus:border-[#B88A44]"
                   />
@@ -223,7 +253,7 @@ export default function ContactPage() {
                   <EditorialButton type="submit" variant="primary" disabled={isSubmitting} className="w-full">
                     {isSubmitting ? (
                       <span className="flex items-center gap-2">
-                        <Loader2 className="w-4 h-4 animate-spin" /> Submitting...
+                        <Loader2Icon className="w-4 h-4 animate-spin" /> Submitting...
                       </span>
                     ) : (
                       'Submit Reservation Inquiry'
@@ -233,7 +263,7 @@ export default function ContactPage() {
               </form>
             ) : (
               <div className="text-center py-12">
-                <CheckCircle2 className="w-12 h-12 text-[#59624C] mx-auto mb-3" />
+                <CheckCircle2Icon className="w-12 h-12 text-[#59624C] mx-auto mb-3" />
                 <h3 className="font-serif-editorial text-3xl text-[#34281F]">Inquiry Received</h3>
                 <p className="font-sans-narrative text-sm text-[#6E5D4F] my-3">
                   Thank you! Event Director Ch. Kala Prasad & team will contact you within 24 hours.

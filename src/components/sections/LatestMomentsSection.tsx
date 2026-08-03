@@ -8,20 +8,30 @@ import { SectionHeader } from '../ui/SectionHeader';
 import { ImageWithSkeleton } from '../ui/ImageWithSkeleton';
 import { EditorialBadge } from '../ui/EditorialBadge';
 
-export const LatestMomentsSection: React.FC = () => {
+export interface LatestMomentsSectionProps {
+  items?: MediaItem[];
+}
+
+export const LatestMomentsSection: React.FC<LatestMomentsSectionProps> = ({ items }) => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'reel' | 'film'>('all');
   const [activeVideoModal, setActiveVideoModal] = useState<MediaItem | null>(null);
-  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>(items && items.length > 0 ? items : []);
 
   useEffect(() => {
-    setMediaItems(getStoredMediaItems());
+    if (items && items.length > 0) {
+      setMediaItems(items);
+    } else {
+      setMediaItems(getStoredMediaItems());
+    }
 
     const handleUpdate = () => {
-      setMediaItems(getStoredMediaItems());
+      if (!items || items.length === 0) {
+        setMediaItems(getStoredMediaItems());
+      }
     };
     window.addEventListener('reelsUpdated', handleUpdate);
     return () => window.removeEventListener('reelsUpdated', handleUpdate);
-  }, []);
+  }, [items]);
 
   const filteredItems = mediaItems.filter(
     (item) => activeFilter === 'all' || item.type === activeFilter

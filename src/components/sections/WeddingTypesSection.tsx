@@ -10,7 +10,13 @@ import { ImageWithSkeleton } from '../ui/ImageWithSkeleton';
 import { EditorialBadge } from '../ui/EditorialBadge';
 import { staggerContainerVariants, fadeUpVariants } from '@/animations/variants';
 
-export const WeddingTypesSection: React.FC = () => {
+export interface WeddingTypesSectionProps {
+  items?: any[];
+}
+
+export const WeddingTypesSection: React.FC<WeddingTypesSectionProps> = ({ items }) => {
+  const displayItems = items && items.length > 0 ? items : weddingExperienceTypes;
+
   return (
     <section className="py-10 md:py-24 bg-[#F5ECDD]/40 border-y border-[#E8DDCD]">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8">
@@ -30,7 +36,7 @@ export const WeddingTypesSection: React.FC = () => {
           viewport={{ once: true, margin: '-50px' }}
           className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-8 md:mt-14"
         >
-          {weddingExperienceTypes.map((exp) => (
+          {displayItems.map((exp) => (
             <motion.div key={exp.id} variants={fadeUpVariants}>
               <Link
                 href={`/wedding-experiences/${exp.slug}`}

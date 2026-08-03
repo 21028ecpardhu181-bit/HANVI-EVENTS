@@ -10,9 +10,14 @@ import { EditorialButton } from '../ui/EditorialButton';
 import { EditorialBadge } from '../ui/EditorialBadge';
 import { staggerContainerVariants, fadeUpVariants, crossfadeVariants } from '@/animations/variants';
 
-export const PackagesSection: React.FC = () => {
-  const [activeTierId, setActiveTierId] = useState(packageTiers[1].id); // Default to 'Elegant' (Most Popular)
-  const activeTier = packageTiers.find((t) => t.id === activeTierId) || packageTiers[1];
+export interface PackagesSectionProps {
+  packages?: any[];
+}
+
+export const PackagesSection: React.FC<PackagesSectionProps> = ({ packages }) => {
+  const displayPackages = packages && packages.length > 0 ? packages : packageTiers;
+  const [activeTierId, setActiveTierId] = useState(displayPackages[1]?.id || displayPackages[0]?.id || 'pkg-1');
+  const activeTier = displayPackages.find((t) => t.id === activeTierId) || displayPackages[0];
 
   return (
     <section className="py-8 md:py-20 bg-[#FCF9F5]">
@@ -27,7 +32,7 @@ export const PackagesSection: React.FC = () => {
 
         {/* 3-Column Bento Segmented Selector on Mobile — Zero Side Scroll! */}
         <div className="md:hidden grid grid-cols-3 gap-2 mt-4 max-w-4xl mx-auto w-full">
-          {packageTiers.map((tier) => {
+          {displayPackages.map((tier) => {
             const isActive = activeTierId === tier.id;
             return (
               <button
@@ -83,7 +88,7 @@ export const PackagesSection: React.FC = () => {
                 </div>
 
                 <ul className="space-y-2.5 font-sans-narrative text-xs text-[#34281F]">
-                  {activeTier.features.map((feature, idx) => (
+                  {(activeTier.features || []).map((feature: any, idx: number) => (
                     <li key={idx} className="flex items-start space-x-2.5">
                       <Check className="w-4 h-4 text-[#B88A44] shrink-0 mt-0.5" />
                       <span className="leading-snug">{feature}</span>
@@ -114,7 +119,7 @@ export const PackagesSection: React.FC = () => {
           viewport={{ once: true, margin: '-50px' }}
           className="hidden md:grid md:grid-cols-3 gap-6 md:gap-8 mt-12 max-w-6xl mx-auto"
         >
-          {packageTiers.map((tier) => (
+          {displayPackages.map((tier) => (
             <motion.div
               key={tier.id}
               variants={fadeUpVariants}
@@ -146,7 +151,7 @@ export const PackagesSection: React.FC = () => {
                 </div>
 
                 <ul className="space-y-3 font-sans-narrative text-sm text-[#34281F]">
-                  {tier.features.map((feature, idx) => (
+                  {(tier.features || []).map((feature: any, idx: number) => (
                     <li key={idx} className="flex items-start space-x-3">
                       <Check className="w-4 h-4 text-[#B88A44] shrink-0 mt-0.5" />
                       <span className="leading-snug">{feature}</span>

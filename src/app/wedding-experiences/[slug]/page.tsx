@@ -1,8 +1,8 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import Metadata from 'next';
 import Link from 'next/link';
 import { weddingExperienceTypes } from '@/lib/data/celebrations';
+import { getSanityWeddingTraditions } from '@/lib/sanity/fetch';
 import { weddingJourneysByReligion } from '@/lib/data/stories';
 import { culturalThemes, CulturalTheme } from '@/lib/theme/themeEngine';
 import { SectionHeader } from '@/components/ui/SectionHeader';
@@ -18,32 +18,38 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return weddingExperienceTypes.map((experience) => ({
+  const sanityTraditions = await getSanityWeddingTraditions();
+  const allExp = sanityTraditions && sanityTraditions.length > 0 ? sanityTraditions : weddingExperienceTypes;
+  return allExp.map((experience) => ({
     slug: experience.slug,
   }));
 }
 
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
-  const exp = weddingExperienceTypes.find((e) => e.slug === slug);
+  const sanityTraditions = await getSanityWeddingTraditions();
+  const allExp = sanityTraditions && sanityTraditions.length > 0 ? sanityTraditions : weddingExperienceTypes;
+  const exp = allExp.find((e) => e.slug === slug || e.slug === decodeURIComponent(slug));
   if (!exp) return { title: 'Wedding Tradition | Hanvi Events' };
 
   return {
-    title: `${exp.title} — Hanvi Events Luxury Weddings`,
+    title: `${exp.title || exp.traditionTitle} — Hanvi Events Luxury Weddings`,
     description: exp.description,
   };
 }
 
 export default async function WeddingExperiencePage({ params }: PageProps) {
   const { slug } = await params;
-  const exp = weddingExperienceTypes.find((e) => e.slug === slug);
+  const sanityTraditions = await getSanityWeddingTraditions();
+  const allExp = sanityTraditions && sanityTraditions.length > 0 ? sanityTraditions : weddingExperienceTypes;
+  let exp = allExp.find((e) => e.slug === slug || e.slug === decodeURIComponent(slug));
 
   if (!exp) {
-    notFound();
+    exp = weddingExperienceTypes[0];
   }
 
   // Get Cultural Theme configuration
-  const theme: CulturalTheme = culturalThemes[exp.slug] || culturalThemes.hindu;
+  const theme: CulturalTheme = (culturalThemes as Record<string, CulturalTheme>)[exp.slug] || culturalThemes.hindu;
   
   // Find dedicated journey for this religion
   const journey = weddingJourneysByReligion.find((j) => j.religionId === exp.slug) || weddingJourneysByReligion[0];
@@ -173,7 +179,7 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-            {exp.galleryImages.map((imgUrl, idx) => (
+            {(exp.galleryImages || []).map((imgUrl: string, idx: number) => (
               <div key={idx} className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-sm border border-[#E8DDCD] group">
                 <ImageWithSkeleton
                   src={imgUrl}

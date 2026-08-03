@@ -11,7 +11,13 @@ import { EditorialBadge } from '../ui/EditorialBadge';
 import { ImageWithSkeleton } from '../ui/ImageWithSkeleton';
 import { staggerContainerVariants, fadeUpVariants } from '@/animations/variants';
 
-export const FeaturedStoriesSection: React.FC = () => {
+export interface FeaturedStoriesSectionProps {
+  stories?: any[];
+}
+
+export const FeaturedStoriesSection: React.FC<FeaturedStoriesSectionProps> = ({ stories }) => {
+  const displayStories = stories && stories.length > 0 ? stories : storyCaseStudies;
+
   return (
     <section className="py-8 md:py-20 bg-[#F5ECDD]/40 border-y border-[#E8DDCD]">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8">
@@ -30,7 +36,7 @@ export const FeaturedStoriesSection: React.FC = () => {
           viewport={{ once: true, margin: '-50px' }}
           className="space-y-6 md:space-y-12 mt-6 md:mt-12"
         >
-          {storyCaseStudies.slice(0, 2).map((story, idx) => (
+          {displayStories.slice(0, 2).map((story, idx) => (
             <motion.div
               key={story.id}
               variants={fadeUpVariants}

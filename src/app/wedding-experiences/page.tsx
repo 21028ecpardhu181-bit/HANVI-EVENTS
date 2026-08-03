@@ -1,8 +1,8 @@
 import React from 'react';
-import Metadata from 'next';
 import Link from 'next/link';
 import { ArrowUpRight, Sparkles, Heart, Crown, Church, Moon } from 'lucide-react';
 import { weddingExperienceTypes } from '@/lib/data/celebrations';
+import { getSanityWeddingTraditions } from '@/lib/sanity/fetch';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { EditorialButton } from '@/components/ui/EditorialButton';
@@ -13,7 +13,10 @@ export const metadata = {
   description: 'Explore bespoke wedding traditions curated by Hanvi Events — Hindu Vedic Mandaps, Christian Cathedral & Beach Unions, and Muslim Nikah & Walima Galas.',
 };
 
-export default function WeddingExperiencesHubPage() {
+export default async function WeddingExperiencesHubPage() {
+  const sanityTraditions = await getSanityWeddingTraditions();
+  const experiences = sanityTraditions && sanityTraditions.length > 0 ? sanityTraditions : weddingExperienceTypes;
+
   return (
     <main className="min-h-screen bg-[#FCF9F5]">
       {/* Hero Header */}
@@ -38,7 +41,7 @@ export default function WeddingExperiencesHubPage() {
       {/* 3 Main Tradition Cards */}
       <section className="py-12 sm:py-20 max-w-[1440px] mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          {weddingExperienceTypes.map((exp) => (
+          {experiences.map((exp) => (
             <Link
               key={exp.id}
               href={`/wedding-experiences/${exp.slug}`}

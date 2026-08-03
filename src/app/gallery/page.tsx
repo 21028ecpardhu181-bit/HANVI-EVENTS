@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { galleryItems } from '@/lib/data/gallery';
+import { getSanityGalleryMedia } from '@/lib/sanity/fetch';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { EditorialBadge } from '@/components/ui/EditorialBadge';
@@ -13,15 +14,38 @@ export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [mediaItems, setMediaItems] = useState<LightboxMedia[]>(
+    galleryItems.map((g) => ({
+      id: g.id,
+      title: g.title,
+      category: g.category,
+      image: g.image,
+      location: g.location,
+      isVideo: false,
+    }))
+  );
 
-  const mediaItems: LightboxMedia[] = galleryItems.map((g) => ({
-    id: g.id,
-    title: g.title,
-    category: g.category,
-    image: g.image,
-    location: g.location,
-    isVideo: false,
-  }));
+  useEffect(() => {
+    async function loadSanityGallery() {
+      try {
+        const sanityData = await getSanityGalleryMedia();
+        if (sanityData && sanityData.length > 0) {
+          const mapped: LightboxMedia[] = sanityData.map((m) => ({
+            id: m.id,
+            title: m.title,
+            category: 'Mandap',
+            image: m.thumbnail,
+            location: m.subtitle,
+            isVideo: m.type === 'reel' || m.type === 'film',
+          }));
+          setMediaItems(mapped);
+        }
+      } catch (err) {
+        console.warn('Gallery page fetch warning:', err);
+      }
+    }
+    loadSanityGallery();
+  }, []);
 
   const filteredItems = activeCategory === 'All'
     ? mediaItems

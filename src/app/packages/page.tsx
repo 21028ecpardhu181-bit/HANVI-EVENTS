@@ -1,12 +1,16 @@
 import React from 'react';
 import { Check } from 'lucide-react';
 import { packageTiers } from '@/lib/data/packages';
+import { getSanityPackages } from '@/lib/sanity/fetch';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { EditorialButton } from '@/components/ui/EditorialButton';
 import { EditorialBadge } from '@/components/ui/EditorialBadge';
 import { FeatureComparisonTable } from '@/components/features/packages/FeatureComparisonTable';
 
-export default function PackagesPage() {
+export default async function PackagesPage() {
+  const sanityPackages = await getSanityPackages();
+  const packages = sanityPackages && sanityPackages.length > 0 ? sanityPackages : packageTiers;
+
   return (
     <div className="pt-28 pb-24 bg-[#FCF9F5]">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8">
@@ -20,7 +24,7 @@ export default function PackagesPage() {
 
         {/* Tier Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-          {packageTiers.map((tier) => (
+          {packages.map((tier) => (
             <div
               key={tier.id}
               className={`relative bg-[#FCF9F5] border rounded-3xl p-6 md:p-8 flex flex-col justify-between transition-all duration-500 ${tier.isPopular
@@ -47,7 +51,7 @@ export default function PackagesPage() {
                 </div>
 
                 <ul className="space-y-2.5">
-                  {tier.features.map((feature, idx) => (
+                  {(tier.features || []).map((feature: any, idx: number) => (
                     <li key={idx} className="flex items-start space-x-2.5 text-xs font-sans-narrative text-[#34281F]">
                       <Check className="w-4 h-4 text-[#B88A44] shrink-0 mt-0.5" />
                       <span>{feature}</span>

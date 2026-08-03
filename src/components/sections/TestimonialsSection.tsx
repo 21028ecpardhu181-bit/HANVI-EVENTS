@@ -8,9 +8,14 @@ import { SectionHeader } from '../ui/SectionHeader';
 import { ImageWithSkeleton } from '../ui/ImageWithSkeleton';
 import { crossfadeVariants } from '@/animations/variants';
 
-export const TestimonialsSection: React.FC = () => {
+export interface TestimonialsSectionProps {
+  testimonialsData?: any[];
+}
+
+export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ testimonialsData }) => {
+  const displayTestimonials = testimonialsData && testimonialsData.length > 0 ? testimonialsData : testimonials;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const currentTestimonial = testimonials[currentIndex];
+  const currentTestimonial = displayTestimonials[currentIndex] || displayTestimonials[0];
 
   return (
     <section className="py-8 md:py-20 bg-[#F5ECDD]/40 border-y border-[#E8DDCD]">
@@ -70,7 +75,7 @@ export const TestimonialsSection: React.FC = () => {
           {/* Controls */}
           <div className="flex items-center justify-between pt-8 mt-6 border-t border-[#E8DDCD]">
             <div className="flex items-center space-x-2">
-              {testimonials.map((t, idx) => (
+              {displayTestimonials.map((t, idx) => (
                 <button
                   key={t.id}
                   onClick={() => setCurrentIndex(idx)}
@@ -84,14 +89,14 @@ export const TestimonialsSection: React.FC = () => {
 
             <div className="flex items-center space-x-2">
               <button
-                onClick={() => setCurrentIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))}
+                onClick={() => setCurrentIndex((prev) => (prev === 0 ? displayTestimonials.length - 1 : prev - 1))}
                 className="p-2 rounded-full border border-[#E8DDCD] hover:bg-[#F5ECDD] text-[#34281F] transition-colors cursor-pointer"
                 aria-label="Previous review"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
-                onClick={() => setCurrentIndex((prev) => (prev + 1) % testimonials.length)}
+                onClick={() => setCurrentIndex((prev) => (prev + 1) % displayTestimonials.length)}
                 className="p-2 rounded-full border border-[#E8DDCD] hover:bg-[#F5ECDD] text-[#34281F] transition-colors cursor-pointer"
                 aria-label="Next review"
               >
