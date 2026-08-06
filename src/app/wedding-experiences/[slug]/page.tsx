@@ -2,7 +2,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { weddingExperienceTypes } from '@/lib/data/celebrations';
-import { getSanityWeddingTraditions } from '@/lib/sanity/fetch';
+import { getSanityWeddingTraditions, getSacredJourneySteps } from '@/lib/sanity/fetch';
 import { weddingJourneysByReligion } from '@/lib/data/stories';
 import { culturalThemes, CulturalTheme } from '@/lib/theme/themeEngine';
 import { SectionHeader } from '@/components/ui/SectionHeader';
@@ -12,6 +12,68 @@ import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { InteractiveSacredJourney } from '@/components/sections/InteractiveSacredJourney';
 import { SignatureDetailsShowcase } from '@/components/sections/SignatureDetailsShowcase';
 import { Calendar, ArrowLeft } from 'lucide-react';
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
+function findExperienceBySlug(allExp: any[], targetSlug: string) {
+  const decoded = decodeURIComponent(targetSlug || '').toLowerCase().trim();
+  const normalized = slugify(decoded);
+
+  // 1. Direct slug match
+  let found = allExp.find((e) => e.slug === targetSlug || e.slug === decoded);
+  if (found) return found;
+
+  // 2. Normalized slug match
+  found = allExp.find((e) => slugify(e.slug || '') === normalized);
+  if (found) return found;
+
+  // 3. Keyword matching (christian, muslim, hindu)
+  for (const key of ['christian', 'muslim', 'hindu'] as const) {
+    if (normalized.includes(key)) {
+      found = allExp.find(
+        (e) =>
+          slugify(e.slug || '').includes(key) ||
+          slugify(e.title || '').includes(key)
+      );
+      if (found) return found;
+    }
+  }
+
+  // 4. Substring match on slug
+  found = allExp.find((e) => {
+    const s = slugify(e.slug || '');
+    return s.includes(normalized) || normalized.includes(s);
+  });
+  if (found) return found;
+
+  // 5. Substring match on title
+  found = allExp.find((e) => {
+    const t = slugify(e.title || '');
+    return t.includes(normalized) || normalized.includes(t);
+  });
+  if (found) return found;
+
+  // 6. Check static weddingExperienceTypes directly
+  const staticFound = weddingExperienceTypes.find((st) => {
+    const stSlug = slugify(st.slug);
+    const stTitle = slugify(st.title);
+    return (
+      stSlug === normalized ||
+      normalized.includes(stSlug) ||
+      stSlug.includes(normalized) ||
+      stTitle.includes(normalized)
+    );
+  });
+  if (staticFound) return staticFound;
+
+  return weddingExperienceTypes[0];
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -29,7 +91,7 @@ export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   const sanityTraditions = await getSanityWeddingTraditions();
   const allExp = sanityTraditions && sanityTraditions.length > 0 ? sanityTraditions : weddingExperienceTypes;
-  const exp = allExp.find((e) => e.slug === slug || e.slug === decodeURIComponent(slug));
+  const exp = findExperienceBySlug(allExp, slug);
   if (!exp) return { title: 'Wedding Tradition | Hanvi Events' };
 
   return {
@@ -42,17 +104,34 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
   const { slug } = await params;
   const sanityTraditions = await getSanityWeddingTraditions();
   const allExp = sanityTraditions && sanityTraditions.length > 0 ? sanityTraditions : weddingExperienceTypes;
-  let exp = allExp.find((e) => e.slug === slug || e.slug === decodeURIComponent(slug));
-
-  if (!exp) {
-    exp = weddingExperienceTypes[0];
-  }
+  const exp = findExperienceBySlug(allExp, slug);
 
   // Get Cultural Theme configuration
-  const theme: CulturalTheme = (culturalThemes as Record<string, CulturalTheme>)[exp.slug] || culturalThemes.hindu;
-  
-  // Find dedicated journey for this religion
-  const journey = weddingJourneysByReligion.find((j) => j.religionId === exp.slug) || weddingJourneysByReligion[0];
+  const religionKey = (['christian', 'muslim', 'hindu'] as const).find(
+    (key) => exp.slug?.toLowerCase().includes(key) || exp.title?.toLowerCase().includes(key)
+  ) || 'hindu';
+
+  const theme: CulturalTheme = culturalThemes[religionKey] || culturalThemes.hindu;
+
+  // --- Sacred Journey steps: prefer Sanity CMS, fall back to static data ---
+  let sanityJourneySteps = await getSacredJourneySteps(exp.slug);
+  if (sanityJourneySteps.length === 0 && exp.slug !== religionKey) {
+    sanityJourneySteps = await getSacredJourneySteps(religionKey);
+  }
+
+  const staticJourney =
+    weddingJourneysByReligion.find(
+      (j) =>
+        j.religionId === exp.slug ||
+        j.religionId === religionKey ||
+        exp.slug.includes(j.religionId)
+    ) || weddingJourneysByReligion.find((j) => j.religionId === religionKey) || weddingJourneysByReligion[0];
+
+  const journeySteps = sanityJourneySteps.length > 0 ? sanityJourneySteps : staticJourney.steps;
+  const journeySubtitle =
+    sanityJourneySteps.length > 0
+      ? (exp.subtitle || exp.region || 'Sacred Ceremony Journey')
+      : staticJourney.subtitle;
 
   return (
     <main style={{ backgroundColor: theme.bgMain }} className="min-h-screen">
@@ -145,13 +224,13 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
       <section id="sacred-journey" className="py-12 sm:py-24 bg-[#F5ECDD]/30 border-b border-[#E8DDCD]">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8">
           <SectionHeader
-            scriptEyebrow={journey.subtitle}
+            scriptEyebrow={journeySubtitle}
             title="The Sacred Journey"
             description="From initial covenant blessings to grand banquet galas, explore every sacred milestone crafted by Hanvi Events."
             align="center"
           />
 
-          <InteractiveSacredJourney steps={journey.steps} theme={theme} />
+          <InteractiveSacredJourney steps={journeySteps} theme={theme} />
         </div>
       </section>
 

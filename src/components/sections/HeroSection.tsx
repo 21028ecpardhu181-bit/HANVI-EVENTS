@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Play, Volume2, VolumeX } from 'lucide-react';
 import { heroRevealVariants } from '@/animations/variants';
-import { getSanityHomeData } from '@/lib/sanity/fetch';
 import { EditorialButton } from '../ui/EditorialButton';
 import { EditorialBadge } from '../ui/EditorialBadge';
 import { ConsultationModal } from '../modals/ConsultationModal';
@@ -13,16 +12,7 @@ export const HeroSection: React.FC = () => {
   const [isMuted, setIsMuted] = useState(true);
   const [consultationOpen, setConsultationOpen] = useState(false);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
-  const [homeCms, setHomeCms] = useState<any>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    async function loadHomeData() {
-      const data = await getSanityHomeData();
-      if (data) setHomeCms(data);
-    }
-    loadHomeData();
-  }, []);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -40,10 +30,10 @@ export const HeroSection: React.FC = () => {
     }
   };
 
-  const heroSubtitle = homeCms?.heroSubtitle || 'Some celebrations last a day. Some become family history.';
-  const heroTitle = homeCms?.heroTitle || 'Designing Celebrations You’ll Remember Forever';
-  const heroDescription = homeCms?.heroDescription || 'From sacred Telugu Vedic mandaps & welcome girls stalls to surprise birthday arches, sangeet concerts & corporate galas in Kakinada & Andhra Pradesh.';
-  const ctaPrimaryText = homeCms?.ctaPrimaryText || 'Book Consultation →';
+  const heroSubtitle = 'Some celebrations last a day. Some become family history.';
+  const heroTitle = 'Designing Celebrations You’ll Remember Forever';
+  const heroDescription = 'From sacred Telugu Vedic mandaps & welcome girls stalls to surprise birthday arches, sangeet concerts & corporate galas in Kakinada & Andhra Pradesh.';
+  const ctaPrimaryText = 'Book Consultation →';
 
   return (
     <>

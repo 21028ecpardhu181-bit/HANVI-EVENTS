@@ -2,11 +2,13 @@ import { CelebrationCategory } from '../types';
 
 export interface WeddingExperienceDetail {
   id: string;
-  slug: 'hindu' | 'christian' | 'muslim';
+  slug: 'hindu' | 'christian' | 'muslim' | string;
   title: string;
   shortTitle: string;
   tagline: string;
   subtitle: string;
+  region?: string;
+  videoUrl?: string;
   description: string;
   culturalBackground: string;
   storyQuote: string;

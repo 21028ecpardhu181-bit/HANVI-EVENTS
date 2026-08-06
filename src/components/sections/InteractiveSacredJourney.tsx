@@ -17,6 +17,12 @@ export const InteractiveSacredJourney: React.FC<InteractiveSacredJourneyProps> =
   theme,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+
+  // Reset active index when steps change (e.g. switching wedding tradition)
+  React.useEffect(() => {
+    setActiveIndex(0);
+  }, [steps]);
+
   const activeStep = steps[activeIndex] || steps[0];
 
   return (

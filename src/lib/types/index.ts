@@ -63,7 +63,6 @@ export interface CelebrationCategory {
 
 export type ServiceCategory = CelebrationCategory;
 
-
 export interface WeddingJourneyStep {
   id: string;
   slug: string;
@@ -108,24 +107,36 @@ export interface GalleryItem {
   title: string;
   category: 'Mandap' | 'Florals' | 'Lighting' | 'Stage' | 'Entrance';
   image: string;
+  images?: string[];
   location: string;
+  type?: 'reel' | 'film' | 'image';
+  videoUrl?: string;
 }
 
-export interface JournalArticle {
+export interface TeamMember {
   id: string;
   slug: string;
-  title: string;
-  excerpt: string;
-  category: string;
-  readTime: string;
-  publishedDate: string;
-  author: {
-    name: string;
-    role: string;
-    avatar: string;
+  name: string;
+  role: string;
+  category?: string;
+  shortBio: string;
+  detailedBio: string;
+  profileImage: string;
+  coverImage?: string;
+  galleryImages?: string[];
+  videos?: Array<{ title?: string; url: string }>;
+  experience?: string;
+  skills?: string[];
+  socialLinks?: Array<{ platform: string; url: string }>;
+  contactInfo?: {
+    phone?: string;
+    email?: string;
+    whatsapp?: string;
   };
-  heroImage: string;
-  content: string[];
+  featured?: boolean;
+  displayOrder?: number;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export interface Testimonial {

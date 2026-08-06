@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Play } from 'lucide-react';
 import { galleryItems } from '@/lib/data/gallery';
 import { getSanityGalleryMedia } from '@/lib/sanity/fetch';
 import { SectionHeader } from '@/components/ui/SectionHeader';
@@ -15,14 +16,22 @@ export default function GalleryPage() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [mediaItems, setMediaItems] = useState<LightboxMedia[]>(
-    galleryItems.map((g) => ({
-      id: g.id,
-      title: g.title,
-      category: g.category,
-      image: g.image,
-      location: g.location,
-      isVideo: false,
-    }))
+    galleryItems.map((g) => {
+      const format = g.type || (g.videoUrl ? 'reel' : 'image');
+      const cover = g.image;
+      const imgs = Array.isArray(g.images) && g.images.length > 0 ? g.images : (cover ? [cover] : []);
+      return {
+        id: g.id,
+        title: g.title,
+        category: g.category,
+        image: cover,
+        images: imgs,
+        location: g.location,
+        videoUrl: g.videoUrl,
+        type: format,
+        isVideo: format === 'reel' || format === 'film' || Boolean(g.videoUrl),
+      };
+    })
   );
 
   useEffect(() => {
@@ -30,14 +39,22 @@ export default function GalleryPage() {
       try {
         const sanityData = await getSanityGalleryMedia();
         if (sanityData && sanityData.length > 0) {
-          const mapped: LightboxMedia[] = sanityData.map((m) => ({
-            id: m.id,
-            title: m.title,
-            category: 'Mandap',
-            image: m.thumbnail,
-            location: m.subtitle,
-            isVideo: m.type === 'reel' || m.type === 'film',
-          }));
+          const mapped: LightboxMedia[] = sanityData.map((m: any) => {
+            const format = m.type || (m.videoUrl ? 'reel' : 'image');
+            const cover = m.thumbnail || m.image;
+            const imgs = Array.isArray(m.images) && m.images.length > 0 ? m.images : (cover ? [cover] : []);
+            return {
+              id: m.id,
+              title: m.title,
+              category: m.category || 'Mandap',
+              image: cover,
+              images: imgs,
+              location: m.subtitle,
+              videoUrl: m.videoUrl,
+              type: format,
+              isVideo: format === 'reel' || format === 'film' || Boolean(m.videoUrl),
+            };
+          });
           setMediaItems(mapped);
         }
       } catch (err) {
@@ -47,9 +64,13 @@ export default function GalleryPage() {
     loadSanityGallery();
   }, []);
 
-  const filteredItems = activeCategory === 'All'
+  const filteredItems = activeCategory.trim().toLowerCase() === 'all'
     ? mediaItems
-    : mediaItems.filter((item) => item.category === activeCategory);
+    : mediaItems.filter((item) => {
+        const itemCategory = (item.category || '').trim().toLowerCase();
+        const targetCategory = activeCategory.trim().toLowerCase();
+        return itemCategory === targetCategory;
+      });
 
   const handleOpenLightbox = (item: LightboxMedia) => {
     const idx = filteredItems.findIndex((m) => m.id === item.id);
@@ -90,34 +111,44 @@ export default function GalleryPage() {
 
         {/* Gallery Responsive Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 mt-10">
-          {filteredItems.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => handleOpenLightbox(item)}
-              className="group relative rounded-3xl overflow-hidden aspect-[4/3] bg-[#F5ECDD] border border-[#E8DDCD] shadow-sm hover:shadow-hover hover:border-[#B88A44]/60 transition-all duration-500 cursor-pointer"
-            >
-              <ImageWithSkeleton
-                src={item.image}
-                alt={item.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-700"
-              />
+          {filteredItems.map((item) => {
+            const isVideo = item.isVideo || item.type === 'reel' || item.type === 'film';
+            return (
+              <div
+                key={item.id}
+                onClick={() => handleOpenLightbox(item)}
+                className="group relative rounded-3xl overflow-hidden aspect-[4/3] bg-[#F5ECDD] border border-[#E8DDCD] shadow-sm hover:shadow-hover hover:border-[#B88A44]/60 transition-all duration-500 cursor-pointer"
+              >
+                <ImageWithSkeleton
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                />
 
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#34281F]/85 via-[#34281F]/20 to-transparent opacity-80 group-hover:opacity-95 transition-opacity" />
+                {/* Play Icon Badge for Reel / Film */}
+                {isVideo && (
+                  <div className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-[#B88A44]/90 text-white flex items-center justify-center shadow-md backdrop-blur-sm group-hover:scale-110 transition-transform">
+                    <Play className="w-4 h-4 fill-white ml-0.5" />
+                  </div>
+                )}
 
-              {/* Info Bar */}
-              <div className="absolute bottom-0 left-0 right-0 p-5 text-[#FCF9F5] space-y-1 z-10">
-                <EditorialBadge variant="gold">
-                  {item.category} {item.location ? `• ${item.location}` : ''}
-                </EditorialBadge>
-                <h3 className="font-serif-editorial text-lg font-medium leading-tight group-hover:text-[#B88A44] transition-colors">
-                  {item.title}
-                </h3>
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#34281F]/85 via-[#34281F]/20 to-transparent opacity-80 group-hover:opacity-95 transition-opacity" />
+
+                {/* Info Bar */}
+                <div className="absolute bottom-0 left-0 right-0 p-5 text-[#FCF9F5] space-y-1 z-10">
+                  <EditorialBadge variant="gold">
+                    {item.category} {item.location ? `• ${item.location}` : ''}
+                  </EditorialBadge>
+                  <h3 className="font-serif-editorial text-lg font-medium leading-tight group-hover:text-[#B88A44] transition-colors">
+                    {item.title}
+                  </h3>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
       </div>
@@ -133,3 +164,4 @@ export default function GalleryPage() {
     </div>
   );
 }
+

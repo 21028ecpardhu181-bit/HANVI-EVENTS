@@ -8,7 +8,7 @@ export const mainNavLinks: NavLink[] = [
   { label: 'Stories', href: '/stories' },
   { label: 'Gallery', href: '/gallery' },
   { label: 'Packages', href: '/packages' },
-  { label: 'Journal', href: '/journal' },
+  { label: 'Team', href: '/team' },
   { label: 'Contact', href: '/contact' },
 ];
 
@@ -41,7 +41,7 @@ export const footerLinks = {
     { label: 'Featured Stories', href: '/stories' },
     { label: 'Visual Gallery', href: '/gallery' },
     { label: 'Packages & Tiers', href: '/packages' },
-    { label: 'Editorial Journal', href: '/journal' },
+    { label: 'Studio Team', href: '/team' },
     { label: 'Admin Portal', href: '/admin' },
     { label: 'Contact Us', href: '/contact' },
   ],

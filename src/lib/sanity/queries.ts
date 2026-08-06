@@ -22,37 +22,6 @@ export const servicesQuery = groq`
   }
 `;
 
-export const homeQuery = groq`
-  *[_type == "home"][0] {
-    heroTitle,
-    heroSubtitle,
-    heroDescription,
-    heroBackgroundImage,
-    ctaPrimaryText,
-    ctaPrimaryLink,
-    ctaSecondaryText,
-    ctaSecondaryLink,
-    statistics,
-    seoTitle,
-    seoDescription
-  }
-`;
-
-export const eventWizardQuery = groq`
-  *[_type == "eventWizard"][0] {
-    title,
-    description,
-    coverImage,
-    whatsappNumber,
-    steps,
-    questions,
-    recommendations,
-    ctaText,
-    seoTitle,
-    seoDescription
-  }
-`;
-
 export const weddingTraditionsQuery = groq`
   *[_type == "weddingTradition"] | order(_createdAt asc) {
     _id,
@@ -106,154 +75,117 @@ export const galleryMediaQuery = groq`
   }
 `;
 
-export const packagesQuery = groq`
-  *[_type == "packageItem"] | order(displayOrder asc) {
+export const teamMembersQuery = groq`
+  *[_type == "teamMember"] | order(featured desc, displayOrder asc, _createdAt desc) {
     _id,
-    packageName,
+    name,
     "slug": slug.current,
-    packageSubtitle,
-    price,
-    includedServices,
-    packageImage,
-    features,
-    ctaButtonText,
-    ctaButtonLink,
-    featuredPackage,
+    role,
+    category,
+    shortBio,
+    detailedBio,
+    profileImage,
+    coverImage,
+    galleryImages,
+    videos[] {
+      title,
+      url,
+      "assetUrl": asset->url,
+      "fileUrl": file.asset->url
+    },
+    experience,
+    skills,
+    socialLinks,
+    contactInfo,
+    featured,
     displayOrder,
     seoTitle,
     seoDescription
   }
 `;
 
-export const articlesQuery = groq`
-  *[_type == "article"] | order(_createdAt desc) {
+export const teamMemberBySlugQuery = groq`
+  *[_type == "teamMember" && (slug.current == $slug || _id == $slug)][0] {
     _id,
-    title,
+    name,
     "slug": slug.current,
-    featuredImage,
-    author,
-    publishDate,
+    role,
     category,
-    excerpt,
-    content,
-    tags,
-    readTime,
+    shortBio,
+    detailedBio,
+    profileImage,
+    coverImage,
+    galleryImages,
+    videos[] {
+      title,
+      url,
+      "assetUrl": asset->url,
+      "fileUrl": file.asset->url
+    },
+    experience,
+    skills,
+    socialLinks,
+    contactInfo,
+    featured,
+    displayOrder,
     seoTitle,
     seoDescription
   }
 `;
 
-export const testimonialsQuery = groq`
-  *[_type == "testimonial"] | order(displayOrder asc, _createdAt desc) {
+/**
+ * Sacred Journey Collection — fetch steps for a specific wedding tradition.
+ * Ordered by displayOrder first, then stepNumber.
+ */
+export const sacredJourneyByTraditionQuery = groq`
+  *[_type == "sacredJourney" && (
+    weddingTradition->slug.current == $traditionSlug ||
+    weddingTradition->_id == $traditionSlug ||
+    weddingTradition->_id == "tradition-" + $traditionSlug ||
+    weddingTradition->slug.current match $traditionSlug + "*" ||
+    $traditionSlug match weddingTradition->slug.current + "*" ||
+    lower(weddingTradition->traditionTitle) match "*" + $traditionSlug + "*"
+  )]
+  | order(displayOrder asc, stepNumber asc) {
     _id,
-    clientName,
-    coupleName,
-    rating,
-    review,
-    clientPhoto,
-    eventType,
-    location,
-    featured,
-    displayOrder
-  }
-`;
-
-export const faqsQuery = groq`
-  *[_type == "faq"] | order(_createdAt desc) {
-    _id,
-    question,
-    answer,
-    category
-  }
-`;
-
-export const teamMembersQuery = groq`
-  *[_type == "teamMember"] | order(displayOrder asc) {
-    _id,
-    name,
-    role,
-    category,
-    profileImage,
-    shortBio,
-    detailedBio,
-    experience,
-    specialization,
-    socialLinks,
-    featured,
-    displayOrder
-  }
-`;
-
-export const studioLeadershipQuery = groq`
-  *[_type == "studioLeadership"] | order(displayOrder asc) {
-    _id,
-    name,
-    position,
-    profileImage,
-    biography,
-    visionStatement,
-    experience,
-    socialLinks,
-    featured,
-    displayOrder
-  }
-`;
-
-export const venuesQuery = groq`
-  *[_type == "venue"] | order(venueName asc) {
-    _id,
-    venueName,
+    journeyTitle,
     "slug": slug.current,
-    location,
-    description,
-    coverImage,
-    gallery,
-    capacity,
-    indoorOutdoor,
-    googleMapsLink,
-    featured
+    "traditionSlug": weddingTradition->slug.current,
+    "traditionId": weddingTradition->_id,
+    "traditionTitle": weddingTradition->traditionTitle,
+    stepNumber,
+    displayOrder,
+    journeyLabel,
+    timeline,
+    ceremonyName,
+    shortDescription,
+    detailedDescription,
+    heroImage,
+    highlights,
+    decorIdeas
   }
 `;
 
-export const contactPageQuery = groq`
-  *[_type == "contactPage"][0] {
-    officeAddress,
-    phoneNumbers,
-    whatsappNumber,
-    email,
-    googleMapsEmbed,
-    businessHours,
-    socialLinks,
-    formSettings
-  }
-`;
-
-export const siteSettingsQuery = groq`
-  *[_type == "siteSettings"][0] {
-    companyName,
-    logo,
-    favicon,
-    navigationMenu,
-    footerContent,
-    copyright,
-    socialLinks,
-    contactInformation,
-    seoDefaults
-  }
-`;
-
-export const portfolioQuery = groq`
-  *[_type == "portfolioItem"] | order(displayOrder asc) {
+/**
+ * Sacred Journey Collection — fetch ALL steps (used for static params generation).
+ */
+export const allSacredJourneyStepsQuery = groq`
+  *[_type == "sacredJourney"] | order(displayOrder asc, stepNumber asc) {
     _id,
-    projectTitle,
+    journeyTitle,
     "slug": slug.current,
-    eventType,
-    coverImage,
-    gallery,
-    clientName,
-    description,
-    completionDate,
-    featured,
-    displayOrder
+    "traditionSlug": weddingTradition->slug.current,
+    "traditionId": weddingTradition->_id,
+    "traditionTitle": weddingTradition->traditionTitle,
+    stepNumber,
+    displayOrder,
+    journeyLabel,
+    timeline,
+    ceremonyName,
+    shortDescription,
+    detailedDescription,
+    heroImage,
+    highlights,
+    decorIdeas
   }
 `;

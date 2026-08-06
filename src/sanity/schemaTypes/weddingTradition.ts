@@ -54,6 +54,31 @@ export const weddingTraditionType = defineType({
       of: [{ type: 'string' }],
     }),
     defineField({
+      name: 'subtitle',
+      title: 'Subtitle / Tagline',
+      type: 'string',
+    }),
+    defineField({
+      name: 'culturalBackground',
+      title: 'Sacred Heritage / Cultural Background',
+      type: 'text',
+    }),
+    defineField({
+      name: 'lightingStyle',
+      title: 'Ambiance & Lighting Architecture',
+      type: 'string',
+    }),
+    defineField({
+      name: 'storyQuote',
+      title: 'Family Blessing / Story Quote',
+      type: 'text',
+    }),
+    defineField({
+      name: 'quoteAuthor',
+      title: 'Quote Author',
+      type: 'string',
+    }),
+    defineField({
       name: 'seoTitle',
       title: 'SEO Title',
       type: 'string',

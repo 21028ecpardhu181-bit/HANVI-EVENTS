@@ -12,8 +12,18 @@ export const teamMemberType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'slug',
+      title: 'Slug / URL Handle',
+      type: 'slug',
+      options: {
+        source: 'name',
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'role',
-      title: 'Role',
+      title: 'Designation / Role',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
@@ -21,7 +31,19 @@ export const teamMemberType = defineType({
       name: 'category',
       title: 'Team Category',
       type: 'string',
-      initialValue: 'Core Team',
+      initialValue: 'Core Leadership',
+    }),
+    defineField({
+      name: 'shortBio',
+      title: 'Short Introduction',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'detailedBio',
+      title: 'Complete Biography',
+      type: 'text',
+      rows: 6,
     }),
     defineField({
       name: 'profileImage',
@@ -30,14 +52,30 @@ export const teamMemberType = defineType({
       options: { hotspot: true },
     }),
     defineField({
-      name: 'shortBio',
-      title: 'Short Bio',
-      type: 'text',
+      name: 'coverImage',
+      title: 'Cover Image / Banner',
+      type: 'image',
+      options: { hotspot: true },
     }),
     defineField({
-      name: 'detailedBio',
-      title: 'Detailed Bio',
-      type: 'text',
+      name: 'galleryImages',
+      title: 'Gallery Images',
+      type: 'array',
+      of: [{ type: 'image', options: { hotspot: true } }],
+    }),
+    defineField({
+      name: 'videos',
+      title: 'Showcase Videos',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'title', title: 'Video Title', type: 'string' },
+            { name: 'url', title: 'Video URL (MP4 / YouTube)', type: 'string' },
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'experience',
@@ -45,22 +83,33 @@ export const teamMemberType = defineType({
       type: 'string',
     }),
     defineField({
-      name: 'specialization',
-      title: 'Specialization',
-      type: 'string',
+      name: 'skills',
+      title: 'Skills & Specialization',
+      type: 'array',
+      of: [{ type: 'string' }],
     }),
     defineField({
       name: 'socialLinks',
-      title: 'Social Links',
+      title: 'Social Media Links',
       type: 'array',
       of: [
         {
           type: 'object',
           fields: [
-            { name: 'platform', title: 'Platform', type: 'string' },
+            { name: 'platform', title: 'Platform (e.g. Instagram, LinkedIn, YouTube)', type: 'string' },
             { name: 'url', title: 'URL', type: 'string' },
           ],
         },
+      ],
+    }),
+    defineField({
+      name: 'contactInfo',
+      title: 'Contact Information',
+      type: 'object',
+      fields: [
+        { name: 'phone', title: 'Phone Number', type: 'string' },
+        { name: 'email', title: 'Email Address', type: 'string' },
+        { name: 'whatsapp', title: 'WhatsApp Number', type: 'string' },
       ],
     }),
     defineField({
@@ -74,6 +123,16 @@ export const teamMemberType = defineType({
       title: 'Display Order',
       type: 'number',
       initialValue: 1,
+    }),
+    defineField({
+      name: 'seoTitle',
+      title: 'SEO Meta Title',
+      type: 'string',
+    }),
+    defineField({
+      name: 'seoDescription',
+      title: 'SEO Meta Description',
+      type: 'text',
     }),
   ],
   preview: {

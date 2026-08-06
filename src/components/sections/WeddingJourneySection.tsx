@@ -9,10 +9,18 @@ import { ImageWithSkeleton } from '../ui/ImageWithSkeleton';
 import { EditorialButton } from '../ui/EditorialButton';
 import { EditorialBadge } from '../ui/EditorialBadge';
 
-export const WeddingJourneySection: React.FC = () => {
+export interface WeddingJourneySectionProps {
+  sanityJourneys?: Record<string, import('@/lib/types').WeddingJourneyStep[]>;
+}
+
+export const WeddingJourneySection: React.FC<WeddingJourneySectionProps> = ({ sanityJourneys }) => {
   const [activeReligionId, setActiveReligionId] = useState<'hindu' | 'christian' | 'muslim'>('hindu');
-  const activeJourney = weddingJourneysByReligion.find((j) => j.religionId === activeReligionId) || weddingJourneysByReligion[0];
-  
+  const activeStaticJourney =
+    weddingJourneysByReligion.find((j) => j.religionId === activeReligionId) || weddingJourneysByReligion[0];
+
+  const cmsSteps = sanityJourneys?.[activeReligionId];
+  const steps = cmsSteps && cmsSteps.length > 0 ? cmsSteps : activeStaticJourney.steps;
+
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
@@ -22,18 +30,22 @@ export const WeddingJourneySection: React.FC = () => {
     setActiveStepIndex(0);
   };
 
-  const activeStep = activeJourney.steps[activeStepIndex] || activeJourney.steps[0];
+  useEffect(() => {
+    setActiveStepIndex(0);
+  }, [activeReligionId, steps]);
+
+  const activeStep = steps[activeStepIndex] || steps[0];
 
   // Auto-advance to next step every 5 seconds
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    if (!isAutoPlaying || !steps.length) return;
 
     const timer = setInterval(() => {
-      setActiveStepIndex((prev) => (prev + 1) % activeJourney.steps.length);
+      setActiveStepIndex((prev) => (prev + 1) % steps.length);
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [isAutoPlaying, activeJourney.steps.length]);
+  }, [isAutoPlaying, steps.length]);
 
   const handleStepClick = (index: number) => {
     setActiveStepIndex(index);
@@ -74,7 +86,7 @@ export const WeddingJourneySection: React.FC = () => {
 
         {/* 2x3 Bento Step Grid on Mobile — Zero Side Scroll! */}
         <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 md:gap-3 mt-4 max-w-5xl mx-auto w-full">
-          {activeJourney.steps.map((step, idx) => {
+          {steps.map((step, idx) => {
             const isActive = activeStepIndex === idx;
             return (
               <button
@@ -153,9 +165,9 @@ export const WeddingJourneySection: React.FC = () => {
                 </p>
 
                 <div className="pt-2">
-                  <Link href={`/wedding-experiences/${activeJourney.experienceSlug}#rituals`} className="block w-full sm:w-auto">
+                  <Link href={`/wedding-experiences/${activeStaticJourney.experienceSlug}#rituals`} className="block w-full sm:w-auto">
                     <EditorialButton variant="primary" size="sm" className="w-full sm:w-auto text-xs py-2.5">
-                      Explore Dedicated {activeJourney.religionName.split(' ')[0]} Page →
+                      Explore Dedicated {activeStaticJourney.religionName.split(' ')[0]} Page →
                     </EditorialButton>
                   </Link>
                 </div>

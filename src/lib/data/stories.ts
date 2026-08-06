@@ -13,7 +13,7 @@ export const weddingJourneysByReligion: ReligiousJourneyPath[] = [
     religionId: 'hindu',
     religionName: 'Hindu Vedic Journey',
     subtitle: 'Nischithardham to Sacred Muhurtham Mandap',
-    experienceSlug: 'hindu-marriage-ceremonies',
+    experienceSlug: 'hindu',
     steps: [
       {
         id: 'hindu-1',
@@ -99,7 +99,7 @@ export const weddingJourneysByReligion: ReligiousJourneyPath[] = [
     religionId: 'christian',
     religionName: 'Christian Cathedral & Beach Path',
     subtitle: 'Betrothal to Oceanfront First Dance Gala',
-    experienceSlug: 'christian-cathedral-beach-unions',
+    experienceSlug: 'christian',
     steps: [
       {
         id: 'chris-1',
@@ -185,7 +185,7 @@ export const weddingJourneysByReligion: ReligiousJourneyPath[] = [
     religionId: 'muslim',
     religionName: 'Muslim Nikah & Walima Path',
     subtitle: 'Manjha to Imperial Palace Walima',
-    experienceSlug: 'muslim-nikah-walima-galas',
+    experienceSlug: 'muslim',
     steps: [
       {
         id: 'mus-1',

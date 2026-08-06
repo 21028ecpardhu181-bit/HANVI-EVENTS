@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import { Menu, Phone, Calendar, Search } from 'lucide-react';
 import { mainNavLinks } from '@/lib/data/navigation';
 import { siteConfig } from '@/lib/data/site';
-import { getSanitySiteSettings } from '@/lib/sanity/fetch';
 import { EditorialButton } from '../ui/EditorialButton';
 import { MobileNav } from './MobileNav';
 import { ConsultationModal } from '../modals/ConsultationModal';
@@ -18,20 +17,9 @@ export const Navbar: React.FC = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [consultationOpen, setConsultationOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [navLinks, setNavLinks] = useState(mainNavLinks);
+  const [navLinks] = useState(mainNavLinks);
   const pathname = usePathname();
-
   const isHomePage = pathname === '/';
-
-  useEffect(() => {
-    async function loadCmsNav() {
-      const siteSettings = await getSanitySiteSettings();
-      if (siteSettings?.navigationMenu && siteSettings.navigationMenu.length > 0) {
-        setNavLinks(siteSettings.navigationMenu);
-      }
-    }
-    loadCmsNav();
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

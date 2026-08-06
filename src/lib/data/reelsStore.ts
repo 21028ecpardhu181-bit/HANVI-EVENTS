@@ -1,10 +1,11 @@
 export interface MediaItem {
   id: string;
-  type: 'reel' | 'film';
+  type: 'reel' | 'film' | 'image';
   title: string;
   subtitle: string;
+  category?: string;
   thumbnail: string;
-  videoUrl: string;
+  videoUrl?: string;
   duration?: string;
   views?: string;
   createdAt?: number;
@@ -16,6 +17,7 @@ export const defaultMediaItems: MediaItem[] = [
     type: 'film',
     title: 'Swathi & Rajesh’s Grand Mandap Gala',
     subtitle: 'Kakinada Convention Center • Telugu Marriage',
+    category: 'Mandap',
     thumbnail: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop',
     videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     duration: '4:15 Cinema',
@@ -27,8 +29,9 @@ export const defaultMediaItems: MediaItem[] = [
     type: 'reel',
     title: '40,000 Jasmine Strand Canopy Reveal',
     subtitle: 'Fresh Jasmine Mandap Entrance',
+    category: 'Florals',
     thumbnail: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop',
-    videoUrl: 'https://linktw.in/utNIGS',
+    videoUrl: 'https://www.youtube.com/shorts/dQw4w9WgXcQ',
     views: '45K Reel Views',
     createdAt: 1700000001000,
   },
@@ -37,6 +40,7 @@ export const defaultMediaItems: MediaItem[] = [
     type: 'film',
     title: 'Ananya & Vikram Beachside Reception',
     subtitle: 'Novotel Beach Resort • Visakhapatnam',
+    category: 'Lighting',
     thumbnail: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1200&auto=format&fit=crop',
     videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     duration: '3:40 Film',
@@ -48,8 +52,9 @@ export const defaultMediaItems: MediaItem[] = [
     type: 'reel',
     title: 'Surprise Balloon Arch setup for Birthday',
     subtitle: 'Kakinada Home Venue Setup',
+    category: 'Stage',
     thumbnail: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=800&auto=format&fit=crop',
-    videoUrl: 'https://linktw.in/utNIGS',
+    videoUrl: 'https://www.youtube.com/shorts/dQw4w9WgXcQ',
     views: '28K Reel Views',
     createdAt: 1700000003000,
   },

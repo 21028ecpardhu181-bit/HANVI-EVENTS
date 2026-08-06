@@ -6,6 +6,7 @@ import { ChooseCelebrationSection } from '@/components/sections/ChooseCelebratio
 import { CelebrationPlannerSection } from '@/components/sections/CelebrationPlannerSection';
 import { WeddingTypesSection } from '@/components/sections/WeddingTypesSection';
 import { FeaturedStoriesSection } from '@/components/sections/FeaturedStoriesSection';
+import { TeamShowcaseSection } from '@/components/sections/TeamShowcaseSection';
 import { OurCraftSection } from '@/components/sections/OurCraftSection';
 import { LatestMomentsSection } from '@/components/sections/LatestMomentsSection';
 import { EmotionalCtaSection } from '@/components/sections/EmotionalCtaSection';
@@ -13,17 +14,15 @@ import {
   getSanityWeddingTraditions,
   getSanityStories,
   getSanityGalleryMedia,
-  getSanityPackages,
-  getSanityTestimonials,
+  getSanityTeamMembers,
 } from '@/lib/sanity/fetch';
 
 export default async function HomePage() {
-  const [weddingTraditions, stories, galleryMedia, packages, testimonials] = await Promise.all([
+  const [weddingTraditions, stories, galleryMedia, teamMembers] = await Promise.all([
     getSanityWeddingTraditions(),
     getSanityStories(),
     getSanityGalleryMedia(),
-    getSanityPackages(),
-    getSanityTestimonials(),
+    getSanityTeamMembers(),
   ]);
 
   return (
@@ -50,10 +49,13 @@ export default async function HomePage() {
       <FeaturedStoriesSection stories={stories} />
       <OurCraftSection />
 
-      {/* 8. Merged Media: Latest Moments (Instagram Reels + YouTube Cinema Films) */}
+      {/* 8. Dynamic Team Showcase */}
+      <TeamShowcaseSection members={teamMembers} />
+
+      {/* 9. Merged Media: Latest Moments (Instagram Reels + YouTube Cinema Films) */}
       <LatestMomentsSection items={galleryMedia} />
 
-      {/* 9. Final Studio Consultation CTA */}
+      {/* 10. Final Studio Consultation CTA */}
       <EmotionalCtaSection />
     </div>
   );

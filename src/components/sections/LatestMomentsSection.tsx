@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Film, Video, ExternalLink } from 'lucide-react';
+import { Play, Film, Video } from 'lucide-react';
 import { MediaItem, getStoredMediaItems } from '@/lib/data/reelsStore';
 import { SectionHeader } from '../ui/SectionHeader';
 import { ImageWithSkeleton } from '../ui/ImageWithSkeleton';
 import { EditorialBadge } from '../ui/EditorialBadge';
+import { LightboxModal, LightboxMedia } from '../ui/LightboxModal';
 
 export interface LatestMomentsSectionProps {
   items?: MediaItem[];
@@ -14,7 +15,8 @@ export interface LatestMomentsSectionProps {
 
 export const LatestMomentsSection: React.FC<LatestMomentsSectionProps> = ({ items }) => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'reel' | 'film'>('all');
-  const [activeVideoModal, setActiveVideoModal] = useState<MediaItem | null>(null);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [mediaItems, setMediaItems] = useState<MediaItem[]>(items && items.length > 0 ? items : []);
 
   useEffect(() => {
@@ -36,6 +38,23 @@ export const LatestMomentsSection: React.FC<LatestMomentsSectionProps> = ({ item
   const filteredItems = mediaItems.filter(
     (item) => activeFilter === 'all' || item.type === activeFilter
   );
+
+  const lightboxMedia: LightboxMedia[] = filteredItems.map((item) => ({
+    id: item.id,
+    title: item.title,
+    category: item.category || (item.type === 'reel' ? 'Reel' : 'Film'),
+    image: item.thumbnail,
+    location: item.subtitle,
+    videoUrl: item.videoUrl,
+    type: item.type,
+    isVideo: item.type === 'reel' || item.type === 'film' || Boolean(item.videoUrl),
+  }));
+
+  const handleOpenItem = (item: MediaItem) => {
+    const idx = filteredItems.findIndex((m) => m.id === item.id);
+    setSelectedIndex(idx >= 0 ? idx : 0);
+    setLightboxOpen(true);
+  };
 
   return (
     <section className="py-12 sm:py-24 bg-[#34281F] text-[#FCF9F5]">
@@ -96,7 +115,7 @@ export const LatestMomentsSection: React.FC<LatestMomentsSectionProps> = ({ item
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
-                onClick={() => setActiveVideoModal(item)}
+                onClick={() => handleOpenItem(item)}
                 className="group relative bg-[#FCF9F5]/5 border border-white/10 rounded-3xl overflow-hidden cursor-pointer shadow-lg hover:border-[#B88A44]/60 transition-all transform hover:-translate-y-1 flex flex-col justify-between"
               >
                 <div className="relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden">
@@ -141,43 +160,15 @@ export const LatestMomentsSection: React.FC<LatestMomentsSectionProps> = ({ item
 
       </div>
 
-      {/* Video Modal */}
-      <AnimatePresence>
-        {activeVideoModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="relative w-full max-w-4xl bg-black rounded-3xl overflow-hidden shadow-2xl aspect-video border border-white/20"
-            >
-              <button
-                onClick={() => setActiveVideoModal(null)}
-                className="absolute top-4 right-4 z-20 px-3.5 py-1.5 bg-white/20 text-white rounded-full font-sans-ui text-xs uppercase cursor-pointer hover:bg-white/40"
-              >
-                Close Media
-              </button>
-              <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center space-y-4">
-                <span className="font-script-accent text-3xl text-[#B88A44]">
-                  {activeVideoModal.title}
-                </span>
-                <p className="font-sans-narrative text-sm text-white/80 max-w-md">
-                  {activeVideoModal.subtitle}
-                </p>
-                <a
-                  href={activeVideoModal.videoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#B88A44] text-white font-sans-ui text-xs uppercase tracking-wider font-semibold hover:bg-[#a07436]"
-                >
-                  <span>Open Video ({activeVideoModal.type === 'reel' ? 'Instagram Reel' : 'YouTube'})</span>
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      {/* Lightbox Media Modal */}
+      <LightboxModal
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        items={lightboxMedia}
+        currentIndex={selectedIndex}
+        onNavigate={(idx) => setSelectedIndex(idx)}
+      />
     </section>
   );
 };
+

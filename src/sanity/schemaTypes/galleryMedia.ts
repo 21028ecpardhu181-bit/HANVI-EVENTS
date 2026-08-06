@@ -15,7 +15,8 @@ export const galleryMediaType = defineType({
       name: 'category',
       title: 'Category',
       type: 'string',
-      initialValue: 'All',
+      options: { list: ['Mandap', 'Florals', 'Lighting', 'Stage', 'Entrance'] },
+      initialValue: 'Mandap',
     }),
     defineField({
       name: 'coverImage',

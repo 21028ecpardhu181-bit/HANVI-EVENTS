@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { getAllServices } from '@/lib/data/services';
 import { weddingJourneySteps, storyCaseStudies } from '@/lib/data/stories';
-import { journalArticles } from '@/lib/data/journal';
+import { staticTeamMembers } from '@/lib/data/team';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hanvi-events.vercel.app';
@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/stories',
     '/gallery',
     '/packages',
-    '/journal',
+    '/team',
     '/admin',
     '/contact',
   ].map((route) => ({
@@ -47,12 +47,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  const journalPages = journalArticles.map((a) => ({
-    url: `${baseUrl}/journal/${a.slug}`,
+  const teamPages = staticTeamMembers.map((m) => ({
+    url: `${baseUrl}/team/${m.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
-    priority: 0.75,
+    priority: 0.8,
   }));
 
-  return [...staticPages, ...servicePages, ...journeyPages, ...storyPages, ...journalPages];
+  return [...staticPages, ...servicePages, ...journeyPages, ...storyPages, ...teamPages];
 }
