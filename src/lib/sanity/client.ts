@@ -8,6 +8,6 @@ export const sanityClient = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false,
+  useCdn: typeof window !== 'undefined' ? true : false,
   token: process.env.SANITY_API_WRITE_TOKEN,
 });

@@ -13,11 +13,19 @@ import { EditorialBadge } from '../ui/EditorialBadge';
 import { ImageWithSkeleton } from '../ui/ImageWithSkeleton';
 import { staggerContainerVariants, fadeUpVariants } from '@/animations/variants';
 
-export const ChooseCelebrationSection: React.FC = () => {
-  const [services, setServices] = useState<ServiceCategory[]>(servicesData);
+interface ChooseCelebrationSectionProps {
+  items?: ServiceCategory[];
+}
+
+export const ChooseCelebrationSection: React.FC<ChooseCelebrationSectionProps> = ({ items }) => {
+  const [services, setServices] = useState<ServiceCategory[]>(items && items.length > 0 ? items : servicesData);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
   useEffect(() => {
+    if (items && items.length > 0) {
+      setServices(items);
+      return;
+    }
     async function loadServices() {
       const data = await getSanityServices();
       if (data && data.length > 0) {
@@ -25,7 +33,7 @@ export const ChooseCelebrationSection: React.FC = () => {
       }
     }
     loadServices();
-  }, []);
+  }, [items]);
 
   // Derive unique categories from the Services collection
   const categories = ['All', ...Array.from(new Set(services.map((s) => s.category).filter(Boolean)))];

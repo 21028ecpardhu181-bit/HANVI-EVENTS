@@ -1,6 +1,4 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { ArrowUpRight, CheckCircle2, Sparkles } from 'lucide-react';
 import { ServiceCategory } from '@/lib/types';
@@ -11,18 +9,14 @@ import { EditorialBadge } from '@/components/ui/EditorialBadge';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { BreadcrumbNav } from '@/components/ui/BreadcrumbNav';
 
-export default function ServicesCatalogPage() {
-  const [services, setServices] = useState<ServiceCategory[]>(servicesData);
+export const metadata = {
+  title: 'Services Collection | Hanvi Events',
+  description: 'Explore our full collection of bespoke event planning services including Bridal Makeup Lounge, Mandaps, Galas, Staging, Catering & Entertainment.',
+};
 
-  useEffect(() => {
-    async function loadData() {
-      const sanityData = await getSanityServices();
-      if (sanityData && sanityData.length > 0) {
-        setServices(sanityData);
-      }
-    }
-    loadData();
-  }, []);
+export default async function ServicesCatalogPage() {
+  const sanityServices = await getSanityServices();
+  const services = sanityServices && sanityServices.length > 0 ? sanityServices : servicesData;
 
   const jsonLd = {
     '@context': 'https://schema.org',

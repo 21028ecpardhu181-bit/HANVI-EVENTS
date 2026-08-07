@@ -11,6 +11,7 @@ import { OurCraftSection } from '@/components/sections/OurCraftSection';
 import { LatestMomentsSection } from '@/components/sections/LatestMomentsSection';
 import { EmotionalCtaSection } from '@/components/sections/EmotionalCtaSection';
 import {
+  getSanityServices,
   getSanityWeddingTraditions,
   getSanityStories,
   getSanityGalleryMedia,
@@ -18,7 +19,8 @@ import {
 } from '@/lib/sanity/fetch';
 
 export default async function HomePage() {
-  const [weddingTraditions, stories, galleryMedia, teamMembers] = await Promise.all([
+  const [services, weddingTraditions, stories, galleryMedia, teamMembers] = await Promise.all([
+    getSanityServices(),
     getSanityWeddingTraditions(),
     getSanityStories(),
     getSanityGalleryMedia(),
@@ -37,7 +39,7 @@ export default async function HomePage() {
       <TrustIndicatorsSection />
 
       {/* 4. Discovery: Asymmetric Celebration Grid */}
-      <ChooseCelebrationSection />
+      <ChooseCelebrationSection items={services} />
 
       {/* 5. Interactive Planner: Early Pricing & Budget Estimator */}
       <CelebrationPlannerSection />
