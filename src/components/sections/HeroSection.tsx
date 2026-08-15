@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, Play, Volume2, VolumeX } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Calendar, Volume2, VolumeX } from 'lucide-react';
 import { heroRevealVariants } from '@/animations/variants';
 import { EditorialButton } from '../ui/EditorialButton';
 import { EditorialBadge } from '../ui/EditorialBadge';
@@ -11,7 +11,7 @@ import { ConsultationModal } from '../modals/ConsultationModal';
 export const HeroSection: React.FC = () => {
   const [isMuted, setIsMuted] = useState(true);
   const [consultationOpen, setConsultationOpen] = useState(false);
-  const [videoModalOpen, setVideoModalOpen] = useState(false);
+
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -99,13 +99,7 @@ export const HeroSection: React.FC = () => {
                 {ctaPrimaryText}
               </EditorialButton>
 
-              <button
-                onClick={() => setVideoModalOpen(true)}
-                className="hidden md:flex w-full sm:w-auto px-7 py-3.5 rounded-full bg-black/40 backdrop-blur-md border border-white/40 text-[#FCF9F5] hover:bg-white hover:text-[#34281F] font-sans-ui text-xs tracking-wider uppercase font-semibold flex items-center justify-center gap-2.5 transition-all cursor-pointer shadow-lg group"
-              >
-                <span>Watch Story →</span>
-                <Play className="w-4 h-4 text-[#B88A44] fill-[#B88A44] group-hover:scale-110 transition-transform" />
-              </button>
+
             </div>
           </motion.div>
         </div>
@@ -117,28 +111,7 @@ export const HeroSection: React.FC = () => {
         onClose={() => setConsultationOpen(false)}
       />
 
-      <AnimatePresence>
-        {videoModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="relative w-full max-w-4xl bg-black rounded-2xl overflow-hidden shadow-2xl aspect-video"
-            >
-              <button
-                onClick={() => setVideoModalOpen(false)}
-                className="absolute top-4 right-4 z-20 px-3 py-1.5 bg-white/20 text-white rounded-full font-sans-ui text-xs uppercase cursor-pointer hover:bg-white/40"
-              >
-                Close Cinema
-              </button>
-              <video controls autoPlay className="w-full h-full object-cover">
-                <source src="/videos/hero-video.mp4" type="video/mp4" />
-              </video>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+
     </>
   );
 };
