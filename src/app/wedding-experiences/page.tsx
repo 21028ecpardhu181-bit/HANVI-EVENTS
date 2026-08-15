@@ -22,65 +22,65 @@ export default async function WeddingExperiencesHubPage() {
 
   return (
     <main className="min-h-screen bg-[#FCF9F5]">
-      {/* Hero Header */}
-      <section className="relative w-full py-16 sm:py-24 md:py-32 bg-[#34281F] text-[#FCF9F5] overflow-hidden text-center">
+      {/* Hero Header — Compact on Mobile */}
+      <section className="relative w-full py-10 sm:py-20 md:py-28 bg-[#34281F] text-[#FCF9F5] overflow-hidden text-center">
         <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#B88A44_1px,transparent_1px)] [background-size:24px_24px]" />
         
-        <div className="relative z-10 max-w-4xl mx-auto px-4 space-y-4">
-          <EditorialBadge variant="gold">
+        <div className="relative z-10 max-w-4xl mx-auto px-4 space-y-2 sm:space-y-4">
+          <EditorialBadge variant="gold" className="text-[10px] sm:text-xs">
             Vedic, Cathedral & Royal Heritage
           </EditorialBadge>
 
-          <h1 className="font-serif-editorial text-4xl sm:text-6xl md:text-7xl font-normal leading-tight text-[#FCF9F5]">
+          <h1 className="font-serif-editorial text-2xl sm:text-5xl md:text-6xl font-normal leading-tight text-[#FCF9F5]">
             Choose Your Wedding Tradition
           </h1>
 
-          <p className="font-sans-narrative text-sm sm:text-lg text-[#FCF9F5]/85 leading-relaxed font-light max-w-2xl mx-auto">
-            From Vedic mandap architecture and fresh jasmine canopies to pristine cathedral aisles and royal Mughal Nikah galas, we honor every sacred ritual with bespoke spatial luxury.
+          <p className="font-sans-narrative text-xs sm:text-base text-[#FCF9F5]/85 leading-relaxed font-light max-w-2xl mx-auto">
+            From Vedic mandap architecture and fresh jasmine canopies to pristine cathedral aisles and royal Mughal Nikah galas.
           </p>
         </div>
       </section>
 
-      {/* 3 Main Tradition Cards */}
-      <section className="py-12 sm:py-20 max-w-[1440px] mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+      {/* 3 Main Tradition Cards — Compact Grid */}
+      <section className="py-6 sm:py-16 max-w-[1440px] mx-auto px-3 sm:px-6 md:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {experiences.map((exp) => (
             <Link
               key={exp.id}
               href={`/wedding-experiences/${exp.slug}`}
-              className="group block relative bg-[#FCF9F5] border border-[#E8DDCD] rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:border-[#B88A44]/60 transition-all duration-500 transform hover:-translate-y-1.5 flex flex-col justify-between"
+              className="group block relative bg-[#FCF9F5] border border-[#E8DDCD] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xs hover:shadow-md hover:border-[#B88A44]/60 transition-all duration-300 flex flex-col justify-between"
             >
-              <div className="relative aspect-[16/10] w-full overflow-hidden">
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#E8DDCD]/30">
                 <ImageWithSkeleton
                   src={exp.heroImage}
                   alt={exp.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute top-3 right-3 z-10">
-                  <EditorialBadge variant="gold" className="bg-black/50 text-white border-white/20 text-[10px]">
+                <div className="absolute top-2.5 right-2.5 z-10">
+                  <EditorialBadge variant="gold" className="bg-black/50 text-white border-white/20 text-[9px] sm:text-[10px]">
                     {exp.shortTitle}
                   </EditorialBadge>
                 </div>
               </div>
 
-              <div className="p-6 sm:p-8 space-y-4 flex-grow flex flex-col justify-between">
+              <div className="p-4 sm:p-6 space-y-2 sm:space-y-3 flex-grow flex flex-col justify-between">
                 <div>
-                  <span className="font-script-accent text-xl text-[#B88A44] block">
+                  <span className="font-script-accent text-base sm:text-lg text-[#B88A44] block">
                     {exp.subtitle}
                   </span>
-                  <h2 className="font-serif-editorial text-2xl sm:text-3xl text-[#34281F] font-normal group-hover:text-[#B88A44] transition-colors mt-1">
+                  <h2 className="font-serif-editorial text-lg sm:text-2xl text-[#34281F] font-normal group-hover:text-[#B88A44] transition-colors mt-0.5">
                     {exp.title}
                   </h2>
-                  <p className="font-sans-narrative text-xs sm:text-sm text-[#6E5D4F] leading-relaxed mt-2.5 line-clamp-3">
+                  <p className="font-sans-narrative text-[11px] sm:text-xs text-[#6E5D4F] leading-relaxed mt-1.5 line-clamp-2 sm:line-clamp-3">
                     {exp.description}
                   </p>
                 </div>
 
-                <div className="pt-4 flex items-center justify-between border-t border-[#E8DDCD]">
-                  <span className="font-sans-ui text-xs uppercase tracking-wider text-[#34281F] group-hover:text-[#B88A44] font-semibold flex items-center gap-1.5 transition-colors">
+                <div className="pt-2 sm:pt-3 flex items-center justify-between border-t border-[#E8DDCD]">
+                  <span className="font-sans-ui text-[11px] sm:text-xs uppercase tracking-wider text-[#7A531C] group-hover:text-[#B88A44] font-semibold flex items-center gap-1 transition-colors">
                     <span>Explore Tradition</span>
-                    <ArrowUpRight className="w-4 h-4 text-[#B88A44]" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#B88A44]" />
                   </span>
                 </div>
               </div>
@@ -89,20 +89,20 @@ export default async function WeddingExperiencesHubPage() {
         </div>
       </section>
 
-      {/* Future Expansion Architectural Showcase */}
-      <section className="py-12 sm:py-20 bg-[#F5ECDD]/40 border-t border-[#E8DDCD]">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-8 text-center space-y-4">
-          <span className="font-script-accent text-3xl text-[#B88A44]">Bespoke Styling</span>
-          <h2 className="font-serif-editorial text-3xl sm:text-5xl text-[#34281F] font-normal">
+      {/* Lookbooks Callout */}
+      <section className="py-8 sm:py-16 bg-[#F5ECDD]/40 border-t border-[#E8DDCD]">
+        <div className="max-w-[1280px] mx-auto px-3 sm:px-6 md:px-8 text-center space-y-2 sm:space-y-4">
+          <span className="font-script-accent text-2xl sm:text-3xl text-[#B88A44]">Bespoke Styling</span>
+          <h2 className="font-serif-editorial text-2xl sm:text-4xl text-[#34281F] font-normal">
             Destination & Culture Lookbooks
           </h2>
-          <p className="font-sans-narrative text-xs sm:text-base text-[#6E5D4F] max-w-xl mx-auto leading-relaxed">
-            Whether planning a Telugu Vedic Muhurtham in Kakinada, a beach resort wedding in Visakhapatnam, or a destination palace union in Rajahmundry, our studio customizes every floral and lighting detail.
+          <p className="font-sans-narrative text-xs sm:text-sm text-[#6E5D4F] max-w-xl mx-auto leading-relaxed">
+            Whether planning a Telugu Vedic Muhurtham in Kakinada, a beach resort wedding in Visakhapatnam, or a destination palace union in Rajahmundry.
           </p>
 
-          <div className="pt-6">
+          <div className="pt-2 sm:pt-4">
             <Link href="/contact">
-              <EditorialButton variant="primary" size="lg">
+              <EditorialButton variant="primary" size="md">
                 Discuss Custom Wedding Concept →
               </EditorialButton>
             </Link>

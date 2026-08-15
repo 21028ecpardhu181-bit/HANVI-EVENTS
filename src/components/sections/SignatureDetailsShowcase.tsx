@@ -8,7 +8,7 @@ interface SignatureDetailsShowcaseProps {
   theme: CulturalTheme;
 }
 
-export const SignatureDetailsShowcase: React.FC<SignatureDetailsShowcaseProps> = ({ theme }) => {
+export const SignatureDetailsShowcase: React.FC<SignatureDetailsShowcaseProps> = () => {
   const details = [
     {
       title: 'Fresh Jasmine Strands',
@@ -33,25 +33,25 @@ export const SignatureDetailsShowcase: React.FC<SignatureDetailsShowcaseProps> =
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 mt-4 sm:mt-8">
       {details.map((item, idx) => (
         <div
           key={idx}
-          className="group bg-[#FCF9F5] border border-[#E8DDCD] rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+          className="group bg-[#FCF9F5] border border-[#E8DDCD] rounded-2xl overflow-hidden shadow-2xs hover:shadow-sm hover:border-[#B88A44]/50 transition-all flex flex-col justify-between"
         >
-          <div className="relative aspect-[4/3] w-full overflow-hidden">
+          <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#E8DDCD]/30">
             <ImageWithSkeleton
               src={item.image}
               alt={item.title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
           </div>
-          <div className="p-4 space-y-1">
-            <h4 className="font-serif-editorial text-base sm:text-lg text-[#34281F] font-normal group-hover:text-[#B88A44] transition-colors">
+          <div className="p-2.5 sm:p-4 space-y-0.5">
+            <h4 className="font-serif-editorial text-xs sm:text-base text-[#34281F] font-normal group-hover:text-[#B88A44] transition-colors truncate">
               {item.title}
             </h4>
-            <span className="font-sans-narrative text-xs text-[#6E5D4F] block">
+            <span className="font-sans-narrative text-[10px] sm:text-xs text-[#6E5D4F] block truncate">
               {item.subtitle}
             </span>
           </div>
