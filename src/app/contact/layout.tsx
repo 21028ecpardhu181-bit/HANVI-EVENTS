@@ -2,18 +2,15 @@ import type { Metadata } from 'next';
 import { createPageMetadata, getBreadcrumbSchema, getLocalBusinessSchema, getFounderPersonSchema, SITE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = createPageMetadata({
-  title: 'Contact Ch. Kala Prasad | Best Event Management in Kakinada & AP',
-  description: 'Connect directly with Event Director Ch. Kala Prasad at Hanvi Events Studio (Kakinada) for bespoke weddings, mandap decor, birthdays, cradle ceremonies & catering consultations across East Godavari and Andhra Pradesh.',
+  title: 'Contact Studio & Consultations | Hanvi Events Kakinada',
+  description: 'Connect with Event Director Ch. Kala Prasad at Hanvi Events Studio (Kakinada) for bespoke weddings, mandap design, birthday parties, and event consultations across East Godavari and Andhra Pradesh.',
   path: '/contact',
   keywords: [
-    'best event management near me',
     'contact Hanvi Events',
-    'Ch Kala Prasad event manager phone number',
-    'wedding planner Kakinada contact',
+    'wedding planner Kakinada phone number',
     'event planners in Kakinada address',
-    'Hanvi Events Jagannaickpur Netaji Park',
-    'event management company East Godavari phone',
-    'marriage decorators Kakinada WhatsApp',
+    'Hanvi Events Studio Kakinada',
+    'Ch Kala Prasad contact',
   ],
 });
 

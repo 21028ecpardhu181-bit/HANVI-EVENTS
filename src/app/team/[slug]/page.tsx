@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const isFounder = member.slug === 'ch-kala-prasad' || member.name.toLowerCase().includes('kala prasad');
   const title = isFounder
-    ? 'Ch. Kala Prasad — Founder & Chief Event Director | Hanvi Events Kakinada'
+    ? 'Ch. Kala Prasad — Event Director & Founder | Hanvi Events'
     : member.seoTitle || `${member.name} — ${member.role} | Hanvi Events`;
   const description = member.seoDescription || member.shortBio || `${member.name}, ${member.role} at Hanvi Events Kakinada.`;
 
@@ -39,11 +39,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     keywords: [
       member.name,
       `${member.name} Kakinada`,
-      `${member.role} Kakinada`,
-      'Ch Kala Prasad Event Director',
-      'best event management near me',
-      'Hanvi Events Studio Kakinada',
-      'Event Planners East Godavari',
+      `${member.role}`,
+      'Hanvi Events',
+      'Event Management Kakinada',
     ],
   });
 }

@@ -8,18 +8,17 @@ import { ServicesCatalogClient } from '@/components/services/ServicesCatalogClie
 import { createPageMetadata, SITE_URL, getBreadcrumbSchema, getFAQSchema } from '@/lib/seo';
 
 export const metadata: Metadata = createPageMetadata({
-  title: 'Best Event Management & Wedding Services in Kakinada | Hanvi Events',
-  description: 'Explore bespoke wedding planning, Vedic mandap decoration, bridal makeup, birthday celebrations, catering, and corporate event management by Hanvi Events & Ch. Kala Prasad across East Godavari and Andhra Pradesh.',
+  title: 'Event Planning & Wedding Services in Kakinada | Hanvi Events',
+  description: 'Explore bespoke wedding planning, Vedic mandap decoration, bridal makeup, birthday celebrations, catering, and corporate event management by Hanvi Events in Kakinada & Andhra Pradesh.',
   path: '/services',
   keywords: [
-    'best event management near me',
-    'event planners in Kakinada',
+    'event planning services Kakinada',
     'wedding services East Godavari',
     'mandap decoration Kakinada',
-    'birthday party planners near me',
-    'bridal makeup Kakinada',
-    'wedding catering AP',
-    'Ch Kala Prasad event manager',
+    'birthday party planners',
+    'bridal makeup artist Kakinada',
+    'wedding catering services',
+    'Hanvi Events services',
   ],
 });
 

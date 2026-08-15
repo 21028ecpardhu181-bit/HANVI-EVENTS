@@ -52,55 +52,60 @@ export async function generateStaticParams() {
   }));
 }
 
+const serviceTitlesBySlug: Record<string, string> = {
+  'marriage-weddings': 'Wedding Planning & Mandap Design in Kakinada | Hanvi Events',
+  'birthdays-anniversaries': 'Birthday & Milestone Event Planning in Kakinada | Hanvi Events',
+  'bridal-makeup': 'Bridal Makeup & Hair Styling in Kakinada | Hanvi Events',
+  'decoration-theme-setup': 'Stage Decoration & Theme Setup in Kakinada | Hanvi Events',
+  'catering-food-services': 'Wedding Catering & Food Services in Kakinada | Hanvi Events',
+  'corporate-events': 'Corporate Events & Conferences in Kakinada | Hanvi Events',
+  'entertainment-live-performances': 'Event Entertainment, Sound & Lighting in Kakinada | Hanvi Events',
+};
+
 const localizedKeywordsBySlug: Record<string, string[]> = {
   'marriage-weddings': [
-    'best wedding planner in Kakinada',
-    'marriage event organizers East Godavari',
-    'mandap decoration in Kakinada',
-    'Vedic mandapam decorators near me',
-    'Telugu wedding planners Andhra Pradesh',
-    'Pellikuthuru decoration in Kakinada',
-    'wedding stage decoration near me',
-    'Ch Kala Prasad wedding planner',
-    'best event management near me',
+    'wedding planning Kakinada',
+    'marriage organizers East Godavari',
+    'mandap decoration Kakinada',
+    'Telugu wedding ceremonies',
+    'Pellikuthuru decor',
+    'reception stage decoration',
   ],
   'birthdays-anniversaries': [
-    'birthday party organizers in Kakinada',
-    'best birthday decorators near me',
-    '1st birthday theme decoration East Godavari',
-    'cradle ceremony decoration Kakinada',
-    'Barasala event organizers near me',
-    'half saree function planners Andhra Pradesh',
-    'dhoti ceremony decorators Kakinada',
+    'birthday party planning Kakinada',
+    'cradle ceremony decoration (Barasala)',
+    'half saree function planners',
+    'theme birthday decor East Godavari',
+    'anniversary celebration organizers',
   ],
   'bridal-makeup': [
-    'bridal makeup artist in Kakinada',
-    'best bridal makeup in East Godavari',
-    'HD airbrush bridal makeup near me',
-    'wedding makeup and saree draping Kakinada',
-    'poola jada braid styling near me',
+    'bridal makeup artist Kakinada',
+    'HD airbrush bridal makeup',
+    'wedding makeup East Godavari',
+    'saree draping and hair styling',
+    'poola jada styling',
   ],
   'decoration-theme-setup': [
-    'stage decoration in Kakinada',
-    'mandap and flower decoration near me',
-    'crystal chandelier lighting for events AP',
-    'reception backdrop decoration East Godavari',
+    'stage decoration Kakinada',
+    'floral mandap design',
+    'theme event setup East Godavari',
+    'crystal lighting and backdrop decor',
   ],
   'catering-food-services': [
-    'wedding catering services in Kakinada',
-    'best catering services in East Godavari',
-    'traditional Andhra banana leaf wedding catering',
-    'multi cuisine banquet catering near me',
+    'wedding catering Kakinada',
+    'traditional Andhra wedding food',
+    'banquet catering East Godavari',
+    'live food stalls',
   ],
   'corporate-events': [
-    'corporate event planners in Kakinada',
-    'conference and seminar organizers East Godavari',
-    'showroom grand opening event planners AP',
+    'corporate event organizers Kakinada',
+    'conference and seminar management',
+    'annual day event production',
   ],
   'entertainment-live-performances': [
-    'wedding DJ sound system in Kakinada',
-    'live music band and Punjabi dhol troupe AP',
-    'sangeet sound & intelligent moving lights',
+    'wedding DJ and sound system Kakinada',
+    'live music troupe Andhra Pradesh',
+    'stage lighting and sound production',
   ],
 };
 
@@ -118,14 +123,12 @@ export async function generateMetadata({ params }: ServiceDetailPageProps): Prom
   const customKeywords = localizedKeywordsBySlug[service.slug] || [
     service.title,
     `${service.title} in Kakinada`,
-    'best event management near me',
-    'Hanvi Events Services',
-    'Ch Kala Prasad Event Director',
-    'Event Planning East Godavari AP',
+    'Hanvi Events',
+    'Event Planning East Godavari',
   ];
 
-  const title = service.seoTitle || `${service.title} in Kakinada | Hanvi Events • Ch. Kala Prasad`;
-  const description = service.seoDescription || `${service.description} Managed personally by Event Director Ch. Kala Prasad in Kakinada & Andhra Pradesh. Starting from ${service.startingPrice}.`;
+  const title = service.seoTitle || serviceTitlesBySlug[service.slug] || `${service.title} in Kakinada | Hanvi Events`;
+  const description = service.seoDescription || `${service.description} Managed by Event Director Ch. Kala Prasad in Kakinada & Andhra Pradesh. Starting from ${service.startingPrice}.`;
 
   return createPageMetadata({
     title,

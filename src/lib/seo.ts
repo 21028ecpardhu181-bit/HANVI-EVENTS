@@ -26,23 +26,14 @@ export function createPageMetadata({
   const url = absoluteUrl(path);
 
   const defaultKeywords = [
-    'best event management near me',
-    'event planners in Kakinada',
-    'best event management company in East Godavari',
-    'wedding planner Kakinada',
-    'marriage event organizers near me',
-    'mandap decoration in Kakinada',
-    'Vedic mandapam decorators East Godavari',
-    'Pellikuthuru decoration in Kakinada',
-    'Barasala cradle ceremony event planners',
-    'half saree function planners Andhra Pradesh',
-    'birthday party organizers in Kakinada',
-    'bridal makeup artist in Kakinada',
-    'wedding catering services East Godavari',
-    'event planners in Rajahmundry',
-    'Ch Kala Prasad Event Director Kakinada',
-    'Hanvi Events Jagannaickpur Netaji Park',
-    'luxury wedding decorators Andhra Pradesh',
+    'event management in Kakinada',
+    'wedding planners in Kakinada',
+    'mandap decoration East Godavari',
+    'birthday party event planners',
+    'Telugu wedding traditions',
+    'bridal makeup Kakinada',
+    'wedding catering services Andhra Pradesh',
+    'Hanvi Events',
   ];
 
   return {
@@ -86,7 +77,6 @@ export function getFounderPersonSchema() {
     '@type': 'Person',
     '@id': `${SITE_URL}/#founder`,
     name: 'Ch. Kala Prasad',
-    alternateName: ['Kala Prasad Event Manager', 'Ch Kala Prasad Hanvi Events', 'Event Director Kala Prasad'],
     jobTitle: 'Event Director & Founder',
     worksFor: {
       '@id': `${SITE_URL}/#business`,
@@ -94,22 +84,20 @@ export function getFounderPersonSchema() {
     url: `${SITE_URL}/team/ch-kala-prasad`,
     image: `${SITE_URL}/logo.png`,
     telephone: siteConfig.phoneRaw || siteConfig.phone,
-    description: 'Ch. Kala Prasad is the founder, chief event director & planner at Hanvi Events (Kakinada), orchestrating luxury weddings, traditional Vedic mandaps, birthday galas & corporate events across East Godavari and Andhra Pradesh.',
+    description: 'Ch. Kala Prasad is the founder and event director of Hanvi Events (Kakinada), orchestrating weddings, mandap architecture, birthday celebrations and corporate events across East Godavari and Andhra Pradesh.',
     knowsAbout: [
-      'Event Management in Kakinada',
-      'Luxury Telugu Wedding Planning',
-      'Vedic Mandap Architecture',
-      'Pellikuthuru & Sangeet Ceremonies',
-      'Stage Decoration & Lighting',
-      'Banquet Catering & Hospitality',
-      'Corporate Event Production',
+      'Wedding Planning & Coordination',
+      'Traditional Mandap Architecture',
+      'Telugu Wedding Ceremonies',
+      'Event Stage Decoration & Lighting',
+      'Catering & Hospitality Management',
     ],
     sameAs: [siteConfig.social.instagram, siteConfig.social.youtube],
   };
 }
 
 /**
- * Primary LocalBusiness Schema with multi-type and rich signals
+ * Primary LocalBusiness Schema with accurate NAP and service signals
  */
 export function getLocalBusinessSchema() {
   return {
@@ -121,11 +109,8 @@ export function getLocalBusinessSchema() {
     alternateName: [
       'Hanvi Events Kakinada',
       'Hanvi Wedding Planners',
-      'Hanvi Event Management',
-      'Ch Kala Prasad Events',
-      'Best Event Management in Kakinada',
     ],
-    description: 'Hanvi Events is Kakinada’s premier luxury wedding planning & event management company managed by Ch. Kala Prasad. Specializing in bespoke marriages, Vedic mandap decoration, birthday parties, cradle ceremonies, bridal makeup, catering & corporate galas across East Godavari and Andhra Pradesh.',
+    description: 'Hanvi Events is an event management and luxury wedding planning company based in Kakinada, Andhra Pradesh. Specializing in wedding coordination, mandap design, birthday parties, cradle ceremonies, catering and corporate events.',
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
     image: [`${SITE_URL}/logo.png`, `${SITE_URL}/icon.png`, DEFAULT_OG_IMAGE],
@@ -135,7 +120,7 @@ export function getLocalBusinessSchema() {
       '@type': 'Person',
       '@id': `${SITE_URL}/#founder`,
       name: 'Ch. Kala Prasad',
-      jobTitle: 'Event Director & Manager',
+      jobTitle: 'Event Director',
       telephone: siteConfig.phoneRaw || siteConfig.phone,
     },
     contactPoint: [
@@ -147,7 +132,7 @@ export function getLocalBusinessSchema() {
         availableLanguage: ['en', 'te', 'hi'],
       },
     ],
-    hasMap: 'https://maps.google.com/?cid=HanviEventsKakinada',
+    hasMap: siteConfig.googleMapsUrl,
     address: {
       '@type': 'PostalAddress',
       streetAddress: '1st Floor, Subhamasthu Showroom, D.No: 20-11-40, Majestic Street, Suryanarayana Puram',
@@ -177,27 +162,16 @@ export function getLocalBusinessSchema() {
       { '@type': 'City', name: 'Visakhapatnam' },
       { '@type': 'City', name: 'Vijayawada' },
       { '@type': 'AdministrativeArea', name: 'Andhra Pradesh' },
-      { '@type': 'Country', name: 'India' },
     ],
     knowsAbout: [
-      'best event management near me',
-      'best event planners in Kakinada',
-      'best event management company in East Godavari',
-      'wedding planners in Kakinada',
-      'wedding planners in Rajahmundry',
-      'mandap decoration Kakinada',
-      'Telugu wedding decorators near me',
-      'Pellikuthuru decoration in Kakinada',
-      'birthday party organizers near me',
-      'cradle ceremony decoration Kakinada',
-      'Barasala function event organizers',
-      'half saree function planners in Andhra Pradesh',
-      'sangeet and mehendi stage decor',
-      'bridal makeup artist in Kakinada',
-      'wedding catering services East Godavari',
-      'stage lighting and sound production',
-      'corporate event organizers Kakinada',
-      'Ch Kala Prasad Event Manager Kakinada',
+      'Wedding Planning & Design',
+      'Mandap Decoration',
+      'Birthday Celebrations',
+      'Cradle & Half Saree Ceremonies',
+      'Bridal Makeup & Styling',
+      'Banquet Catering & Food Services',
+      'Stage Lighting & AV Production',
+      'Corporate Events & Conferences',
     ],
     openingHoursSpecification: [
       {

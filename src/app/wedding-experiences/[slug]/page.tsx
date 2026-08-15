@@ -91,32 +91,33 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!exp) return { title: 'Wedding Tradition | Hanvi Events' };
 
   const norm = (slug || '').toLowerCase();
+  const title = exp.seoTitle || (norm.includes('muslim')
+    ? 'Muslim Nikah & Walima Celebrations in Kakinada | Hanvi Events'
+    : norm.includes('christian')
+    ? 'Christian Wedding Celebrations & Cathedral Decor in Kakinada | Hanvi Events'
+    : 'Telugu Hindu Wedding Traditions & Vedic Mandaps | Hanvi Events');
+
   const keywords = norm.includes('muslim')
     ? [
-        'Muslim wedding planner in Kakinada',
-        'Nikah stage decoration East Godavari',
-        'Walima banquet organizers Andhra Pradesh',
-        'best event management near me',
-        'Ch Kala Prasad wedding planner',
+        'Muslim wedding traditions',
+        'Nikah stage decoration Kakinada',
+        'Walima celebrations East Godavari',
+        'Hanvi Events wedding experiences',
       ]
     : norm.includes('christian')
     ? [
-        'Christian wedding planner in Kakinada',
-        'Cathedral church wedding decoration AP',
-        'Beach resort wedding planners Vizag Godavari',
-        'best event management near me',
-        'Ch Kala Prasad wedding planner',
+        'Christian wedding planning Kakinada',
+        'Cathedral church decoration Andhra Pradesh',
+        'Beach wedding planning Godavari',
+        'Hanvi Events',
       ]
     : [
-        'Hindu wedding planner in Kakinada',
-        'Telugu wedding traditions planner East Godavari',
-        'Vedic mandapam decoration near me',
-        'Pellikuthuru ceremony planners AP',
-        'best event management near me',
-        'Ch Kala Prasad wedding planner',
+        'Telugu Hindu wedding traditions',
+        'Vedic mandap design Kakinada',
+        'Pellikuthuru ceremony planning',
+        'traditional marriage rituals Andhra Pradesh',
       ];
 
-  const title = exp.seoTitle || `${exp.title || exp.traditionTitle} in Kakinada | Hanvi Events • Ch. Kala Prasad`;
   const description = exp.seoDescription || `${exp.description} Managed by Event Director Ch. Kala Prasad across East Godavari and Andhra Pradesh.`;
 
   return createPageMetadata({

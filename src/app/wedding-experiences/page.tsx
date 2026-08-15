@@ -10,17 +10,16 @@ import { EditorialBadge } from '@/components/ui/EditorialBadge';
 import { createPageMetadata } from '@/lib/seo';
 
 export const metadata: Metadata = createPageMetadata({
-  title: 'Hindu, Christian & Muslim Wedding Traditions in Kakinada | Hanvi Events',
+  title: 'Wedding Traditions & Cultural Experiences | Hanvi Events Kakinada',
   description: 'Explore bespoke wedding traditions curated by Hanvi Events — Hindu Telugu Vedic Mandaps, Christian Cathedral Unions, and Muslim Nikah Galas across East Godavari and Andhra Pradesh.',
   path: '/wedding-experiences',
   keywords: [
-    'best event management near me',
-    'Hindu Wedding Planner Kakinada',
-    'Christian Wedding Planner Kakinada',
-    'Muslim Wedding Planner Kakinada',
-    'Vedic Mandap Kakinada',
-    'wedding planners in East Godavari',
-    'Ch Kala Prasad wedding traditions',
+    'Telugu wedding traditions',
+    'Hindu wedding ceremonies Kakinada',
+    'Christian wedding celebrations AP',
+    'Muslim Nikah event planning',
+    'Vedic mandap design',
+    'Hanvi Events wedding experiences',
   ],
 });
 
