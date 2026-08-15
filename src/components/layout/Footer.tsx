@@ -100,19 +100,14 @@ export const Footer: React.FC = () => {
             </a>
           </div>
 
-          {/* Quick Nav Links Wrap */}
-          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 pt-1 text-[11px] font-sans-narrative text-[#FCF9F5]/70">
-            <Link href="/services" className="hover:text-[#B88A44]">Services</Link>
-            <span>•</span>
-            <Link href="/wedding-experiences" className="hover:text-[#B88A44]">Traditions</Link>
-            <span>•</span>
-            <Link href="/gallery" className="hover:text-[#B88A44]">Gallery</Link>
-            <span>•</span>
-            <Link href="/wizard" className="hover:text-[#B88A44]">Wizard</Link>
-            <span>•</span>
-            <Link href="/team" className="hover:text-[#B88A44]">Team</Link>
-            <span>•</span>
-            <Link href="/contact" className="hover:text-[#B88A44]">Contact</Link>
+          {/* Quick Nav Links Row */}
+          <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1 text-[11px] font-sans-narrative text-[#FCF9F5]/75">
+            <Link href="/services" className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/5 hover:border-[#B88A44]/50 hover:text-[#B88A44] transition-colors">Services</Link>
+            <Link href="/wedding-experiences" className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/5 hover:border-[#B88A44]/50 hover:text-[#B88A44] transition-colors">Traditions</Link>
+            <Link href="/gallery" className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/5 hover:border-[#B88A44]/50 hover:text-[#B88A44] transition-colors">Gallery</Link>
+            <Link href="/wizard" className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/5 hover:border-[#B88A44]/50 hover:text-[#B88A44] transition-colors">Wizard</Link>
+            <Link href="/team" className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/5 hover:border-[#B88A44]/50 hover:text-[#B88A44] transition-colors">Team</Link>
+            <Link href="/contact" className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/5 hover:border-[#B88A44]/50 hover:text-[#B88A44] transition-colors">Contact</Link>
           </div>
         </div>
 

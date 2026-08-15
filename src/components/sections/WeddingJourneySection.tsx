@@ -65,23 +65,26 @@ export const WeddingJourneySection: React.FC<WeddingJourneySectionProps> = ({ sa
         />
 
         {/* Religion Selection Tabs */}
-        <div className="flex justify-center gap-2 sm:gap-3 max-w-2xl mx-auto mb-6">
-          {weddingJourneysByReligion.map((j) => {
-            const isActive = activeReligionId === j.religionId;
-            return (
-              <button
-                key={j.religionId}
-                onClick={() => handleReligionSwitch(j.religionId)}
-                className={`flex-1 px-3 sm:px-5 py-2 sm:py-3 rounded-full font-sans-ui text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer text-center ${
-                  isActive
-                    ? 'bg-[#34281F] text-[#FCF9F5] shadow-md font-semibold ring-2 ring-[#B88A44]'
-                    : 'bg-[#F5ECDD]/60 text-[#6E5D4F] border border-[#E8DDCD] hover:bg-[#F5ECDD]'
-                }`}
-              >
-                <span>{j.religionName.split(' ')[0]} Path</span>
-              </button>
-            );
-          })}
+        <div className="flex justify-center mb-6">
+          <div className="inline-flex items-center p-1 rounded-full bg-[#F5ECDD]/80 border border-[#E8DDCD] shadow-xs max-w-md w-full sm:w-auto">
+            {weddingJourneysByReligion.map((j) => {
+              const isActive = activeReligionId === j.religionId;
+              return (
+                <button
+                  key={j.religionId}
+                  type="button"
+                  onClick={() => handleReligionSwitch(j.religionId)}
+                  className={`flex-1 sm:flex-initial px-4 sm:px-6 py-2 rounded-full font-sans-ui text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer text-center min-h-[36px] flex items-center justify-center ${
+                    isActive
+                      ? 'bg-[#34281F] text-[#FCF9F5] shadow-sm font-semibold ring-1 ring-[#B88A44]/60'
+                      : 'text-[#6E5D4F] hover:text-[#34281F]'
+                  }`}
+                >
+                  <span>{j.religionName.split(' ')[0]}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* 2x3 Bento Step Grid on Mobile — Zero Side Scroll! */}
