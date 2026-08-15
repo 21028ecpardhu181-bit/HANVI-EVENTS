@@ -2,7 +2,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Check, Phone, MessageCircle, MapPin, Sparkles, HelpCircle } from 'lucide-react';
+import { Check, Sparkles, HelpCircle, ArrowLeft, Calendar, ShieldCheck, MapPin } from 'lucide-react';
 import { getSanityServiceBySlug, getSanityServices } from '@/lib/sanity/fetch';
 import { siteConfig } from '@/lib/data/site';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
@@ -28,7 +28,6 @@ export async function generateStaticParams() {
     if (service.slug) slugSet.add(service.slug);
   });
 
-  // Include legacy alias slugs for backward compatibility
   const legacyAliases = [
     'wedding-planning',
     'birthday-parties',
@@ -93,7 +92,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const allServices = await getSanityServices();
   const relatedServices = allServices.filter((s) => s.slug !== service.slug).slice(0, 4);
 
-  // Schema.org Service & LocalBusiness structured data
+  // Schema.org structured data
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -113,137 +112,152 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     },
     offers: {
       '@type': 'Offer',
-      price: service.startingPrice.replace(/[^0-9]/g, '') || '15000',
+      price: service.startingPrice?.replace(/[^0-9]/g, '') || '15000',
       priceCurrency: 'INR',
     },
     image: service.heroImage,
   };
 
   return (
-    <div className="pt-20 md:pt-24 pb-20 bg-[#FCF9F5]">
+    <div className="pt-16 sm:pt-20 md:pt-24 pb-16 sm:pb-20 bg-[#FCF9F5]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Hero Banner Section */}
-      <section className="relative w-full h-[55vh] min-h-[420px] max-h-[600px] flex items-center justify-center bg-[#34281F]">
+      {/* Compact App-like Hero Banner */}
+      <section className="relative w-full h-[220px] sm:h-[300px] md:h-[420px] flex items-center justify-center bg-[#1E1712] overflow-hidden">
         <ImageWithSkeleton
           src={service.heroImage}
           alt={`${service.title} Hero Background - Hanvi Events`}
           fill
           sizes="100vw"
-          className="object-cover opacity-40"
+          className="object-cover opacity-35"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#34281F] via-[#34281F]/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#FCF9F5] via-[#1E1712]/60 to-[#1E1712]/40" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-[#FCF9F5] space-y-3">
-          <div className="flex items-center justify-center gap-2 flex-wrap mb-2">
-            <EditorialBadge variant="muted" className="text-[#FCF9F5] bg-white/10 border-white/30">
-              Ch. Kala Prasad Supervision
-            </EditorialBadge>
+        <div className="relative z-10 max-w-3xl mx-auto px-4 text-center space-y-1.5 sm:space-y-2.5">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur-xs border border-white/25 text-[#FCF9F5] text-[10px] sm:text-xs font-sans-ui">
+            <ShieldCheck className="w-3 h-3 text-[#B88A44]" />
+            <span>Ch. Kala Prasad Supervision</span>
           </div>
 
-          <span className="font-script-accent text-3xl sm:text-5xl text-[#B88A44] block">
-            {service.tagline}
+          <span className="font-script-accent text-xl sm:text-3xl md:text-4xl text-[#B88A44] block">
+            {service.tagline || 'Bespoke Celebration'}
           </span>
-          <h1 className="font-serif-editorial text-3xl sm:text-6xl font-normal leading-tight">
+          <h1 className="font-serif-editorial text-2xl sm:text-4xl md:text-5xl font-normal leading-tight text-[#1E1712] drop-shadow-xs">
             {service.title}
           </h1>
-          <p className="font-sans-narrative text-xs sm:text-base text-[#FCF9F5]/85 max-w-2xl mx-auto font-light leading-relaxed">
-            {service.description}
-          </p>
 
-          {/* Share Button in Hero */}
-          <div className="pt-4 flex justify-center">
-            <ShareButton
-              title={service.title}
-              description={service.shortDescription || service.description}
-              url={`${SITE_URL}/services/${service.slug}`}
-            />
+          {/* Quick Stats Pill Row */}
+          <div className="pt-1 flex items-center justify-center gap-2 flex-wrap text-[11px] sm:text-xs font-sans-ui text-[#6E5D4F]">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#F5ECDD]/90 border border-[#E8DDCD]">
+              📍 Kakinada & AP
+            </span>
+            <span className="px-2.5 py-0.5 rounded-full bg-[#B88A44]/15 text-[#7A531C] font-semibold border border-[#B88A44]/30">
+              Starting {service.startingPrice || 'On Request'}
+            </span>
           </div>
         </div>
       </section>
 
       {/* Main Container */}
-      <div className="max-w-[1360px] mx-auto px-4 md:px-8 mt-6">
+      <div className="max-w-[1360px] mx-auto px-3 sm:px-6 md:px-8 mt-4 sm:mt-6">
         
-        {/* Breadcrumb Navigation */}
-        <BreadcrumbNav
-          items={[
-            { label: 'Services', href: '/services' },
-            { label: service.title },
-          ]}
-          className="mb-6"
-        />
+        {/* Navigation & Share Row */}
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <Link
+            href="/services"
+            className="inline-flex items-center gap-1 text-xs font-sans-ui text-[#7A531C] hover:text-[#34281F] font-medium"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>All Services</span>
+          </Link>
+          <ShareButton
+            title={service.title}
+            description={service.shortDescription || service.description}
+            url={`${SITE_URL}/services/${service.slug}`}
+          />
+        </div>
 
         {/* Content Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-start">
           
-          {/* Left Column: Details & Features */}
-          <div className="lg:col-span-8 space-y-8">
+          {/* Left Column: Details, Features & Gallery */}
+          <div className="lg:col-span-8 space-y-4 sm:space-y-6">
             
-            {/* About Box */}
-            <div className="bg-[#F5ECDD]/40 border border-[#E8DDCD] rounded-3xl p-6 sm:p-8 space-y-4 shadow-xs">
-              <div className="flex items-center gap-2 text-[#B88A44]">
-                <Sparkles className="w-5 h-5" />
-                <span className="font-script-accent text-xl">Service Spotlight</span>
-              </div>
-              <h2 className="font-serif-editorial text-2xl sm:text-3xl text-[#34281F]">
-                About {service.title}
-              </h2>
-              <p className="font-sans-narrative text-sm sm:text-base text-[#6E5D4F] leading-relaxed">
-                {service.description}
-              </p>
-              {service.subtitle && (
-                <p className="font-sans-ui text-xs text-[#34281F] font-semibold tracking-wide border-l-2 border-[#B88A44] pl-3 py-1 bg-[#B88A44]/10 rounded-r-lg">
-                  {service.subtitle}
+            {/* Overview & Deliverables Box */}
+            <div className="bg-[#FCF9F5] border border-[#E8DDCD] rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 space-y-4 shadow-2xs">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-1.5 text-[#B88A44]">
+                  <Sparkles className="w-4 h-4" />
+                  <span className="font-script-accent text-lg">Craft & Scope</span>
+                </div>
+                <h2 className="font-serif-editorial text-xl sm:text-2xl md:text-3xl text-[#34281F]">
+                  About {service.title}
+                </h2>
+                <p className="font-sans-narrative text-xs sm:text-sm text-[#6E5D4F] leading-relaxed">
+                  {service.description}
                 </p>
+                {service.subtitle && (
+                  <p className="font-sans-ui text-[11px] sm:text-xs text-[#7A531C] font-semibold tracking-wide border-l-2 border-[#B88A44] pl-2.5 py-1 bg-[#B88A44]/10 rounded-r-md">
+                    {service.subtitle}
+                  </p>
+                )}
+              </div>
+
+              {/* What We Provide / Deliverables Micro-Chips (Compact 2-Column on Mobile) */}
+              {service.features && service.features.length > 0 && (
+                <div className="pt-3 border-t border-[#E8DDCD]/80 space-y-2.5">
+                  <h3 className="font-sans-ui text-xs font-semibold text-[#34281F] uppercase tracking-wider">
+                    Signature Deliverables & Inclusions:
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
+                    {service.features.map((feature, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-2 p-2 sm:p-2.5 bg-[#F5ECDD]/40 border border-[#E8DDCD] rounded-xl hover:border-[#B88A44]/40 transition-colors"
+                      >
+                        <Check className="w-3.5 h-3.5 text-[#B88A44] shrink-0" />
+                        <span className="font-sans-narrative text-[11px] sm:text-xs text-[#34281F] font-medium truncate">
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
 
-            {/* What We Provide / Decor Features */}
-            {service.features && service.features.length > 0 && (
-              <div className="bg-[#FCF9F5] border border-[#E8DDCD] rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
-                <h3 className="font-serif-editorial text-2xl text-[#34281F]">
-                  What We Provide & Signature Deliverables
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  {service.features.map((feature, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-start space-x-3 p-4 bg-[#F5ECDD]/30 border border-[#E8DDCD] rounded-2xl hover:border-[#B88A44]/40 transition-colors"
-                    >
-                      <Check className="w-4 h-4 text-[#B88A44] shrink-0 mt-0.5" />
-                      <span className="font-sans-narrative text-xs sm:text-sm text-[#34281F] font-medium leading-normal">
-                        {feature}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Mobile Booking Panel (Shown directly after details on mobile for quick fingertip access) */}
+            <div className="block lg:hidden">
+              <ServiceBookingGlassPanel
+                serviceTitle={service.title}
+                startingPrice={service.startingPrice}
+                category={service.category || service.tagline}
+              />
+            </div>
 
             {/* Visual Portfolio & Setup Gallery Showcase */}
             <ServiceVisualShowcase service={service} />
 
             {/* FAQ Section */}
             {service.faq && service.faq.length > 0 && (
-              <div className="bg-[#FCF9F5] border border-[#E8DDCD] rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
-                <div className="flex items-center gap-2">
-                  <HelpCircle className="w-5 h-5 text-[#B88A44]" />
-                  <h3 className="font-serif-editorial text-2xl text-[#34281F]">
+              <div className="bg-[#FCF9F5] border border-[#E8DDCD] rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 space-y-4 shadow-2xs">
+                <div className="flex items-center gap-1.5">
+                  <HelpCircle className="w-4 h-4 text-[#B88A44]" />
+                  <h3 className="font-serif-editorial text-lg sm:text-2xl text-[#34281F]">
                     Frequently Asked Questions
                   </h3>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-2.5 sm:space-y-3">
                   {service.faq.map((item, idx) => (
-                    <div key={idx} className="p-4 bg-[#F5ECDD]/40 border border-[#E8DDCD] rounded-2xl space-y-1.5">
-                      <h4 className="font-serif-editorial text-base text-[#34281F] font-semibold">
+                    <div key={idx} className="p-3 sm:p-4 bg-[#F5ECDD]/35 border border-[#E8DDCD] rounded-xl sm:rounded-2xl space-y-1">
+                      <h4 className="font-serif-editorial text-sm sm:text-base text-[#34281F] font-medium">
                         Q: {item.question}
                       </h4>
-                      <p className="font-sans-narrative text-xs text-[#6E5D4F] leading-relaxed">
+                      <p className="font-sans-narrative text-[11px] sm:text-xs text-[#6E5D4F] leading-relaxed">
                         {item.answer}
                       </p>
                     </div>
@@ -252,27 +266,10 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               </div>
             )}
 
-            {/* Share Service Callout */}
-            <div className="p-6 bg-[#F5ECDD]/50 border border-[#E8DDCD] rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div>
-                <h4 className="font-serif-editorial text-lg text-[#34281F]">
-                  Like this service option?
-                </h4>
-                <p className="font-sans-narrative text-xs text-[#6E5D4F]">
-                  Share this page URL directly with family, bride, or event organizers.
-                </p>
-              </div>
-              <ShareButton
-                title={service.title}
-                description={service.shortDescription || service.description}
-                url={`${SITE_URL}/services/${service.slug}`}
-              />
-            </div>
-
           </div>
 
-          {/* Right Column: Sticky Liquid Glass Inquiry Panel */}
-          <div className="lg:col-span-4 sticky top-28">
+          {/* Right Column: Sticky Liquid Glass Inquiry Panel (Desktop only) */}
+          <div className="hidden lg:block lg:col-span-4 sticky top-28">
             <ServiceBookingGlassPanel
               serviceTitle={service.title}
               startingPrice={service.startingPrice}
@@ -283,7 +280,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
         </div>
 
         {/* Dynamic Related Services Section */}
-        <div className="mt-16">
+        <div className="mt-8 sm:mt-12">
           <RelatedServicesSection
             services={relatedServices}
             title={`More Services Related to ${service.title}`}
