@@ -25,17 +25,30 @@ export function createPageMetadata({
 }): Metadata {
   const url = absoluteUrl(path);
 
+  const defaultKeywords = [
+    'best event management near me',
+    'event planners in Kakinada',
+    'best event management company in East Godavari',
+    'wedding planner Kakinada',
+    'marriage event organizers near me',
+    'mandap decoration in Kakinada',
+    'Vedic mandapam decorators East Godavari',
+    'Pellikuthuru decoration in Kakinada',
+    'Barasala cradle ceremony event planners',
+    'half saree function planners Andhra Pradesh',
+    'birthday party organizers in Kakinada',
+    'bridal makeup artist in Kakinada',
+    'wedding catering services East Godavari',
+    'event planners in Rajahmundry',
+    'Ch Kala Prasad Event Director Kakinada',
+    'Hanvi Events Jagannaickpur Netaji Park',
+    'luxury wedding decorators Andhra Pradesh',
+  ];
+
   return {
     title,
     description,
-    keywords: keywords || [
-      'Hanvi Events Kakinada',
-      'Wedding Planner Kakinada',
-      'Mandap Decoration Kakinada',
-      'Event Management Kakinada',
-      'Birthday Planner Kakinada',
-      'Telugu Wedding Planner Andhra Pradesh',
-    ],
+    keywords: keywords || defaultKeywords,
     alternates: {
       canonical: url,
     },
@@ -64,6 +77,40 @@ export function createPageMetadata({
   };
 }
 
+/**
+ * Founder & Leadership Schema (Ch. Kala Prasad)
+ */
+export function getFounderPersonSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': `${SITE_URL}/#founder`,
+    name: 'Ch. Kala Prasad',
+    alternateName: ['Kala Prasad Event Manager', 'Ch Kala Prasad Hanvi Events', 'Event Director Kala Prasad'],
+    jobTitle: 'Event Director & Founder',
+    worksFor: {
+      '@id': `${SITE_URL}/#business`,
+    },
+    url: `${SITE_URL}/team/ch-kala-prasad`,
+    image: `${SITE_URL}/logo.png`,
+    telephone: siteConfig.phoneRaw || siteConfig.phone,
+    description: 'Ch. Kala Prasad is the founder, chief event director & planner at Hanvi Events (Kakinada), orchestrating luxury weddings, traditional Vedic mandaps, birthday galas & corporate events across East Godavari and Andhra Pradesh.',
+    knowsAbout: [
+      'Event Management in Kakinada',
+      'Luxury Telugu Wedding Planning',
+      'Vedic Mandap Architecture',
+      'Pellikuthuru & Sangeet Ceremonies',
+      'Stage Decoration & Lighting',
+      'Banquet Catering & Hospitality',
+      'Corporate Event Production',
+    ],
+    sameAs: [siteConfig.social.instagram, siteConfig.social.youtube],
+  };
+}
+
+/**
+ * Primary LocalBusiness Schema with multi-type and rich signals
+ */
 export function getLocalBusinessSchema() {
   return {
     '@context': 'https://schema.org',
@@ -71,13 +118,35 @@ export function getLocalBusinessSchema() {
     additionalType: 'https://schema.org/EventPlanner',
     '@id': `${SITE_URL}/#business`,
     name: siteConfig.name,
-    alternateName: ['Hanvi Events Kakinada', 'Hanvi Wedding Planners', 'Hanvi Event Management'],
-    description: 'Premier luxury wedding planner & event management company in Kakinada, Rajahmundry, East Godavari & Andhra Pradesh. Specializing in marriage event planning, sacred mandap decoration, birthday celebrations, corporate galas & catering.',
+    alternateName: [
+      'Hanvi Events Kakinada',
+      'Hanvi Wedding Planners',
+      'Hanvi Event Management',
+      'Ch Kala Prasad Events',
+      'Best Event Management in Kakinada',
+    ],
+    description: 'Hanvi Events is Kakinada’s premier luxury wedding planning & event management company managed by Ch. Kala Prasad. Specializing in bespoke marriages, Vedic mandap decoration, birthday parties, cradle ceremonies, bridal makeup, catering & corporate galas across East Godavari and Andhra Pradesh.',
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
     image: [`${SITE_URL}/logo.png`, `${SITE_URL}/icon.png`, DEFAULT_OG_IMAGE],
     telephone: siteConfig.phoneRaw || siteConfig.phone,
     email: siteConfig.email,
+    founder: {
+      '@type': 'Person',
+      '@id': `${SITE_URL}/#founder`,
+      name: 'Ch. Kala Prasad',
+      jobTitle: 'Event Director & Manager',
+      telephone: siteConfig.phoneRaw || siteConfig.phone,
+    },
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        telephone: siteConfig.phoneRaw || siteConfig.phone,
+        contactType: 'customer service',
+        areaServed: 'IN',
+        availableLanguage: ['en', 'te', 'hi'],
+      },
+    ],
     hasMap: 'https://maps.google.com/?cid=HanviEventsKakinada',
     address: {
       '@type': 'PostalAddress',
@@ -102,25 +171,33 @@ export function getLocalBusinessSchema() {
       { '@type': 'City', name: 'Pithapuram' },
       { '@type': 'City', name: 'Amalapuram' },
       { '@type': 'City', name: 'Annavaram' },
+      { '@type': 'City', name: 'Mandapeta' },
+      { '@type': 'City', name: 'Peddapuram' },
+      { '@type': 'City', name: 'Tuni' },
       { '@type': 'City', name: 'Visakhapatnam' },
       { '@type': 'City', name: 'Vijayawada' },
       { '@type': 'AdministrativeArea', name: 'Andhra Pradesh' },
       { '@type': 'Country', name: 'India' },
     ],
     knowsAbout: [
-      'Best event planners near me',
-      'Marriage event planning',
-      'Wedding planners in Kakinada',
-      'Wedding planners in Rajahmundry',
-      'Mandap decoration Kakinada',
-      'Birthday event planning',
-      'Birthday party organizers near me',
-      'Half saree function decoration',
-      'Sangeet and mehendi decor',
-      'Cradle ceremony decoration',
-      'Corporate event organizers',
-      'Catering and event management',
-      'Stage lighting and sound production',
+      'best event management near me',
+      'best event planners in Kakinada',
+      'best event management company in East Godavari',
+      'wedding planners in Kakinada',
+      'wedding planners in Rajahmundry',
+      'mandap decoration Kakinada',
+      'Telugu wedding decorators near me',
+      'Pellikuthuru decoration in Kakinada',
+      'birthday party organizers near me',
+      'cradle ceremony decoration Kakinada',
+      'Barasala function event organizers',
+      'half saree function planners in Andhra Pradesh',
+      'sangeet and mehendi stage decor',
+      'bridal makeup artist in Kakinada',
+      'wedding catering services East Godavari',
+      'stage lighting and sound production',
+      'corporate event organizers Kakinada',
+      'Ch Kala Prasad Event Manager Kakinada',
     ],
     openingHoursSpecification: [
       {
@@ -187,10 +264,14 @@ export function getServiceSchema(serviceName: string, description: string, price
     provider: {
       '@id': `${SITE_URL}/#business`,
     },
+    areaServed: {
+      '@type': 'AdministrativeArea',
+      name: 'Andhra Pradesh',
+    },
     ...(price ? {
       offers: {
         '@type': 'Offer',
-        price: price.replace(/[^0-9]/g, '') || '0',
+        price: price.replace(/[^0-9]/g, '') || '15000',
         priceCurrency: 'INR',
       },
     } : {}),
@@ -211,4 +292,3 @@ export function getFAQSchema(faqs: Array<{ question: string; answer: string }>) 
     })),
   };
 }
-

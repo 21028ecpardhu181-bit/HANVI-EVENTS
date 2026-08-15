@@ -52,6 +52,58 @@ export async function generateStaticParams() {
   }));
 }
 
+const localizedKeywordsBySlug: Record<string, string[]> = {
+  'marriage-weddings': [
+    'best wedding planner in Kakinada',
+    'marriage event organizers East Godavari',
+    'mandap decoration in Kakinada',
+    'Vedic mandapam decorators near me',
+    'Telugu wedding planners Andhra Pradesh',
+    'Pellikuthuru decoration in Kakinada',
+    'wedding stage decoration near me',
+    'Ch Kala Prasad wedding planner',
+    'best event management near me',
+  ],
+  'birthdays-anniversaries': [
+    'birthday party organizers in Kakinada',
+    'best birthday decorators near me',
+    '1st birthday theme decoration East Godavari',
+    'cradle ceremony decoration Kakinada',
+    'Barasala event organizers near me',
+    'half saree function planners Andhra Pradesh',
+    'dhoti ceremony decorators Kakinada',
+  ],
+  'bridal-makeup': [
+    'bridal makeup artist in Kakinada',
+    'best bridal makeup in East Godavari',
+    'HD airbrush bridal makeup near me',
+    'wedding makeup and saree draping Kakinada',
+    'poola jada braid styling near me',
+  ],
+  'decoration-theme-setup': [
+    'stage decoration in Kakinada',
+    'mandap and flower decoration near me',
+    'crystal chandelier lighting for events AP',
+    'reception backdrop decoration East Godavari',
+  ],
+  'catering-food-services': [
+    'wedding catering services in Kakinada',
+    'best catering services in East Godavari',
+    'traditional Andhra banana leaf wedding catering',
+    'multi cuisine banquet catering near me',
+  ],
+  'corporate-events': [
+    'corporate event planners in Kakinada',
+    'conference and seminar organizers East Godavari',
+    'showroom grand opening event planners AP',
+  ],
+  'entertainment-live-performances': [
+    'wedding DJ sound system in Kakinada',
+    'live music band and Punjabi dhol troupe AP',
+    'sangeet sound & intelligent moving lights',
+  ],
+};
+
 export async function generateMetadata({ params }: ServiceDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const service = await getSanityServiceBySlug(slug);
@@ -63,21 +115,24 @@ export async function generateMetadata({ params }: ServiceDetailPageProps): Prom
     };
   }
 
-  const title = `${service.title} Services in Kakinada | Hanvi Events`;
-  const description = `${service.description} Managed by Ch. Kala Prasad in Kakinada & Andhra Pradesh. Starting from ${service.startingPrice}.`;
+  const customKeywords = localizedKeywordsBySlug[service.slug] || [
+    service.title,
+    `${service.title} in Kakinada`,
+    'best event management near me',
+    'Hanvi Events Services',
+    'Ch Kala Prasad Event Director',
+    'Event Planning East Godavari AP',
+  ];
+
+  const title = service.seoTitle || `${service.title} in Kakinada | Hanvi Events • Ch. Kala Prasad`;
+  const description = service.seoDescription || `${service.description} Managed personally by Event Director Ch. Kala Prasad in Kakinada & Andhra Pradesh. Starting from ${service.startingPrice}.`;
 
   return createPageMetadata({
     title,
     description,
     path: `/services/${service.slug}`,
     image: service.heroImage,
-    keywords: [
-      service.title,
-      `${service.title} Kakinada`,
-      'Hanvi Events Services',
-      'Ch Kala Prasad Events',
-      'Event Planning AP',
-    ],
+    keywords: customKeywords,
   });
 }
 
@@ -103,15 +158,11 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     serviceType: service.title,
     description: service.description,
     provider: {
-      '@type': 'LocalBusiness',
-      name: 'Hanvi Events',
-      telephone: siteConfig.phoneRaw,
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: 'Kakinada',
-        addressRegion: 'Andhra Pradesh',
-        addressCountry: 'IN',
-      },
+      '@id': `${SITE_URL}/#business`,
+    },
+    areaServed: {
+      '@type': 'AdministrativeArea',
+      name: 'Andhra Pradesh',
     },
     offers: {
       '@type': 'Offer',
@@ -121,12 +172,45 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     image: service.heroImage,
   };
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_URL}/services` },
+      { '@type': 'ListItem', position: 3, name: service.title, item: `${SITE_URL}/services/${service.slug}` },
+    ],
+  };
+
+  const faqJsonLd = service.faq && service.faq.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: service.faq.map((f: any) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: f.answer,
+      },
+    })),
+  } : null;
+
   return (
     <div className="pt-16 sm:pt-20 md:pt-24 pb-16 sm:pb-20 bg-[#FCF9F5]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
 
       {/* Compact App-like Hero Banner */}
       <section className="relative w-full h-[220px] sm:h-[300px] md:h-[420px] flex items-center justify-center bg-[#1E1712] overflow-hidden">

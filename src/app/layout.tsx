@@ -3,7 +3,7 @@ import { Cormorant_Garamond, Inter, Manrope, Allura } from 'next/font/google';
 import '@/styles/globals.css';
 import { LayoutContent } from '@/components/layout/LayoutContent';
 import { PaperTexture } from '@/components/ui/PaperTexture';
-import { getLocalBusinessSchema, getWebsiteSchema, SITE_URL } from '@/lib/seo';
+import { getLocalBusinessSchema, getWebsiteSchema, getFounderPersonSchema, SITE_URL } from '@/lib/seo';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -35,38 +35,42 @@ const allura = Allura({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Hanvi Events — Luxury Event Planning & Wedding Design | Kakinada',
+    default: 'Hanvi Events — Best Event Management in Kakinada & Andhra Pradesh | Ch. Kala Prasad',
     template: '%s | Hanvi Events Kakinada',
   },
   description:
-    'Hanvi Events (Est. 2018) is Kakinada’s premier luxury wedding planner & event management company managed by Ch. Kala Prasad. We design mandaps, mehendi, birthdays & corporate galas in Andhra Pradesh.',
+    'Hanvi Events is the #1 luxury wedding planner & event management company in Kakinada & East Godavari, managed by Ch. Kala Prasad (Event Director). Specialist in marriage mandap decoration, birthday parties, cradle ceremonies, bridal makeup, catering & corporate galas in Andhra Pradesh.',
   alternates: {
     canonical: SITE_URL,
   },
   keywords: [
-    'best event planners near me',
-    'event planners in Kakinada',
-    'event planners in Rajahmundry',
-    'marriage event planning Kakinada',
+    'best event management near me',
+    'event management in Kakinada',
+    'best event planners in Kakinada',
+    'best event management company in East Godavari',
     'wedding planner Kakinada',
-    'birthday events planner near me',
-    'birthday party organizers Kakinada',
-    'mandap decoration Kakinada',
-    'event management company East Godavari',
-    'event organizers Andhra Pradesh',
-    'Hanvi Events Kakinada',
+    'marriage event organizers near me',
+    'mandap decoration in Kakinada',
+    'Vedic mandapam decorators East Godavari',
+    'Pellikuthuru decoration in Kakinada',
+    'Barasala cradle ceremony event planners',
+    'half saree function planners Andhra Pradesh',
+    'birthday party organizers in Kakinada',
+    'bridal makeup artist in Kakinada',
+    'wedding catering services East Godavari',
+    'event planners in Rajahmundry',
+    'Ch Kala Prasad Event Director Kakinada',
     'Hanvi Events Jagannaickpur Netaji Park',
-    'Telugu wedding decorators Andhra Pradesh',
-    'half saree function decor Kakinada',
-    'sangeet mehendi stage decor Rajahmundry',
-    'catering services Kakinada',
+    'luxury wedding decorators Andhra Pradesh',
+    'best event managers near me',
+    'stage decoration near me Kakinada',
   ],
-  authors: [{ name: 'Hanvi Events Studio' }],
-  creator: 'Hanvi Events Studio',
+  authors: [{ name: 'Ch. Kala Prasad • Hanvi Events Studio' }],
+  creator: 'Ch. Kala Prasad',
   publisher: 'Hanvi Events Studio',
   openGraph: {
-    title: 'Hanvi Events — Luxury Event Planning & Design',
-    description: 'Bespoke luxury wedding planning, mandap architecture, birthday celebrations & corporate galas in Kakinada & Andhra Pradesh.',
+    title: 'Hanvi Events — Best Event Management & Wedding Planning in Kakinada | Ch. Kala Prasad',
+    description: 'Bespoke luxury wedding planning, mandap architecture, birthday celebrations & corporate galas managed by Event Director Ch. Kala Prasad in Kakinada & Andhra Pradesh.',
     url: SITE_URL,
     siteName: 'Hanvi Events Kakinada',
     locale: 'en_IN',
@@ -82,7 +86,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Hanvi Events — Luxury Event Planning & Design',
+    title: 'Hanvi Events — Best Event Management & Luxury Weddings in Kakinada',
     description: 'Bespoke luxury wedding planning, mandap architecture & celebrations managed by Ch. Kala Prasad.',
     images: ['https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop'],
   },
@@ -123,6 +127,7 @@ export default function RootLayout({
 }>) {
   const jsonLd = getLocalBusinessSchema();
   const websiteJsonLd = getWebsiteSchema();
+  const founderJsonLd = getFounderPersonSchema();
 
   return (
     <html
@@ -146,6 +151,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(founderJsonLd) }}
         />
       </head>
       <body className="relative bg-[var(--bg-primary)] text-[var(--text-primary)] min-h-screen flex flex-col font-sans-narrative antialiased pb-[72px] md:pb-0">

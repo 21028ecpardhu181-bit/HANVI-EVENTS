@@ -8,10 +8,19 @@ import { ServicesCatalogClient } from '@/components/services/ServicesCatalogClie
 import { createPageMetadata, SITE_URL, getBreadcrumbSchema, getFAQSchema } from '@/lib/seo';
 
 export const metadata: Metadata = createPageMetadata({
-  title: 'Event Planning Services in Kakinada | Hanvi Events',
-  description: 'Explore wedding planning, mandap decoration, bridal makeup, birthdays, catering, entertainment, and corporate event services by Hanvi Events in Kakinada.',
+  title: 'Best Event Management & Wedding Services in Kakinada | Hanvi Events',
+  description: 'Explore bespoke wedding planning, Vedic mandap decoration, bridal makeup, birthday celebrations, catering, and corporate event management by Hanvi Events & Ch. Kala Prasad across East Godavari and Andhra Pradesh.',
   path: '/services',
-  keywords: ['Event Planning Services Kakinada', 'Wedding Services Kakinada', 'Mandap Decoration Kakinada', 'Bridal Makeup Kakinada'],
+  keywords: [
+    'best event management near me',
+    'event planners in Kakinada',
+    'wedding services East Godavari',
+    'mandap decoration Kakinada',
+    'birthday party planners near me',
+    'bridal makeup Kakinada',
+    'wedding catering AP',
+    'Ch Kala Prasad event manager',
+  ],
 });
 
 export default async function ServicesCatalogPage() {
