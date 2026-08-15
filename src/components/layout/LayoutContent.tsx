@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { MobileBottomNav } from './MobileBottomNav';
+import { SmoothScrollProvider } from '../providers/SmoothScrollProvider';
 
 export function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -15,12 +16,11 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <>
+    <SmoothScrollProvider>
       <Navbar />
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow w-full relative">{children}</main>
       <Footer />
       <MobileBottomNav />
-    </>
+    </SmoothScrollProvider>
   );
 }
-

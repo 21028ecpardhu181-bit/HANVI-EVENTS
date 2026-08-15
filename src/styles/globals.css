@@ -21,12 +21,41 @@
     --app-gutter: 16px;
   }
 
-  html, body {
+  html {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     font-family: var(--font-manrope), sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+  }
+
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -45,6 +74,14 @@
 
 .font-script-accent {
   font-family: var(--font-allura), cursive;
+}
+
+/* Hardware accelerated smooth GPU layer */
+.gpu-layer {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform, opacity;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -151,7 +188,7 @@
 /* Custom Scrollbar (Desktop only) */
 @media (min-width: 768px) {
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 7px;
   }
 
   ::-webkit-scrollbar-track {
@@ -159,12 +196,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--accent-gold);
-    border-radius: 4px;
+    background: #B88A44;
+    border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--text-primary);
+    background: #8C6428;
   }
 }
 
