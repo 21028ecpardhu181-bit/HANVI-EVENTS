@@ -40,6 +40,9 @@ export const metadata: Metadata = {
   },
   description:
     'Hanvi Events (Est. 2018) is Kakinada’s premier luxury wedding planner & event management company managed by Ch. Kala Prasad. We design mandaps, mehendi, birthdays & corporate galas in Andhra Pradesh.',
+  alternates: {
+    canonical: SITE_URL,
+  },
   keywords: [
     'best event planners near me',
     'event planners in Kakinada',

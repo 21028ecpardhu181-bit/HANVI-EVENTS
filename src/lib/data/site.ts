@@ -20,6 +20,7 @@ export const siteConfig: SiteConfig = {
     instagram: 'https://linktw.in/utNIGS',
     youtube: 'https://youtube.com/@hanvievents',
     whatsappUrl: 'https://wa.me/916305457612?text=Hello%20Ch.%20Kala%20Prasad%20(Hanvi%20Events),%20I%20would%20like%20to%20inquire%20about%20event%20planning.',
+    googleReview: 'https://search.google.com/local/writereview?placeid=HanviEventsKakinada',
   },
   stats: [
     {

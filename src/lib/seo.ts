@@ -67,7 +67,8 @@ export function createPageMetadata({
 export function getLocalBusinessSchema() {
   return {
     '@context': 'https://schema.org',
-    '@type': 'EventPlanner',
+    '@type': 'LocalBusiness',
+    additionalType: 'https://schema.org/EventPlanner',
     '@id': `${SITE_URL}/#business`,
     name: siteConfig.name,
     alternateName: ['Hanvi Events Kakinada', 'Hanvi Wedding Planners', 'Hanvi Event Management'],
@@ -75,6 +76,7 @@ export function getLocalBusinessSchema() {
     url: SITE_URL,
     telephone: siteConfig.phoneRaw || siteConfig.phone,
     email: siteConfig.email,
+    hasMap: 'https://maps.google.com/?cid=HanviEventsKakinada',
     address: {
       '@type': 'PostalAddress',
       streetAddress: '1st Floor, Subhamasthu Showroom, D.No: 20-11-40, Majestic Street, Suryanarayana Puram',

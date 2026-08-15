@@ -150,10 +150,15 @@ export const Footer: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-3 md:pt-2">
+              <div className="pt-3 md:pt-2 space-y-2">
                 <a href={siteConfig.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="block w-full">
                   <EditorialButton variant="outline" size="sm" className="w-full text-[#FCF9F5] border-[#B88A44] text-[11px] py-2">
                     Visit Store in Google Maps
+                  </EditorialButton>
+                </a>
+                <a href={siteConfig.social.googleReview} target="_blank" rel="noopener noreferrer" className="block w-full">
+                  <EditorialButton variant="ghost" size="sm" className="w-full text-[#B88A44] hover:text-white text-[10px] py-1 border border-[#B88A44]/30">
+                    ⭐ 4.9 Rating (150+ Reviews)
                   </EditorialButton>
                 </a>
               </div>
