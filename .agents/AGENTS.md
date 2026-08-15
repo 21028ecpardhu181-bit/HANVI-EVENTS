@@ -18,3 +18,11 @@
 4. **Clean Code & Next.js 15+ Architecture**:
    - Always apply the `clean-architecture-nextjs` skill.
    - Enforce strict TypeScript (zero `any`), feature-based modular folder structure, zero duplicate logic, loading states, empty states, and resilient error boundaries.
+
+5. **Global Agentic SEO Engine Standard**:
+   - Always apply the `seo` skill (Agentic SEO suite: 16 sub-skills, 10 specialist agents, 89 audit scripts).
+   - Enforce local SEO geo-signals, NAP consistency, Schema.org LocalBusiness, Open Graph, dynamic sitemaps, and robots.txt.
+
+6. **Understand-Anything Codebase Knowledge Graph Standard**:
+   - Always apply the `understand` and `understand-anything` suite (`understand`, `understand-chat`, `understand-dashboard`, `understand-diff`, `understand-domain`, `understand-explain`, `understand-onboard`).
+   - Use hybrid Tree-sitter + semantic analysis to map dependencies, architectural layers, business domain flows, and diff impacts across all projects.
