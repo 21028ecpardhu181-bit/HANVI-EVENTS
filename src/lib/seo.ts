@@ -74,6 +74,7 @@ export function getLocalBusinessSchema() {
     alternateName: ['Hanvi Events Kakinada', 'Hanvi Wedding Planners', 'Hanvi Event Management'],
     description: 'Premier luxury wedding planner & event management company in Kakinada, Rajahmundry, East Godavari & Andhra Pradesh. Specializing in marriage event planning, sacred mandap decoration, birthday celebrations, corporate galas & catering.',
     url: SITE_URL,
+    logo: `${SITE_URL}/logo.png`,
     telephone: siteConfig.phoneRaw || siteConfig.phone,
     email: siteConfig.email,
     hasMap: 'https://maps.google.com/?cid=HanviEventsKakinada',
@@ -143,7 +144,7 @@ export function getLocalBusinessSchema() {
       bestRating: '5',
     },
     priceRange: '₹₹ - ₹₹₹₹',
-    image: DEFAULT_OG_IMAGE,
+    image: [`${SITE_URL}/logo.png`, DEFAULT_OG_IMAGE],
     sameAs: [siteConfig.social.instagram, siteConfig.social.youtube],
   };
 }
