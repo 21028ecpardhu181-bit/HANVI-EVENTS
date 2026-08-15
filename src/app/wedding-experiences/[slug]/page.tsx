@@ -5,13 +5,25 @@ import { weddingExperienceTypes } from '@/lib/data/celebrations';
 import { getSanityWeddingTraditions, getSacredJourneySteps } from '@/lib/sanity/fetch';
 import { weddingJourneysByReligion } from '@/lib/data/stories';
 import { culturalThemes, CulturalTheme } from '@/lib/theme/themeEngine';
+import { siteConfig } from '@/lib/data/site';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { EditorialButton } from '@/components/ui/EditorialButton';
 import { EditorialBadge } from '@/components/ui/EditorialBadge';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { InteractiveSacredJourney } from '@/components/sections/InteractiveSacredJourney';
 import { SignatureDetailsShowcase } from '@/components/sections/SignatureDetailsShowcase';
-import { Calendar, ArrowLeft } from 'lucide-react';
+import {
+  Calendar,
+  ArrowLeft,
+  MessageCircle,
+  Sparkles,
+  ShieldCheck,
+  Check,
+  Palette,
+  Layers,
+  HelpCircle,
+  ArrowRight,
+} from 'lucide-react';
 
 function slugify(text: string): string {
   return text
@@ -133,6 +145,14 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
       ? (exp.subtitle || exp.region || 'Sacred Ceremony Journey')
       : staticJourney.subtitle;
 
+  const rawWhatsApp = siteConfig.whatsapp ? siteConfig.whatsapp.replace(/[^0-9]/g, '') : '916305457612';
+  const whatsappInquiryUrl = `https://wa.me/${rawWhatsApp}?text=${encodeURIComponent(
+    `Hello Ch. Kala Prasad (Hanvi Events)! I would like to inquire about planning our ${exp.title} with custom floral decor and mandap architecture.`
+  )}`;
+
+  // Find other 2 traditions to allow quick switcher
+  const otherTraditions = weddingExperienceTypes.filter((t) => t.slug !== exp.slug && t.slug !== religionKey);
+
   return (
     <main style={{ backgroundColor: theme.bgMain }} className="min-h-screen">
       {/* Chapter 1: Opening Scene (Cinematic Hero) */}
@@ -140,22 +160,53 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
         <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#B88A44_1px,transparent_1px)] [background-size:24px_24px]" />
 
         <div className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-8">
-          <Link
-            href="/wedding-experiences"
-            className="inline-flex items-center gap-2 text-xs font-sans-ui uppercase tracking-wider text-[#B88A44] hover:text-[#FCF9F5] mb-6 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" /> Back to All Traditions
-          </Link>
+          {/* Top Breadcrumb & Switcher */}
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-6 sm:mb-8">
+            <Link
+              href="/wedding-experiences"
+              className="inline-flex items-center gap-2 text-xs font-sans-ui uppercase tracking-wider text-[#B88A44] hover:text-[#FCF9F5] transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" /> Back to All Traditions
+            </Link>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-7 space-y-4">
+            {/* Quick Switcher Pills */}
+            <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md p-1 rounded-full border border-white/15 text-[11px] font-sans-narrative">
+              <Link
+                href="/wedding-experiences/hindu"
+                className={`px-3 py-1 rounded-full transition-all ${
+                  religionKey === 'hindu' ? 'bg-[#B88A44] text-white font-medium shadow-xs' : 'text-white/60 hover:text-white'
+                }`}
+              >
+                Hindu
+              </Link>
+              <Link
+                href="/wedding-experiences/christian"
+                className={`px-3 py-1 rounded-full transition-all ${
+                  religionKey === 'christian' ? 'bg-[#B88A44] text-white font-medium shadow-xs' : 'text-white/60 hover:text-white'
+                }`}
+              >
+                Christian
+              </Link>
+              <Link
+                href="/wedding-experiences/muslim"
+                className={`px-3 py-1 rounded-full transition-all ${
+                  religionKey === 'muslim' ? 'bg-[#B88A44] text-white font-medium shadow-xs' : 'text-white/60 hover:text-white'
+                }`}
+              >
+                Muslim
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <div className="lg:col-span-7 space-y-4 sm:space-y-5">
               <div>
-                <EditorialBadge variant="gold" className="bg-black/40 border-white/20">
+                <EditorialBadge variant="gold" className="bg-black/50 border-white/25">
                   {exp.subtitle}
                 </EditorialBadge>
               </div>
 
-              <h1 className="font-serif-editorial text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-normal leading-tight text-[#FCF9F5]">
+              <h1 className="font-serif-editorial text-3xl sm:text-5xl md:text-6xl font-normal leading-tight text-[#FCF9F5]">
                 {exp.title}
               </h1>
 
@@ -163,7 +214,15 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
                 {exp.description}
               </p>
 
-              <div className="pt-4 flex flex-wrap items-center gap-4">
+              {/* Tagline Bar */}
+              {exp.tagline && (
+                <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/15 text-xs sm:text-sm font-sans-narrative text-[#FCF9F5]/90 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-[#B88A44] shrink-0" />
+                  <span>{exp.tagline}</span>
+                </div>
+              )}
+
+              <div className="pt-3 flex flex-wrap items-center gap-3.5">
                 <a href="#book-experience">
                   <EditorialButton variant="primary" size="lg" icon={<Calendar className="w-4 h-4" />}>
                     Book Consultation →
@@ -174,23 +233,37 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
                     Explore Journey →
                   </EditorialButton>
                 </a>
+                <Link href="/wizard">
+                  <EditorialButton variant="glass" size="lg" className="text-white border-white/30 hover:bg-white/20">
+                    Plan in 4 Steps ⇄
+                  </EditorialButton>
+                </Link>
               </div>
             </div>
 
-            <div className="lg:col-span-5 relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-white/10 w-full">
+            <div className="lg:col-span-5 relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-white/15 w-full">
               <ImageWithSkeleton
                 src={exp.heroImage}
                 alt={exp.title}
                 fill
                 className="object-cover"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4 text-white">
+                <span className="font-sans-ui text-[10px] uppercase tracking-wider text-[#B88A44] font-semibold block">
+                  Managed Personally by
+                </span>
+                <span className="font-serif-editorial text-lg font-medium">
+                  Ch. Kala Prasad • Event Director
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Chapter 2: The Soul & Philosophy */}
-      <section className="py-12 sm:py-20 border-b border-[#E8DDCD]">
+      {/* Chapter 2: The Soul & Cultural Heritage */}
+      <section className="py-16 sm:py-24 border-b border-[#E8DDCD]">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8">
           <SectionHeader
             scriptEyebrow={theme.motif.headerScript}
@@ -199,29 +272,71 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
             align="center"
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto bg-[#FCF9F5] border border-[#E8DDCD] rounded-3xl p-6 sm:p-8 shadow-xs">
-            <div className="space-y-2">
-              <span style={{ color: theme.accent }} className="font-sans-ui text-xs uppercase tracking-wider font-semibold block">
-                🌸 Floral Styling & Sculpting
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mt-8">
+            <div className="space-y-3 bg-[#FCF9F5] border border-[#E8DDCD] rounded-3xl p-6 sm:p-8 shadow-xs">
+              <span style={{ color: theme.accent }} className="font-sans-ui text-xs uppercase tracking-wider font-semibold block flex items-center gap-2">
+                <Sparkles className="w-4 h-4" />
+                <span>🌸 Floral Architecture & Styling</span>
               </span>
               <p className="font-sans-narrative text-sm text-[#34281F] leading-relaxed">
-                {theme.motif.decorStyle}
+                {exp.floralStyle || theme.motif.decorStyle}
               </p>
             </div>
-            <div className="space-y-2">
-              <span style={{ color: theme.accent }} className="font-sans-ui text-xs uppercase tracking-wider font-semibold block">
-                ✨ Ambiance & Lighting Architecture
+
+            <div className="space-y-3 bg-[#FCF9F5] border border-[#E8DDCD] rounded-3xl p-6 sm:p-8 shadow-xs">
+              <span style={{ color: theme.accent }} className="font-sans-ui text-xs uppercase tracking-wider font-semibold block flex items-center gap-2">
+                <Sparkles className="w-4 h-4" />
+                <span>✨ Ambiance & Lighting Architecture</span>
               </span>
               <p className="font-sans-narrative text-sm text-[#34281F] leading-relaxed">
                 {exp.lightingStyle}
               </p>
             </div>
           </div>
+
+          {/* Color Palette Swatches */}
+          {exp.paletteSwatches && exp.paletteSwatches.length > 0 && (
+            <div className="mt-8 max-w-4xl mx-auto bg-[#FCF9F5] border border-[#E8DDCD] rounded-3xl p-6 sm:p-8 shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-[#E8DDCD]">
+                <div>
+                  <span className="font-sans-ui text-[11px] uppercase tracking-wider text-[#B88A44] font-semibold block flex items-center gap-1.5">
+                    <Palette className="w-3.5 h-3.5" />
+                    <span>Ceremonial Color Palette</span>
+                  </span>
+                  <p className="font-sans-narrative text-xs text-[#6E5D4F] mt-0.5">
+                    {exp.paletteDescription}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {exp.paletteSwatches.map((swatch: { name: string; hex: string }, idx: number) => (
+                  <div
+                    key={idx}
+                    className="p-3 rounded-2xl bg-[#F5ECDD]/40 border border-[#E8DDCD] flex items-center gap-3"
+                  >
+                    <span
+                      className="w-8 h-8 rounded-full shadow-inner shrink-0 border border-black/10"
+                      style={{ backgroundColor: swatch.hex }}
+                    />
+                    <div className="overflow-hidden">
+                      <span className="font-serif-editorial text-xs sm:text-sm text-[#34281F] font-semibold block truncate">
+                        {swatch.name}
+                      </span>
+                      <span className="font-sans-ui text-[10px] text-[#6E5D4F] uppercase tracking-wider block">
+                        {swatch.hex}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Chapter 3: The Sacred Journey (Interactive Magazine Layout) */}
-      <section id="sacred-journey" className="py-12 sm:py-24 bg-[#F5ECDD]/30 border-b border-[#E8DDCD]">
+      {/* Chapter 3: The Sacred Journey (Interactive Milestone Showcase) */}
+      <section id="sacred-journey" className="py-16 sm:py-28 bg-[#F5ECDD]/30 border-b border-[#E8DDCD]">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8">
           <SectionHeader
             scriptEyebrow={journeySubtitle}
@@ -230,12 +345,58 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
             align="center"
           />
 
-          <InteractiveSacredJourney steps={journeySteps} theme={theme} />
+          <div className="mt-8">
+            <InteractiveSacredJourney steps={journeySteps} theme={theme} />
+          </div>
         </div>
       </section>
 
-      {/* Chapter 4: Signature Details (Macro Detail Showcase) */}
-      <section className="py-12 sm:py-20 border-b border-[#E8DDCD]">
+      {/* Chapter 4: Ritual Milestones Grid */}
+      {exp.ritualMilestones && exp.ritualMilestones.length > 0 && (
+        <section className="py-16 sm:py-24 border-b border-[#E8DDCD]">
+          <div className="max-w-[1280px] mx-auto px-4 md:px-8">
+            <SectionHeader
+              scriptEyebrow="Key Ceremonial Stages"
+              title="Ritual Architecture & Milestones"
+              description="Detailed spatial staging crafted specifically for each ceremony."
+              align="center"
+            />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+              {exp.ritualMilestones.map((m: any, idx: number) => (
+                <div
+                  key={idx}
+                  className="bg-[#FCF9F5] border border-[#E8DDCD] rounded-3xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                >
+                  <div className="space-y-2">
+                    <span className="font-sans-ui text-xs font-bold text-[#B88A44] bg-[#B88A44]/15 px-2.5 py-0.5 rounded-full inline-block">
+                      Stage {m.step || `0${idx + 1}`}
+                    </span>
+                    <h3 className="font-serif-editorial text-lg sm:text-xl text-[#34281F] font-normal leading-snug">
+                      {m.title}
+                    </h3>
+                    <p className="font-sans-narrative text-xs text-[#6E5D4F] leading-relaxed">
+                      {m.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 mt-3 border-t border-[#E8DDCD] text-xs font-sans-narrative text-[#34281F]">
+                    <span className="font-semibold text-[#B88A44] block text-[11px] uppercase tracking-wider">
+                      Staging:
+                    </span>
+                    <span className="text-[#6E5D4F] text-[11px] leading-tight block mt-0.5">
+                      {m.spatialDecor}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Chapter 5: Signature Details (Macro Craftsmanship) */}
+      <section className="py-16 sm:py-24 border-b border-[#E8DDCD]">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8">
           <SectionHeader
             scriptEyebrow="Macro Craftsmanship"
@@ -248,35 +409,73 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Chapter 5: Moments From Real Celebrations */}
-      <section className="py-12 sm:py-20">
+      {/* Chapter 6: Signature Architectural Features */}
+      {exp.signatureFeatures && exp.signatureFeatures.length > 0 && (
+        <section className="py-16 sm:py-24 bg-[#FCF9F5] border-b border-[#E8DDCD]">
+          <div className="max-w-[1280px] mx-auto px-4 md:px-8">
+            <SectionHeader
+              scriptEyebrow="Bespoke Hanvi Craft"
+              title="Exclusive Signature Features"
+              description="Distinctive amenities and setups provided exclusively by our event studio."
+              align="center"
+            />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto mt-8">
+              {exp.signatureFeatures.map((feat: any, idx: number) => (
+                <div
+                  key={idx}
+                  className="bg-gradient-to-br from-[#FFF9F0] via-[#FDF3E3] to-[#F5E6CC] border border-[#B88A44]/60 rounded-3xl p-6 sm:p-8 shadow-xs space-y-2"
+                >
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-[#B88A44]" />
+                    <h3 className="font-serif-editorial text-xl sm:text-2xl text-[#34281F] font-normal">
+                      {feat.title}
+                    </h3>
+                  </div>
+                  <p className="font-sans-narrative text-xs sm:text-sm text-[#6E5D4F] leading-relaxed">
+                    {feat.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Chapter 7: Moments From Real Celebrations */}
+      <section className="py-16 sm:py-24">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8">
           <SectionHeader
             scriptEyebrow="Captured Memories"
             title="Moments From Real Celebrations"
+            description="Visual vignettes captured at live weddings across Andhra Pradesh."
             align="center"
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
             {(exp.galleryImages || []).map((imgUrl: string, idx: number) => (
-              <div key={idx} className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-sm border border-[#E8DDCD] group">
+              <div key={idx} className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-md border border-[#E8DDCD] group">
                 <ImageWithSkeleton
                   src={imgUrl}
                   alt={`${exp.title} Photo ${idx + 1}`}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute bottom-3 left-3 text-white text-xs font-sans-ui opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span>{exp.shortTitle} • Kakinada Staging</span>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Chapter 6: Handwritten Pull Quote */}
+      {/* Chapter 8: Handwritten Pull Quote */}
       <section className="py-16 sm:py-24 bg-[#FCF9F5] border-t border-[#E8DDCD] text-center">
         <div className="max-w-4xl mx-auto px-4 space-y-4">
           <span style={{ color: theme.accent }} className="font-script-accent text-3xl sm:text-4xl">
-            Family Blessing
+            Family Blessing & Review
           </span>
           <blockquote className="font-serif-editorial text-2xl sm:text-4xl text-[#34281F] italic leading-relaxed max-w-3xl mx-auto">
             "{exp.storyQuote}"
@@ -287,7 +486,67 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Chapter 7: Begin Your Celebration */}
+      {/* Chapter 9: Frequently Asked Questions */}
+      {exp.faq && exp.faq.length > 0 && (
+        <section className="py-16 sm:py-24 bg-[#F5ECDD]/30 border-t border-[#E8DDCD]">
+          <div className="max-w-3xl mx-auto px-4">
+            <SectionHeader
+              scriptEyebrow="Clarifications & Planning"
+              title="Frequently Asked Questions"
+              align="center"
+            />
+
+            <div className="space-y-4 mt-8">
+              {exp.faq.map((item: any, idx: number) => (
+                <div
+                  key={idx}
+                  className="p-5 sm:p-6 bg-[#FCF9F5] border border-[#E8DDCD] rounded-2xl shadow-2xs space-y-2"
+                >
+                  <h4 className="font-serif-editorial text-lg text-[#34281F] font-medium flex items-center gap-2">
+                    <HelpCircle className="w-4 h-4 text-[#B88A44] shrink-0" />
+                    <span>{item.question}</span>
+                  </h4>
+                  <p className="font-sans-narrative text-xs sm:text-sm text-[#6E5D4F] leading-relaxed pl-6">
+                    {item.answer}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Chapter 10: Switch to Other Traditions */}
+      {otherTraditions.length > 0 && (
+        <section className="py-12 sm:py-16 bg-[#FCF9F5] border-t border-[#E8DDCD]">
+          <div className="max-w-[1280px] mx-auto px-4 md:px-8">
+            <span className="font-sans-ui text-xs uppercase tracking-wider text-[#B88A44] font-semibold block mb-2 text-center">
+              Explore Other Wedding Traditions
+            </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto mt-4">
+              {otherTraditions.map((trad) => (
+                <Link
+                  key={trad.id}
+                  href={`/wedding-experiences/${trad.slug}`}
+                  className="p-4 rounded-2xl bg-[#F5ECDD]/40 border border-[#E8DDCD] hover:border-[#B88A44] hover:bg-[#F5ECDD] transition-all flex items-center justify-between group"
+                >
+                  <div>
+                    <span className="font-serif-editorial text-base text-[#34281F] font-semibold group-hover:text-[#B88A44] block">
+                      {trad.title}
+                    </span>
+                    <span className="font-sans-narrative text-xs text-[#6E5D4F] block">
+                      {trad.subtitle}
+                    </span>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-[#B88A44] group-hover:translate-x-1 transition-transform" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Chapter 11: Final Consultation CTA */}
       <section id="book-experience" className="py-16 sm:py-28 bg-[#34281F] text-[#FCF9F5] text-center">
         <div className="max-w-3xl mx-auto px-4 space-y-6">
           <span className="font-script-accent text-3xl sm:text-4xl text-[#B88A44]">
@@ -297,23 +556,43 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
             Reserve Your {exp.title}
           </h2>
           <p className="font-sans-narrative text-xs sm:text-base text-[#FCF9F5]/80 leading-relaxed max-w-xl mx-auto">
-            Contact Event Manager Ch. Kala Prasad to discuss venue availability, floral customisation, and package details.
+            Contact Event Manager <strong>Ch. Kala Prasad</strong> to discuss date availability, custom mandap framing, and package options.
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href={`https://wa.me/919849012345?text=Hello%20Hanvi%20Events!%20I%20want%20to%20plan%20a%20${encodeURIComponent(exp.title)}.`}
+              href={whatsappInquiryUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto"
             >
-              <EditorialButton variant="primary" size="lg" className="w-full sm:w-auto bg-[#B88A44] hover:bg-[#a07436] text-white">
-                Book via WhatsApp
+              <EditorialButton
+                variant="primary"
+                size="lg"
+                className="w-full sm:w-auto bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white shadow-[0_4px_20px_rgba(37,211,102,0.3)] hover:brightness-110"
+                icon={<MessageCircle className="w-5 h-5 fill-white" />}
+              >
+                Discuss via WhatsApp
               </EditorialButton>
             </a>
+
+            <Link href="/wizard" className="w-full sm:w-auto">
+              <EditorialButton
+                variant="gold"
+                size="lg"
+                className="w-full sm:w-auto"
+              >
+                Launch 4-Step Planner →
+              </EditorialButton>
+            </Link>
+
             <Link href="/contact" className="w-full sm:w-auto">
-              <EditorialButton variant="outline" size="lg" className="w-full sm:w-auto border-white/40 text-white hover:bg-white hover:text-[#34281F]">
-                Book Consultation →
+              <EditorialButton
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto border-white/40 text-white hover:bg-white hover:text-[#34281F]"
+              >
+                Store & Studio Details
               </EditorialButton>
             </Link>
           </div>

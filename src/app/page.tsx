@@ -5,7 +5,6 @@ import { TrustIndicatorsSection } from '@/components/sections/TrustIndicatorsSec
 import { ChooseCelebrationSection } from '@/components/sections/ChooseCelebrationSection';
 import { CelebrationPlannerSection } from '@/components/sections/CelebrationPlannerSection';
 import { WeddingTypesSection } from '@/components/sections/WeddingTypesSection';
-import { FeaturedStoriesSection } from '@/components/sections/FeaturedStoriesSection';
 import { TeamShowcaseSection } from '@/components/sections/TeamShowcaseSection';
 import { OurCraftSection } from '@/components/sections/OurCraftSection';
 import { LatestMomentsSection } from '@/components/sections/LatestMomentsSection';
@@ -13,16 +12,14 @@ import { EmotionalCtaSection } from '@/components/sections/EmotionalCtaSection';
 import {
   getSanityServices,
   getSanityWeddingTraditions,
-  getSanityStories,
   getSanityGalleryMedia,
   getSanityTeamMembers,
 } from '@/lib/sanity/fetch';
 
 export default async function HomePage() {
-  const [services, weddingTraditions, stories, galleryMedia, teamMembers] = await Promise.all([
+  const [services, weddingTraditions, galleryMedia, teamMembers] = await Promise.all([
     getSanityServices(),
     getSanityWeddingTraditions(),
-    getSanityStories(),
     getSanityGalleryMedia(),
     getSanityTeamMembers(),
   ]);
@@ -48,7 +45,6 @@ export default async function HomePage() {
       <WeddingTypesSection items={weddingTraditions} />
 
       {/* 7. Inspiration & Crafted Fine Art */}
-      <FeaturedStoriesSection stories={stories} />
       <OurCraftSection />
 
       {/* 8. Dynamic Team Showcase */}

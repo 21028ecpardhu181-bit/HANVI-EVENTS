@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Phone, MessageCircle, Calendar, ArrowRight } from 'lucide-react';
@@ -70,19 +71,30 @@ export const MobileNav: React.FC<MobileNavProps> = ({ isOpen, onClose, onOpenCon
           >
             {/* Header — Brand Identity */}
             <div className="px-6 pt-6 pb-5 border-b border-[var(--border-color)]">
-              <div className="flex items-start justify-between">
+              <div className="flex items-center justify-between">
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2, duration: 0.5 }}
-                  className="flex flex-col"
+                  className="flex items-center gap-3"
                 >
-                  <span className="font-script-accent text-3xl text-[var(--accent-gold)] leading-none">
-                    Hanvi
-                  </span>
-                  <span className="font-serif-editorial text-[10px] tracking-[0.3em] uppercase text-[var(--text-primary)]/70 mt-0.5 font-medium">
-                    Events Studio
-                  </span>
+                  <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-[#B88A44] shadow-md ring-2 ring-[#B88A44]/30 shrink-0">
+                    <Image
+                      src="/logo.png"
+                      alt="Hanvi Events Royal Logo"
+                      fill
+                      sizes="40px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-script-accent text-2xl text-[var(--accent-gold)] leading-none">
+                      Hanvi Events
+                    </span>
+                    <span className="font-serif-editorial text-[9px] tracking-[0.25em] uppercase text-[var(--text-primary)]/70 mt-0.5 font-medium">
+                      Luxury Celebrations
+                    </span>
+                  </div>
                 </motion.div>
                 <button
                   onClick={onClose}

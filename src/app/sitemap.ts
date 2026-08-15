@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 import { getAllServices } from '@/lib/data/services';
-import { weddingJourneySteps, storyCaseStudies } from '@/lib/data/stories';
+import { weddingJourneySteps } from '@/lib/data/stories';
 import { staticTeamMembers } from '@/lib/data/team';
 import { SITE_URL } from '@/lib/seo';
 
@@ -15,7 +15,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/celebrations',
     '/wedding-journey',
     '/wedding-experiences',
-    '/stories',
     '/gallery',
     '/team',
     '/contact',
@@ -40,13 +39,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
-  const storyPages = storyCaseStudies.map((s) => ({
-    url: `${baseUrl}/stories/${s.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-  }));
-
   const teamPages = staticTeamMembers.map((m) => ({
     url: `${baseUrl}/team/${m.slug}`,
     lastModified: new Date(),
@@ -54,5 +46,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...servicePages, ...journeyPages, ...storyPages, ...teamPages];
+  return [...staticPages, ...servicePages, ...journeyPages, ...teamPages];
 }

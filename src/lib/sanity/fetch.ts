@@ -259,9 +259,15 @@ export async function getSanityGalleryMedia(): Promise<MediaItem[]> {
     const categoryFallbacks = ['Mandap', 'Florals', 'Lighting', 'Stage', 'Entrance'];
 
     return rawMedia.map((m, idx) => {
+      const vUrl = m.videoUrl || (Array.isArray(m.videos) && m.videos[0]) || '';
+      const ytThumb = vUrl && (vUrl.includes('youtube.com') || vUrl.includes('youtu.be'))
+        ? `https://img.youtube.com/vi/${vUrl.match(/(?:shorts\/|v=|youtu\.be\/)([a-zA-Z0-9_-]+)/)?.[1] || ''}/hqdefault.jpg`
+        : null;
+
       const coverUrl = resolveImageUrl(
         m.coverImage || m.thumbnail,
-        defaultMediaItems[idx % defaultMediaItems.length]?.thumbnail ||
+        ytThumb ||
+          defaultMediaItems[idx % defaultMediaItems.length]?.thumbnail ||
           'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop'
       );
 
@@ -274,16 +280,26 @@ export async function getSanityGalleryMedia(): Promise<MediaItem[]> {
         ? categoryFallbacks[idx % categoryFallbacks.length]
         : rawCat;
 
+      // Smart format detection
+      let detectedType: 'reel' | 'film' | 'image' = m.type === 'film' ? 'film' : m.type === 'reel' ? 'reel' : 'image';
+      if (vUrl) {
+        if (vUrl.includes('shorts') || vUrl.includes('reel')) {
+          detectedType = 'reel';
+        } else if (detectedType === 'image') {
+          detectedType = 'film';
+        }
+      }
+
       return {
         id: m._id || `media-${idx}`,
-        type: m.type === 'film' ? 'film' : (m.type === 'image' ? 'image' : 'reel'),
+        type: detectedType,
         title: m.albumTitle || m.title || 'Celebration Media',
         subtitle: m.eventName || m.subtitle || 'Kakinada Event',
         category: cleanCat,
         thumbnail: coverUrl,
         images: imagesArray,
-        videoUrl: m.videoUrl || (Array.isArray(m.videos) && m.videos[0]) || '',
-        views: m.views || 'Featured',
+        videoUrl: vUrl,
+        views: m.views || (detectedType === 'reel' ? 'Short Reel' : detectedType === 'film' ? 'Cinema Film' : 'Featured'),
       };
     });
   } catch (err) {

@@ -78,6 +78,20 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/stories',
+        destination: '/gallery',
+        permanent: true,
+      },
+      {
+        source: '/stories/:path*',
+        destination: '/gallery',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

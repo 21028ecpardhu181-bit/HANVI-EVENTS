@@ -277,9 +277,22 @@ export default async function TeamMemberPage({ params }: PageProps) {
 
                       return (
                         <div key={idx} className="space-y-2">
-                          <span className="font-sans-ui text-xs font-semibold text-[#34281F] uppercase tracking-wider block">
-                            {videoTitle}
-                          </span>
+                          <div className="flex items-center justify-between">
+                            <span className="font-sans-ui text-xs font-semibold text-[#34281F] uppercase tracking-wider block">
+                              {videoTitle}
+                            </span>
+                            {ytEmbed && (
+                              <a
+                                href={videoUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[11px] font-sans-ui text-[#B88A44] hover:underline flex items-center gap-1"
+                              >
+                                <span>Watch on YouTube</span>
+                                <span>↗</span>
+                              </a>
+                            )}
+                          </div>
                           <div className="relative aspect-video rounded-2xl overflow-hidden bg-black shadow-md border border-[#E8DDCD]">
                             {ytEmbed ? (
                               <iframe
@@ -287,6 +300,7 @@ export default async function TeamMemberPage({ params }: PageProps) {
                                 title={videoTitle}
                                 className="w-full h-full border-0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerPolicy="strict-origin-when-cross-origin"
                                 allowFullScreen
                               />
                             ) : vimeoMatch && vimeoMatch[1] ? (
@@ -295,6 +309,7 @@ export default async function TeamMemberPage({ params }: PageProps) {
                                 title={videoTitle}
                                 className="w-full h-full border-0"
                                 allow="autoplay; fullscreen; picture-in-picture"
+                                referrerPolicy="strict-origin-when-cross-origin"
                                 allowFullScreen
                               />
                             ) : (

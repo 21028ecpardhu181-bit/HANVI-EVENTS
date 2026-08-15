@@ -224,8 +224,13 @@ export const LightboxModal: React.FC<LightboxModalProps> = ({
                   <iframe
                     src={youtubeEmbedUrl}
                     title={currentItem.title}
-                    className="w-full h-full max-w-5xl max-h-[85vh] m-auto aspect-video rounded-none sm:rounded-xl"
+                    className={`w-full h-full m-auto rounded-none sm:rounded-2xl shadow-2xl ${
+                      currentItem.type === 'reel'
+                        ? 'max-w-[380px] max-h-[82vh] aspect-[9/16]'
+                        : 'max-w-5xl max-h-[85vh] aspect-video'
+                    }`}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
                   />
                 ) : (

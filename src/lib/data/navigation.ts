@@ -5,7 +5,6 @@ export const mainNavLinks: NavLink[] = [
   { label: 'Services', href: '/services' },
   { label: 'Event Wizard', href: '/wizard' },
   { label: 'Wedding Traditions', href: '/wedding-experiences' },
-  { label: 'Stories', href: '/stories' },
   { label: 'Gallery', href: '/gallery' },
   { label: 'Team', href: '/team' },
   { label: 'Contact', href: '/contact' },
@@ -37,7 +36,6 @@ export const footerLinks = {
   ],
   company: [
     { label: 'Event Planning Wizard', href: '/wizard' },
-    { label: 'Featured Stories', href: '/stories' },
     { label: 'Visual Gallery', href: '/gallery' },
     { label: 'Studio Team', href: '/team' },
     { label: 'Admin Portal', href: '/admin' },

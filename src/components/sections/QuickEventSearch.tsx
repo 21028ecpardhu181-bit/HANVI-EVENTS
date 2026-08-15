@@ -108,7 +108,7 @@ export const QuickEventSearch: React.FC = () => {
 
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="flex-1 sm:flex-initial px-5 h-11 md:h-14 py-3 rounded-full bg-[#34281F] w-full md:w-auto text-[#FCF9F5] font-sans-ui text-xs font-semibold uppercase tracking-wider hover:bg-[#B88A44] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                className="flex-1 sm:flex-initial px-5 h-11 md:h-14 py-3 rounded-full bg-gradient-to-r from-[#B88A44] via-[#C99A4E] to-[#9E7432] w-full md:w-auto text-white font-sans-ui text-xs font-semibold uppercase tracking-wider hover:brightness-110 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_16px_rgba(184,138,68,0.35)]"
               >
                 <span>Call Back Request</span>
               </button>
