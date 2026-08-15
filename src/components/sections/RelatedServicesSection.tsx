@@ -91,7 +91,7 @@ export const RelatedServicesSection: React.FC<RelatedServicesSectionProps> = ({
                   <Link
                     href={detailUrl}
                     aria-label={`View details about ${item.title}`}
-                    className="w-full py-2.5 px-4 rounded-xl bg-[#F5ECDD]/70 hover:bg-[#34281F] text-[#34281F] hover:text-[#FCF9F5] font-sans-ui text-xs font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-between group/btn focus:outline-none focus:ring-2 focus:ring-[#B88A44]"
+                    className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#FFF9F0] via-[#FDF3E3] to-[#F5E6CC] border border-[#B88A44]/40 hover:from-[#B88A44] hover:via-[#C99C55] hover:to-[#A07635] text-[#7A531C] hover:text-[#FCF9F5] font-sans-ui text-xs font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-between group/btn shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#B88A44]"
                   >
                     <span>View Details</span>
                     <ArrowUpRight className="w-4 h-4 text-[#B88A44] group-hover/btn:text-[#FCF9F5] group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />

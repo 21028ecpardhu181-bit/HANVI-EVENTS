@@ -11,6 +11,7 @@ import { BreadcrumbNav } from '@/components/ui/BreadcrumbNav';
 import { ShareButton } from '@/components/ui/ShareButton';
 import { RelatedServicesSection } from '@/components/sections/RelatedServicesSection';
 import { ServiceVisualShowcase } from '@/components/sections/ServiceVisualShowcase';
+import { ServiceBookingGlassPanel } from '@/components/services/ServiceBookingGlassPanel';
 import { SITE_URL, createPageMetadata } from '@/lib/seo';
 
 interface ServiceDetailPageProps {
@@ -270,48 +271,13 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
           </div>
 
-          {/* Right Column: Sticky Inquiry Panel */}
-          <div className="lg:col-span-4 bg-[#34281F] text-[#FCF9F5] rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl sticky top-28 border border-[#B88A44]/30">
-            <div>
-              <EditorialBadge variant="gold">
-                Supervised by Ch. Kala Prasad
-              </EditorialBadge>
-              <h3 className="font-serif-editorial text-2xl sm:text-3xl text-[#FCF9F5] mt-2">
-                Book {service.title}
-              </h3>
-            </div>
-
-            <p className="font-sans-narrative text-[#FCF9F5]/80 text-xs leading-relaxed">
-              Get an instant customized estimate and availability check for your upcoming function date in Kakinada or surrounding districts.
-            </p>
-
-            <div className="space-y-3 font-sans-ui text-xs">
-              <a
-                href={`tel:${siteConfig.phoneRaw}`}
-                className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#B88A44] text-[#FCF9F5] rounded-full font-semibold hover:bg-[#a27838] transition-colors focus:outline-none focus:ring-2 focus:ring-white"
-              >
-                <Phone className="w-4 h-4" />
-                <span>Call Studio: {siteConfig.phone}</span>
-              </a>
-
-              <a
-                href={`https://wa.me/${siteConfig.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hello Hanvi Events! I am interested in ${service.title}. Please share package options and availability.`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#59624C] text-[#FCF9F5] rounded-full font-semibold hover:bg-[#66785F] transition-colors focus:outline-none focus:ring-2 focus:ring-white"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>WhatsApp Instant Inquiry</span>
-              </a>
-
-              <Link
-                href="/contact"
-                className="flex items-center justify-center gap-1.5 pt-2 text-[#FCF9F5]/70 hover:text-white underline text-xs transition-colors"
-              >
-                <MapPin className="w-3.5 h-3.5 text-[#B88A44]" />
-                <span>View Kakinada Studio Map & Hours →</span>
-              </Link>
-            </div>
+          {/* Right Column: Sticky Liquid Glass Inquiry Panel */}
+          <div className="lg:col-span-4 sticky top-28">
+            <ServiceBookingGlassPanel
+              serviceTitle={service.title}
+              startingPrice={service.startingPrice}
+              category={service.category || service.tagline}
+            />
           </div>
 
         </div>

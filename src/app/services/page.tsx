@@ -166,7 +166,7 @@ export default async function ServicesCatalogPage() {
 
                   {/* Card Action Link */}
                   <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2 border-t border-[#E8DDCD]/80 flex items-center justify-between">
-                    <span className="w-full py-3 px-4 rounded-xl bg-[#34281F] group-hover:bg-[#B88A44] text-[#FCF9F5] font-sans-ui text-xs font-semibold tracking-wider uppercase transition-colors flex items-center justify-between">
+                    <span className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#B88A44] via-[#C99C55] to-[#A07635] text-[#FCF9F5] font-sans-ui text-xs font-semibold tracking-wider uppercase shadow-xs group-hover:shadow-md transition-all flex items-center justify-between">
                       <span>View Service Details</span>
                       <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </span>
