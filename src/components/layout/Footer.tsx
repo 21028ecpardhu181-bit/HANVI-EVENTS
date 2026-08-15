@@ -18,11 +18,106 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-[#34281F] text-[#FCF9F5] pt-6 sm:pt-12 md:pt-16 pb-20 md:pb-10 border-t border-[#B88A44]/30 relative z-10">
+    <footer className="bg-[#1F1915] text-[#FCF9F5] pt-4 sm:pt-12 md:pt-16 pb-24 sm:pb-12 md:pb-10 border-t border-[#B88A44]/30 relative z-10">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8">
 
-        {/* Top Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6 md:gap-12 pb-6 md:pb-10 border-b border-[#FCF9F5]/10">
+        {/* ─── MOBILE COMPACT FOOTER (Visible on Mobile only) ─── */}
+        <div className="block sm:hidden space-y-3 pb-3 border-b border-white/10">
+          {/* Top Brand Identity */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2.5">
+              <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#B88A44]/60 shadow-xs shrink-0">
+                <Image
+                  src="/logo.png"
+                  alt="Hanvi Events Logo"
+                  fill
+                  sizes="32px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-script-accent text-xl text-[#B88A44] leading-none">Hanvi Events</span>
+                <span className="font-serif-editorial text-[9px] tracking-wider uppercase text-[#FCF9F5]/70">
+                  {siteConfig.tagline}
+                </span>
+              </div>
+            </div>
+
+            <a
+              href={siteConfig.social.googleReview}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2 py-0.5 rounded-full bg-[#B88A44]/20 border border-[#B88A44]/40 text-[#E6C687] text-[10px] font-sans-ui font-semibold"
+            >
+              ⭐ 4.9 (150+)
+            </a>
+          </div>
+
+          {/* Quick Round Touch Action Buttons Bar */}
+          <div className="flex items-center justify-between gap-2 pt-1">
+            <a
+              href="tel:+919700929650"
+              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-[#B88A44] text-xs font-sans-ui text-white"
+            >
+              <Phone className="w-3.5 h-3.5 text-[#B88A44]" />
+              <span>Call</span>
+            </a>
+            <a
+              href="https://wa.me/916305457612"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[#25D366]/15 border border-[#25D366]/30 text-xs font-sans-ui text-[#25D366]"
+            >
+              <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
+              <span>WhatsApp</span>
+            </a>
+            <a
+              href={siteConfig.googleMapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-xl bg-white/5 border border-white/10 text-white hover:text-[#B88A44]"
+              title="Google Maps"
+            >
+              <MapPin className="w-3.5 h-3.5 text-[#B88A44]" />
+            </a>
+            <a
+              href={siteConfig.social.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-xl bg-white/5 border border-white/10 text-white hover:text-[#B88A44]"
+              title="Instagram"
+            >
+              <InstagramIcon className="w-3.5 h-3.5" />
+            </a>
+            <a
+              href={siteConfig.social.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-xl bg-white/5 border border-white/10 text-white hover:text-[#B88A44]"
+              title="YouTube"
+            >
+              <YoutubeIcon className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {/* Quick Nav Links Wrap */}
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 pt-1 text-[11px] font-sans-narrative text-[#FCF9F5]/70">
+            <Link href="/services" className="hover:text-[#B88A44]">Services</Link>
+            <span>•</span>
+            <Link href="/wedding-experiences" className="hover:text-[#B88A44]">Traditions</Link>
+            <span>•</span>
+            <Link href="/gallery" className="hover:text-[#B88A44]">Gallery</Link>
+            <span>•</span>
+            <Link href="/wizard" className="hover:text-[#B88A44]">Wizard</Link>
+            <span>•</span>
+            <Link href="/team" className="hover:text-[#B88A44]">Team</Link>
+            <span>•</span>
+            <Link href="/contact" className="hover:text-[#B88A44]">Contact</Link>
+          </div>
+        </div>
+
+        {/* ─── DESKTOP FULL GRID (Visible on sm/md/lg screens) ─── */}
+        <div className="hidden sm:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-12 pb-6 md:pb-10 border-b border-[#FCF9F5]/10">
 
           {/* Brand & Manager Column */}
           <div className="lg:col-span-4 space-y-3">
@@ -48,8 +143,8 @@ export const Footer: React.FC = () => {
               Managed by <strong className="text-[#B88A44] font-semibold">{siteConfig.founder} (Event Manager)</strong>. Designing bespoke marriages, sangeet, cradle ceremonies & galas since 2018.
             </p>
 
-            {/* Quick Phone Pills (2-column on mobile) */}
-            <div className="pt-1 grid grid-cols-1 sm:grid-cols-2 gap-2 font-sans-ui text-xs text-[#FCF9F5]/90">
+            {/* Quick Phone Pills */}
+            <div className="pt-1 grid grid-cols-2 gap-2 font-sans-ui text-xs text-[#FCF9F5]/90">
               <a
                 href="tel:+919700929650"
                 className="flex items-center gap-2 p-2 rounded-xl bg-white/5 border border-white/10 hover:border-[#B88A44] transition-colors"
@@ -90,18 +185,10 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Wedding Traditions Column (Accordion on mobile) */}
-          <div className="lg:col-span-3 border-t border-[#FCF9F5]/10 md:border-none pt-2 md:pt-0">
-            <button 
-              className="w-full flex items-center justify-between md:hidden py-2 cursor-pointer"
-              onClick={() => toggleSection('experiences')}
-              aria-expanded={openSection === 'experiences'}
-            >
-              <h4 className="font-serif-editorial text-sm sm:text-lg text-[#B88A44] m-0 font-medium">Wedding Traditions</h4>
-              <ChevronDown className={`w-4 h-4 text-[#B88A44] transition-transform duration-300 ${openSection === 'experiences' ? 'rotate-180' : ''}`} />
-            </button>
-            <h4 className="hidden md:block font-serif-editorial text-lg text-[#B88A44] mb-3">Wedding Traditions</h4>
-            <ul className={`space-y-2 font-sans-narrative text-xs sm:text-sm text-[#FCF9F5]/80 overflow-hidden transition-all duration-300 ${openSection === 'experiences' ? 'max-h-96 pt-2 pb-3' : 'max-h-0 md:max-h-none'}`}>
+          {/* Wedding Traditions Column */}
+          <div className="lg:col-span-3">
+            <h4 className="font-serif-editorial text-base sm:text-lg text-[#B88A44] mb-3">Wedding Traditions</h4>
+            <ul className="space-y-1.5 font-sans-narrative text-xs text-[#FCF9F5]/80">
               {footerLinks.experiences.map((item, idx) => (
                 <li key={`exp-${idx}`}>
                   <Link href={item.href} className="hover:text-[#B88A44] transition-colors inline-block py-0.5">
@@ -112,18 +199,10 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Quick Links Column (Accordion on mobile) */}
-          <div className="lg:col-span-2 border-t border-[#FCF9F5]/10 md:border-none pt-2 md:pt-0">
-            <button 
-              className="w-full flex items-center justify-between md:hidden py-2 cursor-pointer"
-              onClick={() => toggleSection('quickLinks')}
-              aria-expanded={openSection === 'quickLinks'}
-            >
-              <h4 className="font-serif-editorial text-sm sm:text-lg text-[#B88A44] m-0 font-medium">Quick Links</h4>
-              <ChevronDown className={`w-4 h-4 text-[#B88A44] transition-transform duration-300 ${openSection === 'quickLinks' ? 'rotate-180' : ''}`} />
-            </button>
-            <h4 className="hidden md:block font-serif-editorial text-lg text-[#B88A44] mb-3">Quick Links</h4>
-            <ul className={`space-y-2 font-sans-narrative text-xs sm:text-sm text-[#FCF9F5]/80 overflow-hidden transition-all duration-300 ${openSection === 'quickLinks' ? 'max-h-96 pt-2 pb-3' : 'max-h-0 md:max-h-none'}`}>
+          {/* Quick Links Column */}
+          <div className="lg:col-span-2">
+            <h4 className="font-serif-editorial text-base sm:text-lg text-[#B88A44] mb-3">Quick Links</h4>
+            <ul className="space-y-1.5 font-sans-narrative text-xs text-[#FCF9F5]/80">
               {footerLinks.company.map((item, idx) => (
                 <li key={`comp-${idx}`}>
                   <Link href={item.href} className="hover:text-[#B88A44] transition-colors inline-block py-0.5">
@@ -134,20 +213,11 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Studio Address Column (Accordion on mobile) */}
-          <div className="lg:col-span-3 border-t border-[#FCF9F5]/10 md:border-none pt-2 md:pt-0">
-            <button 
-              className="w-full flex items-center justify-between md:hidden py-2 cursor-pointer"
-              onClick={() => toggleSection('studio')}
-              aria-expanded={openSection === 'studio'}
-            >
-              <h4 className="font-serif-editorial text-sm sm:text-lg text-[#B88A44] m-0 font-medium">Kakinada Studio</h4>
-              <ChevronDown className={`w-4 h-4 text-[#B88A44] transition-transform duration-300 ${openSection === 'studio' ? 'rotate-180' : ''}`} />
-            </button>
-            <h4 className="hidden md:block font-serif-editorial text-lg text-[#B88A44] mb-3">Kakinada Studio</h4>
-            
-            <div className={`overflow-hidden transition-all duration-300 ${openSection === 'studio' ? 'max-h-96 pt-2 pb-3' : 'max-h-0 md:max-h-none'}`}>
-              <div className="font-sans-narrative text-xs sm:text-sm text-[#FCF9F5]/80 space-y-2">
+          {/* Studio Address Column */}
+          <div className="lg:col-span-3 space-y-3">
+            <h4 className="font-serif-editorial text-base sm:text-lg text-[#B88A44]">Kakinada Studio</h4>
+            <div className="font-sans-narrative text-xs text-[#FCF9F5]/80 space-y-2">
+              <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
                 <a
                   href={siteConfig.googleMapsUrl}
                   target="_blank"
@@ -163,15 +233,10 @@ export const Footer: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-3 md:pt-2 space-y-2">
+              <div className="pt-1 space-y-2">
                 <a href={siteConfig.googleMapsUrl} target="_blank" rel="noopener noreferrer" className="block w-full">
-                  <EditorialButton variant="outline" size="sm" className="w-full text-[#FCF9F5] border-[#B88A44] text-[11px] py-2">
+                  <EditorialButton variant="outline" size="sm" className="w-full text-[#FCF9F5] border-[#B88A44] text-[11px] py-1.5">
                     Visit Store in Google Maps
-                  </EditorialButton>
-                </a>
-                <a href={siteConfig.social.googleReview} target="_blank" rel="noopener noreferrer" className="block w-full">
-                  <EditorialButton variant="ghost" size="sm" className="w-full text-[#B88A44] hover:text-white text-[10px] py-1 border border-[#B88A44]/30">
-                    ⭐ 4.9 Rating (150+ Reviews)
                   </EditorialButton>
                 </a>
               </div>
