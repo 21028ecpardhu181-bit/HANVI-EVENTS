@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, Calendar, Search, Phone } from 'lucide-react';
 import { mainNavLinks } from '@/lib/data/navigation';
@@ -19,20 +20,16 @@ export const Navbar: React.FC = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [navLinks] = useState(mainNavLinks);
   const pathname = usePathname();
-  const isHomePage = pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 15) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const isHomePage = pathname === '/';
 
   return (
     <>
@@ -45,21 +42,33 @@ export const Navbar: React.FC = () => {
       >
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 flex items-center justify-between">
           {/* Brand Logo */}
-          <Link href="/" className="group flex items-center space-x-2">
-            <span
-              className={`font-script-accent text-2xl sm:text-3xl md:text-4xl transition-colors ${
-                (!isHomePage || isScrolled) ? 'text-[#B88A44]' : 'text-white'
-              }`}
-            >
-              Hanvi Events
-            </span>
-            <span
-              className={`hidden sm:inline-block font-sans-ui text-[10px] uppercase tracking-widest border-l pl-2 transition-colors ${
-                (!isHomePage || isScrolled) ? 'text-[#B88A44] border-[#B88A44]/40' : 'text-white/80 border-white/40'
-              }`}
-            >
-              Kakinada
-            </span>
+          <Link href="/" className="group flex items-center space-x-2.5">
+            <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border border-[#B88A44]/50 shadow-xs shrink-0">
+              <Image
+                src="/logo.png"
+                alt="Hanvi Events Logo"
+                fill
+                sizes="36px"
+                className="object-cover"
+                priority
+              />
+            </div>
+            <div className="flex items-center space-x-1.5">
+              <span
+                className={`font-script-accent text-2xl sm:text-3xl md:text-4xl transition-colors ${
+                  (!isHomePage || isScrolled) ? 'text-[#B88A44]' : 'text-white'
+                }`}
+              >
+                Hanvi Events
+              </span>
+              <span
+                className={`hidden sm:inline-block font-sans-ui text-[10px] uppercase tracking-widest border-l pl-2 transition-colors ${
+                  (!isHomePage || isScrolled) ? 'text-[#B88A44] border-[#B88A44]/40' : 'text-white/80 border-white/40'
+                }`}
+              >
+                Kakinada
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation Links */}

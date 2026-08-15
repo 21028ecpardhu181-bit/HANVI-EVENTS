@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Phone, Mail, MapPin, MessageCircle, ChevronDown } from 'lucide-react';
 import { siteConfig } from '@/lib/data/site';
 import { footerLinks } from '@/lib/data/navigation';
@@ -24,11 +25,22 @@ export const Footer: React.FC = () => {
 
           {/* Brand & Manager Column */}
           <div className="lg:col-span-4 space-y-3">
-            <div className="flex items-baseline justify-between md:justify-start md:space-x-3">
-              <span className="font-script-accent text-2xl sm:text-3xl text-[#B88A44]">Hanvi Events</span>
-              <span className="font-serif-editorial text-[10px] sm:text-xs tracking-widest uppercase text-[#FCF9F5]/70 font-medium">
-                {siteConfig.tagline}
-              </span>
+            <div className="flex items-center space-x-3">
+              <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#B88A44]/50 shadow-md shrink-0">
+                <Image
+                  src="/logo.png"
+                  alt="Hanvi Events Royal Logo"
+                  fill
+                  sizes="40px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex items-baseline space-x-2">
+                <span className="font-script-accent text-2xl sm:text-3xl text-[#B88A44]">Hanvi Events</span>
+                <span className="font-serif-editorial text-[10px] sm:text-xs tracking-widest uppercase text-[#FCF9F5]/70 font-medium">
+                  {siteConfig.tagline}
+                </span>
+              </div>
             </div>
 
             <p className="font-sans-narrative text-[11px] sm:text-sm text-[#FCF9F5]/70 leading-relaxed max-w-sm">
