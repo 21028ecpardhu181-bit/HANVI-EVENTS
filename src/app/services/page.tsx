@@ -8,7 +8,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { EditorialBadge } from '@/components/ui/EditorialBadge';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { BreadcrumbNav } from '@/components/ui/BreadcrumbNav';
-import { createPageMetadata, SITE_URL } from '@/lib/seo';
+import { createPageMetadata, SITE_URL, getBreadcrumbSchema, getFAQSchema } from '@/lib/seo';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Event Planning Services in Kakinada | Hanvi Events',
@@ -34,11 +34,42 @@ export default async function ServicesCatalogPage() {
     })),
   };
 
+  const breadcrumbJsonLd = getBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Services', url: '/services' },
+  ]);
+
+  const faqJsonLd = getFAQSchema([
+    {
+      question: 'What event management services does Hanvi Events provide in Kakinada?',
+      answer:
+        'Hanvi Events provides luxury wedding planning, mandap decoration, thematic birthday party organizing, corporate event management, bridal styling, premium catering, and AV production across Kakinada and East Godavari.',
+    },
+    {
+      question: 'Which areas do you cover for wedding and event planning?',
+      answer:
+        'We provide end-to-end event planning across Kakinada, Rajahmundry, East Godavari, Konaseema, Samalkota, Pithapuram, Visakhapatnam, Vijayawada, and the broader Andhra Pradesh region.',
+    },
+    {
+      question: 'How do I book a consultation with Hanvi Events?',
+      answer:
+        'You can book a consultation directly through our website contact form or by calling our studio line at +91 93902 46849.',
+    },
+  ]);
+
   return (
     <div className="pt-24 md:pt-28 pb-24 bg-[#FCF9F5]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
       <div className="max-w-[1440px] mx-auto px-4 md:px-8">

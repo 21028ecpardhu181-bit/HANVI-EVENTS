@@ -28,6 +28,7 @@ export interface SiteConfig {
     instagram: string;
     youtube: string;
     whatsappUrl: string;
+    googleReview?: string;
   };
   stats: SiteStat[];
 }

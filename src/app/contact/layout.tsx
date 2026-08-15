@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { createPageMetadata } from '@/lib/seo';
+import { createPageMetadata, getBreadcrumbSchema } from '@/lib/seo';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Contact Hanvi Events | Luxury Event & Wedding Planner in Kakinada',
@@ -9,5 +9,18 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default function ContactLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <>{children}</>;
+  const breadcrumbJsonLd = getBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Contact', url: '/contact' },
+  ]);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }

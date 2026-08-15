@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   creator: 'Hanvi Events Studio',
   publisher: 'Hanvi Events Studio',
   openGraph: {
-    title: 'Hanvi Events — Luxury Event Planning & Mandap Design | Kakinada',
+    title: 'Hanvi Events — Luxury Event Planning & Design',
     description: 'Bespoke luxury wedding planning, mandap architecture, birthday celebrations & corporate galas in Kakinada & Andhra Pradesh.',
     url: SITE_URL,
     siteName: 'Hanvi Events Kakinada',
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Hanvi Events — Luxury Event Planning & Wedding Design | Kakinada',
+    title: 'Hanvi Events — Luxury Event Planning & Design',
     description: 'Bespoke luxury wedding planning, mandap architecture & celebrations managed by Ch. Kala Prasad.',
     images: ['https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop'],
   },
