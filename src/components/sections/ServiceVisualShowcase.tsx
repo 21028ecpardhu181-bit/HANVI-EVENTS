@@ -10,17 +10,18 @@ import { ServiceCategory } from '@/lib/types';
 
 interface ServiceVisualShowcaseProps {
   service: ServiceCategory;
+  sanityMediaList?: any[];
 }
 
-export const ServiceVisualShowcase: React.FC<ServiceVisualShowcaseProps> = ({ service }) => {
+export const ServiceVisualShowcase: React.FC<ServiceVisualShowcaseProps> = ({ service, sanityMediaList = [] }) => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [lightboxOpen, setLightboxOpen] = useState<boolean>(false);
   const [lightboxIndex, setLightboxIndex] = useState<number>(0);
 
-  // Combine Sanity images with extended curated showcase photography
+  // Combine Sanity images with Sanity Gallery Media items
   const sanityImages = service.galleryImages || [service.heroImage];
-  const allGalleryItems: ExtendedGalleryImage[] = getExtendedGalleryForService(service.slug, sanityImages);
+  const allGalleryItems: ExtendedGalleryImage[] = getExtendedGalleryForService(service.slug, sanityImages, sanityMediaList);
 
   // Filter categories dynamically
   const categories = ['All', ...Array.from(new Set(allGalleryItems.map((item) => item.category)))];

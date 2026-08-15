@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { Check, Sparkles, HelpCircle, ArrowLeft, Calendar, ShieldCheck, MapPin } from 'lucide-react';
-import { getSanityServiceBySlug, getSanityServices } from '@/lib/sanity/fetch';
+import { getSanityServiceBySlug, getSanityServices, getSanityGalleryMedia } from '@/lib/sanity/fetch';
 import { siteConfig } from '@/lib/data/site';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { EditorialBadge } from '@/components/ui/EditorialBadge';
@@ -89,7 +89,10 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     notFound();
   }
 
-  const allServices = await getSanityServices();
+  const [allServices, sanityGalleryMedia] = await Promise.all([
+    getSanityServices(),
+    getSanityGalleryMedia(),
+  ]);
   const relatedServices = allServices.filter((s) => s.slug !== service.slug).slice(0, 4);
 
   // Schema.org structured data
@@ -239,8 +242,8 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               />
             </div>
 
-            {/* Visual Portfolio & Setup Gallery Showcase */}
-            <ServiceVisualShowcase service={service} />
+            {/* Visual Portfolio & Setup Gallery Showcase (Pure Sanity CMS images) */}
+            <ServiceVisualShowcase service={service} sanityMediaList={sanityGalleryMedia} />
 
             {/* FAQ Section */}
             {service.faq && service.faq.length > 0 && (
