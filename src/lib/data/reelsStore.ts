@@ -5,6 +5,7 @@ export interface MediaItem {
   subtitle: string;
   category?: string;
   thumbnail: string;
+  images?: string[];
   videoUrl?: string;
   duration?: string;
   views?: string;

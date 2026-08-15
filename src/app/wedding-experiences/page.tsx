@@ -1,17 +1,20 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowUpRight, Sparkles, Heart, Crown, Church, Moon } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { weddingExperienceTypes } from '@/lib/data/celebrations';
 import { getSanityWeddingTraditions } from '@/lib/sanity/fetch';
-import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { EditorialButton } from '@/components/ui/EditorialButton';
 import { EditorialBadge } from '@/components/ui/EditorialBadge';
+import { createPageMetadata } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Choose Your Wedding Tradition | Hanvi Events',
-  description: 'Explore bespoke wedding traditions curated by Hanvi Events — Hindu Vedic Mandaps, Christian Cathedral & Beach Unions, and Muslim Nikah & Walima Galas.',
-};
+export const metadata: Metadata = createPageMetadata({
+  title: 'Hindu, Christian & Muslim Wedding Traditions | Hanvi Events Kakinada',
+  description: 'Explore bespoke wedding traditions curated by Hanvi Events — Hindu Telugu Vedic Mandaps, Christian Cathedral Unions, and Muslim Nikah Galas in Andhra Pradesh.',
+  path: '/wedding-experiences',
+  keywords: ['Hindu Wedding Planner Kakinada', 'Christian Wedding Planner Kakinada', 'Muslim Wedding Planner Kakinada', 'Vedic Mandap Kakinada'],
+});
 
 export default async function WeddingExperiencesHubPage() {
   const sanityTraditions = await getSanityWeddingTraditions();

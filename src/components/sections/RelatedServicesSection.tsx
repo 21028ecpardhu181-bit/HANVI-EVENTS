@@ -70,11 +70,6 @@ export const RelatedServicesSection: React.FC<RelatedServicesSectionProps> = ({
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
                     />
-                    <div className="absolute top-3 right-3 z-10">
-                      <EditorialBadge variant="gold" className="text-[10px] sm:text-xs px-2.5 py-0.5 shadow-sm">
-                        Starting {item.startingPrice}
-                      </EditorialBadge>
-                    </div>
                   </div>
 
                   {/* Card Content */}

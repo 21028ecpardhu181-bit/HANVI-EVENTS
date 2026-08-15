@@ -1,19 +1,84 @@
+import type { Metadata } from 'next';
 import { siteConfig } from './data/site';
+
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hanvievents.com';
+export const SITE_NAME = 'Hanvi Events';
+export const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop';
+
+export function absoluteUrl(path = '/') {
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${SITE_URL}${cleanPath}`;
+}
+
+export function createPageMetadata({
+  title,
+  description,
+  path,
+  image = DEFAULT_OG_IMAGE,
+  keywords,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  image?: string;
+  keywords?: string[];
+}): Metadata {
+  const url = absoluteUrl(path);
+
+  return {
+    title,
+    description,
+    keywords: keywords || [
+      'Hanvi Events Kakinada',
+      'Wedding Planner Kakinada',
+      'Mandap Decoration Kakinada',
+      'Event Management Kakinada',
+      'Birthday Planner Kakinada',
+      'Telugu Wedding Planner Andhra Pradesh',
+    ],
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: SITE_NAME,
+      locale: 'en_IN',
+      type: 'website',
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image],
+    },
+  };
+}
 
 export function getLocalBusinessSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'EventPlanner',
+    '@id': `${SITE_URL}/#business`,
     name: siteConfig.name,
     description: siteConfig.mission,
-    url: 'https://hanvievents.com',
-    telephone: siteConfig.phone,
+    url: SITE_URL,
+    telephone: siteConfig.phoneRaw || siteConfig.phone,
     email: siteConfig.email,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'D No: 60-1-1/1, Jammichettu Center, Jagannaickpur (Near Netaji Park)',
+      streetAddress: '1st Floor, Subhamasthu Showroom, D.No: 20-11-40, Majestic Street, Suryanarayana Puram',
       addressLocality: 'Kakinada',
-      postalCode: '533002',
+      postalCode: '533001',
       addressRegion: 'Andhra Pradesh',
       addressCountry: 'IN',
     },
@@ -28,12 +93,26 @@ export function getLocalBusinessSchema() {
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '4.9',
-      reviewCount: '8',
+      reviewCount: '150',
       bestRating: '5',
     },
     priceRange: '₹₹₹₹',
-    image: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop',
+    image: DEFAULT_OG_IMAGE,
     sameAs: [siteConfig.social.instagram, siteConfig.social.youtube],
+  };
+}
+
+export function getWebsiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
+    name: SITE_NAME,
+    url: SITE_URL,
+    inLanguage: 'en-IN',
+    publisher: {
+      '@id': `${SITE_URL}/#business`,
+    },
   };
 }
 
@@ -45,12 +124,12 @@ export function getBreadcrumbSchema(items: Array<{ name: string; url: string }>)
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: `https://hanvievents.com${item.url}`,
+      item: absoluteUrl(item.url),
     })),
   };
 }
 
-export function getServiceSchema(serviceName: string, description: string, price: string) {
+export function getServiceSchema(serviceName: string, description: string, price?: string) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -58,13 +137,14 @@ export function getServiceSchema(serviceName: string, description: string, price
     name: serviceName,
     description: description,
     provider: {
-      '@type': 'EventPlanner',
-      name: siteConfig.name,
+      '@id': `${SITE_URL}/#business`,
     },
-    offers: {
-      '@type': 'Offer',
-      price: price.replace(/[^0-9]/g, ''),
-      priceCurrency: 'INR',
-    },
+    ...(price ? {
+      offers: {
+        '@type': 'Offer',
+        price: price.replace(/[^0-9]/g, '') || '0',
+        priceCurrency: 'INR',
+      },
+    } : {}),
   };
 }

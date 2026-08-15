@@ -34,18 +34,18 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
       whileInView="visible"
       viewport={{ once: true, margin: '-60px' }}
       variants={fadeInUpVariants}
-      className={cn('flex flex-col max-w-3xl mb-12 md:mb-16', alignmentClasses[align], className)}
+      className={cn('flex flex-col max-w-3xl mb-6 sm:mb-10 md:mb-16 px-2 sm:px-0', alignmentClasses[align], className)}
     >
       {scriptEyebrow && (
-        <span className="font-script-accent text-2xl md:text-3xl text-[#B88A44] mb-1 font-normal tracking-wide">
+        <span className="font-script-accent text-lg sm:text-2xl md:text-3xl text-[#B88A44] mb-1 font-normal tracking-wide">
           {scriptEyebrow}
         </span>
       )}
-      <h2 className={cn('font-serif-editorial text-3xl md:text-5xl lg:text-6xl font-normal leading-[1.15] tracking-tight', isDark ? 'text-[#FCF9F5]' : 'text-[#34281F]')}>
+      <h2 className={cn('font-serif-editorial text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-normal leading-[1.15] tracking-tight', isDark ? 'text-[#FCF9F5]' : 'text-[#34281F]')}>
         {title}
       </h2>
       {description && (
-        <p className={cn('font-sans-narrative text-sm md:text-base leading-relaxed mt-4 font-normal max-w-2xl', isDark ? 'text-[#FCF9F5]/80' : 'text-[#6E5D4F]')}>
+        <p className={cn('font-sans-narrative text-xs sm:text-sm md:text-base leading-relaxed mt-2 sm:mt-4 font-normal max-w-2xl', isDark ? 'text-[#FCF9F5]/80' : 'text-[#6E5D4F]')}>
           {description}
         </p>
       )}

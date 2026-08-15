@@ -4,7 +4,7 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
-import { PaletteSwitcher } from '../ui/PaletteSwitcher';
+import { MobileBottomNav } from './MobileBottomNav';
 import { FloatingActions } from '../ui/FloatingActions';
 
 export function LayoutContent({ children }: { children: React.ReactNode }) {
@@ -20,8 +20,9 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
       <Navbar />
       <main className="flex-grow">{children}</main>
       <Footer />
-      <PaletteSwitcher />
+      <MobileBottomNav />
       <FloatingActions />
     </>
   );
 }
+

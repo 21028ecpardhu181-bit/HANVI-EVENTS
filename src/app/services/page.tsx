@@ -1,18 +1,21 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowUpRight, CheckCircle2, Sparkles } from 'lucide-react';
-import { ServiceCategory } from '@/lib/types';
 import { servicesData } from '@/lib/data/services';
 import { getSanityServices } from '@/lib/sanity/fetch';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { EditorialBadge } from '@/components/ui/EditorialBadge';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { BreadcrumbNav } from '@/components/ui/BreadcrumbNav';
+import { createPageMetadata, SITE_URL } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Services Collection | Hanvi Events',
-  description: 'Explore our full collection of bespoke event planning services including Bridal Makeup Lounge, Mandaps, Galas, Staging, Catering & Entertainment.',
-};
+export const metadata: Metadata = createPageMetadata({
+  title: 'Event Planning Services in Kakinada | Hanvi Events',
+  description: 'Explore wedding planning, mandap decoration, bridal makeup, birthdays, catering, entertainment, and corporate event services by Hanvi Events in Kakinada.',
+  path: '/services',
+  keywords: ['Event Planning Services Kakinada', 'Wedding Services Kakinada', 'Mandap Decoration Kakinada', 'Bridal Makeup Kakinada'],
+});
 
 export default async function ServicesCatalogPage() {
   const sanityServices = await getSanityServices();
@@ -27,7 +30,7 @@ export default async function ServicesCatalogPage() {
       '@type': 'ListItem',
       position: idx + 1,
       name: s.title,
-      url: `https://hanvievents.com/services/${s.slug}`,
+      url: `${SITE_URL}/services/${s.slug}`,
     })),
   };
 
@@ -54,7 +57,7 @@ export default async function ServicesCatalogPage() {
         />
 
         {/* Services Collection Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-8 sm:mt-12">
           {services.map((item, idx) => {
             const isFeatured = item.featured || item.slug === 'bridal-makeup' || idx === 0;
 
@@ -91,16 +94,10 @@ export default async function ServicesCatalogPage() {
                           </span>
                         </div>
                       )}
-
-                      <div className="absolute top-4 right-4 z-10">
-                        <EditorialBadge variant="gold" className="bg-black/60 text-white border-white/20">
-                          {item.startingPrice ? `Starting ${item.startingPrice}` : 'Custom Pricing'}
-                        </EditorialBadge>
-                      </div>
                     </div>
 
                     {/* Content Details: Service Name, Category Badge & Short Description */}
-                    <div className="p-6 space-y-3">
+                    <div className="p-4 sm:p-6 space-y-3">
                       <div className="flex items-center justify-between">
                         <EditorialBadge variant="gold">
                           {item.category || item.tagline}
@@ -113,7 +110,7 @@ export default async function ServicesCatalogPage() {
                       </div>
 
                       {/* Service Name */}
-                      <h2 className="font-serif-editorial text-2xl text-[#34281F] font-normal group-hover:text-[#B88A44] transition-colors">
+                      <h2 className="font-serif-editorial text-xl sm:text-2xl text-[#34281F] font-normal group-hover:text-[#B88A44] transition-colors">
                         {item.title}
                       </h2>
 
@@ -137,7 +134,7 @@ export default async function ServicesCatalogPage() {
                   </div>
 
                   {/* Card Action Link */}
-                  <div className="px-6 pb-6 pt-2 border-t border-[#E8DDCD]/80 flex items-center justify-between">
+                  <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2 border-t border-[#E8DDCD]/80 flex items-center justify-between">
                     <span className="w-full py-3 px-4 rounded-xl bg-[#34281F] group-hover:bg-[#B88A44] text-[#FCF9F5] font-sans-ui text-xs font-semibold tracking-wider uppercase transition-colors flex items-center justify-between">
                       <span>View Service Details</span>
                       <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

@@ -2,9 +2,10 @@ import { MetadataRoute } from 'next';
 import { getAllServices } from '@/lib/data/services';
 import { weddingJourneySteps, storyCaseStudies } from '@/lib/data/stories';
 import { staticTeamMembers } from '@/lib/data/team';
+import { SITE_URL } from '@/lib/seo';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hanvi-events.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_URL;
   const services = getAllServices();
 
   const staticPages = [
@@ -13,11 +14,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/services',
     '/celebrations',
     '/wedding-journey',
+    '/wedding-experiences',
     '/stories',
     '/gallery',
-    '/packages',
     '/team',
-    '/admin',
     '/contact',
   ].map((route) => ({
     url: `${baseUrl}${route}`,

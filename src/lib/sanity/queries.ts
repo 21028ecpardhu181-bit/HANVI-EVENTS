@@ -59,7 +59,7 @@ export const storiesQuery = groq`
 `;
 
 export const galleryMediaQuery = groq`
-  *[_type == "galleryMedia"] | order(displayOrder asc, _createdAt desc) {
+  *[_type == "galleryMedia" && isActive != false] | order(displayOrder asc, _createdAt desc) {
     _id,
     albumTitle,
     category,
@@ -71,7 +71,8 @@ export const galleryMediaQuery = groq`
     displayOrder,
     type,
     videoUrl,
-    views
+    views,
+    isActive
   }
 `;
 

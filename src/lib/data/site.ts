@@ -11,12 +11,11 @@ export const siteConfig: SiteConfig = {
   phoneNumbers: [
     { label: 'Primary', number: '+91 97009 29650', raw: '+919700929650' },
     { label: 'WhatsApp', number: '+91 63054 57612', raw: '+916305457612' },
-    { label: 'Studio Direct', number: '+91 83745 27954', raw: '+918374527954' },
   ],
   whatsapp: '+91 63054 57612',
   email: 'hello@hanvievents.com',
-  address: '60-1-1/1, Jammichettu Center, Netajipark, KAKINADA, Andhra Pradesh',
-  googleMapsUrl: 'https://maps.google.com/?q=Hanvi+Events+Jammichettu+Center+Kakinada',
+  address: '1st Floor, Subhamasthu Showroom, D.No: 20-11-40, Majestic Street, Suryanarayana Puram, Kakinada, Andhra Pradesh 533001',
+  googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=1st+Floor,+Subhamasthu+Showroom,+D.No:+20-11-40,+Majestic+Street,+Suryanarayana+Puram,+Kakinada,+Andhra+Pradesh+533001',
   social: {
     instagram: 'https://linktw.in/utNIGS',
     youtube: 'https://youtube.com/@hanvievents',

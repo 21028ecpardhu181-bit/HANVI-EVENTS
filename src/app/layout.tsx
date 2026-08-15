@@ -3,7 +3,7 @@ import { Cormorant_Garamond, Inter, Manrope, Allura } from 'next/font/google';
 import '@/styles/globals.css';
 import { LayoutContent } from '@/components/layout/LayoutContent';
 import { PaperTexture } from '@/components/ui/PaperTexture';
-import { getLocalBusinessSchema } from '@/lib/seo';
+import { getLocalBusinessSchema, getWebsiteSchema, SITE_URL } from '@/lib/seo';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -33,13 +33,13 @@ const allura = Allura({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://hanvievents.com'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'Hanvi Events — Luxury Event Planning & Wedding Design | Kakinada',
     template: '%s | Hanvi Events Kakinada',
   },
   description:
-    'Hanvi Events (Est. 2015) is Kakinada’s premier luxury wedding planner & event management company located near Netaji Park, Jagannaickpur. We design mandaps, mehendi, birthdays & corporate galas.',
+    'Hanvi Events (Est. 2018) is Kakinada’s premier luxury wedding planner & event management company managed by Ch. Kala Prasad. We design mandaps, mehendi, birthdays & corporate galas in Andhra Pradesh.',
   keywords: [
     'Hanvi Events Kakinada',
     'Hanvi Events Jagannaickpur',
@@ -55,8 +55,8 @@ export const metadata: Metadata = {
   publisher: 'Hanvi Events Studio',
   openGraph: {
     title: 'Hanvi Events — Luxury Event Planning & Mandap Design | Kakinada',
-    description: 'Est. 2015 in Kakinada. Bespoke luxury wedding planning, mandap architecture, birthday celebrations & corporate galas.',
-    url: 'https://hanvievents.com',
+    description: 'Bespoke luxury wedding planning, mandap architecture, birthday celebrations & corporate galas in Kakinada & Andhra Pradesh.',
+    url: SITE_URL,
     siteName: 'Hanvi Events Kakinada',
     locale: 'en_IN',
     type: 'website',
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Hanvi Events — Luxury Event Planning & Wedding Design | Kakinada',
-    description: 'Est. 2015 in Kakinada. Bespoke luxury wedding planning, mandap architecture & celebrations.',
+    description: 'Bespoke luxury wedding planning, mandap architecture & celebrations managed by Ch. Kala Prasad.',
     images: ['https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop'],
   },
   robots: {
@@ -86,6 +86,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  verification: {
+    google: 'googlec40ccbb49f7957ba',
+  },
 };
 
 export default function RootLayout({
@@ -94,6 +97,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const jsonLd = getLocalBusinessSchema();
+  const websiteJsonLd = getWebsiteSchema();
 
   return (
     <html
@@ -107,6 +111,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
       </head>
       <body className="relative bg-[var(--bg-primary)] text-[var(--text-primary)] min-h-screen flex flex-col font-sans-narrative antialiased pb-[72px] md:pb-0">

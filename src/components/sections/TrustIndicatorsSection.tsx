@@ -20,17 +20,17 @@ export const TrustIndicatorsSection: React.FC = () => {
             <motion.div
               key={stat.id}
               variants={fadeUpVariants}
-              className={`w-full bg-[#FCF9F5] border border-[#E8DDCD] rounded-2xl p-4 sm:p-5 text-center shadow-xs hover:border-[#B88A44]/50 transition-all duration-300 ${
+              className={`w-full bg-[#FCF9F5] border border-[#E8DDCD] rounded-xl sm:rounded-2xl p-2.5 sm:p-5 text-center shadow-xs hover:border-[#B88A44]/50 transition-all duration-300 ${
                 idx === 4 ? 'col-span-2 sm:col-span-1' : ''
               }`}
             >
-              <span className="font-serif-editorial text-2xl md:text-4xl text-[#34281F] font-normal block tracking-tight">
+              <span className="font-serif-editorial text-xl sm:text-3xl md:text-4xl text-[#34281F] font-semibold block tracking-tight">
                 {stat.value}
               </span>
-              <span className="font-sans-ui text-[11px] sm:text-xs uppercase tracking-wider text-[#B88A44] font-semibold block mt-1">
+              <span className="font-sans-ui text-[10px] sm:text-xs uppercase tracking-wider text-[#B88A44] font-semibold block mt-0.5 sm:mt-1">
                 {stat.label}
               </span>
-              <span className="font-sans-narrative text-[11px] sm:text-xs text-[#6E5D4F] block mt-0.5">
+              <span className="font-sans-narrative text-[9px] sm:text-xs text-[#6E5D4F] block mt-0.5 line-clamp-1 sm:line-clamp-none">
                 {stat.sublabel}
               </span>
             </motion.div>

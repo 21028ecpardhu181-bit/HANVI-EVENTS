@@ -28,19 +28,19 @@ export const WeddingTypesSection: React.FC<WeddingTypesSectionProps> = ({ items 
           align="center"
         />
 
-        {/* 3 Apple-Style Interactive Cards — Entire Card is Clickable! */}
+        {/* 3 Interactive Cards — Compact on mobile */}
         <motion.div
           variants={staggerContainerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-50px' }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-8 md:mt-14"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-6 mt-4 md:mt-14"
         >
           {displayItems.map((exp) => (
             <motion.div key={exp.id} variants={fadeUpVariants}>
               <Link
                 href={`/wedding-experiences/${exp.slug}`}
-                className="group block relative bg-[#FCF9F5] border border-[#E8DDCD] rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:border-[#B88A44]/60 transition-all duration-500 transform hover:-translate-y-1.5 flex flex-col justify-between h-full"
+                className="group block relative bg-[#FCF9F5] border border-[#E8DDCD] rounded-2xl md:rounded-3xl overflow-hidden shadow-xs hover:shadow-xl hover:border-[#B88A44]/60 transition-all duration-500 transform hover:-translate-y-1.5 flex flex-col justify-between h-full"
               >
                 {/* Image Header */}
                 <div className="relative w-full aspect-[16/10] overflow-hidden">
@@ -50,8 +50,8 @@ export const WeddingTypesSection: React.FC<WeddingTypesSectionProps> = ({ items 
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
-                  <div className="absolute top-3 right-3 z-10">
-                    <EditorialBadge variant="gold" className="text-[10px] px-2.5 py-0.5 bg-black/50 backdrop-blur-md text-white border-white/20">
+                  <div className="absolute top-2.5 right-2.5 z-10">
+                    <EditorialBadge variant="gold" className="text-[9px] sm:text-[10px] px-2 py-0.5 bg-black/50 backdrop-blur-md text-white border-white/20">
                       {exp.shortTitle}
                     </EditorialBadge>
                   </div>
@@ -59,23 +59,23 @@ export const WeddingTypesSection: React.FC<WeddingTypesSectionProps> = ({ items 
                 </div>
 
                 {/* Content Body */}
-                <div className="p-6 sm:p-7 flex-grow flex flex-col justify-between space-y-4">
+                <div className="p-4 sm:p-7 flex-grow flex flex-col justify-between space-y-2 sm:space-y-4">
                   <div>
-                    <span className="font-script-accent text-xl text-[#B88A44] block">
+                    <span className="font-script-accent text-sm sm:text-xl text-[#B88A44] block">
                       {exp.subtitle}
                     </span>
-                    <h3 className="font-serif-editorial text-2xl sm:text-3xl text-[#34281F] font-normal group-hover:text-[#B88A44] transition-colors mt-1">
+                    <h3 className="font-serif-editorial text-lg sm:text-3xl text-[#34281F] font-normal group-hover:text-[#B88A44] transition-colors mt-0.5">
                       {exp.title}
                     </h3>
-                    <p className="font-sans-narrative text-xs sm:text-sm text-[#6E5D4F] leading-relaxed mt-2.5 line-clamp-3">
+                    <p className="font-sans-narrative text-[11px] sm:text-sm text-[#6E5D4F] leading-relaxed mt-1.5 line-clamp-2 sm:line-clamp-3">
                       {exp.description}
                     </p>
                   </div>
 
-                  <div className="pt-4 flex items-center justify-between border-t border-[#E8DDCD]/80">
-                    <span className="font-sans-ui text-xs uppercase tracking-wider text-[#34281F] group-hover:text-[#B88A44] font-semibold flex items-center gap-1.5 transition-colors">
+                  <div className="pt-2 sm:pt-4 flex items-center justify-between border-t border-[#E8DDCD]/80">
+                    <span className="font-sans-ui text-[10px] sm:text-xs uppercase tracking-wider text-[#34281F] group-hover:text-[#B88A44] font-semibold flex items-center gap-1 transition-colors">
                       <span>Explore Tradition</span>
-                      <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform text-[#B88A44]" />
+                      <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform text-[#B88A44]" />
                     </span>
                   </div>
                 </div>

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Home, Image as ImageIcon, CalendarHeart, PackageCheck, MessageCircle } from 'lucide-react';
+import { Home, Sparkles, CalendarHeart, Image as ImageIcon, MessageCircle } from 'lucide-react';
 import { siteConfig } from '@/lib/data/site';
 import { ConsultationModal } from '../modals/ConsultationModal';
 
@@ -26,11 +26,11 @@ export const MobileBottomNav: React.FC = () => {
         const viewportHeight = window.innerHeight;
         const distanceFromBottom = documentHeight - currentScrollY - viewportHeight;
 
-        // Always show near page bottom (within 200px)
-        if (distanceFromBottom < 200) {
+        // Always show near top (within 50px) or near bottom (within 200px)
+        if (currentScrollY < 50 || distanceFromBottom < 200) {
           setIsVisible(true);
         }
-        // Hide on scroll down, reveal on scroll up
+        // Hide on scroll down past 100px, reveal on scroll up
         else if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
           setIsVisible(false);
         } else if (currentScrollY < lastScrollY.current) {
@@ -65,7 +65,7 @@ export const MobileBottomNav: React.FC = () => {
   return (
     <>
       <motion.div
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[var(--bg-primary)]/95 backdrop-blur-lg border-t border-[var(--border-color)]"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[var(--bg-primary)]/95 backdrop-blur-lg border-t border-[var(--border-color)] shadow-[0_-4px_20px_rgba(0,0,0,0.06)]"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
         initial={false}
         animate={{
@@ -76,15 +76,15 @@ export const MobileBottomNav: React.FC = () => {
       >
         <div className="flex items-center justify-between h-[56px] px-2">
           <NavItem href="/" icon={Home} label="Home" isActive={pathname === '/'} />
-          <NavItem href="/gallery" icon={ImageIcon} label="Gallery" isActive={pathname === '/gallery'} />
+          <NavItem href="/services" icon={Sparkles} label="Services" isActive={pathname.startsWith('/services')} />
 
           {/* Center Action — Elevated Book Button */}
           <button
             onClick={() => setIsConsultationOpen(true)}
-            className="flex flex-col items-center justify-center flex-1 h-full min-w-[48px]"
+            className="flex flex-col items-center justify-center flex-1 h-full min-w-[48px] cursor-pointer"
             aria-label="Book Consultation"
           >
-            <div className="p-2.5 rounded-full bg-[var(--accent-gold)] text-[var(--bg-primary)] shadow-md -mt-5 ring-4 ring-[var(--bg-primary)]">
+            <div className="p-2.5 rounded-full bg-[var(--accent-gold)] text-[var(--bg-primary)] shadow-md -mt-5 ring-4 ring-[var(--bg-primary)] hover:bg-[var(--text-primary)] transition-colors">
               <CalendarHeart className="w-5 h-5" strokeWidth={2} />
             </div>
             <span className="font-sans-ui text-[10px] mt-1 text-[var(--accent-gold)] font-semibold">
@@ -92,17 +92,17 @@ export const MobileBottomNav: React.FC = () => {
             </span>
           </button>
 
-          <NavItem href="/packages" icon={PackageCheck} label="Packages" isActive={pathname === '/packages'} />
+          <NavItem href="/gallery" icon={ImageIcon} label="Gallery" isActive={pathname.startsWith('/gallery')} />
 
           <button
             onClick={handleWhatsApp}
-            className="flex flex-col items-center justify-center flex-1 h-full min-w-[48px]"
+            className="flex flex-col items-center justify-center flex-1 h-full min-w-[48px] cursor-pointer"
             aria-label="Contact via WhatsApp"
           >
             <div className="p-1 rounded-full text-[#25D366]">
               <MessageCircle className="w-5 h-5" strokeWidth={1.5} />
             </div>
-            <span className="font-sans-ui text-[10px] mt-0.5 text-[#25D366]/80">
+            <span className="font-sans-ui text-[10px] mt-0.5 text-[#25D366]/80 font-medium">
               Chat
             </span>
           </button>
@@ -116,3 +116,4 @@ export const MobileBottomNav: React.FC = () => {
     </>
   );
 };
+

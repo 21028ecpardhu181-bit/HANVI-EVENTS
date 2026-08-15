@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Phone, Calendar, Search } from 'lucide-react';
+import { Menu, Calendar, Search, Phone } from 'lucide-react';
 import { mainNavLinks } from '@/lib/data/navigation';
 import { siteConfig } from '@/lib/data/site';
 import { EditorialButton } from '../ui/EditorialButton';
@@ -23,7 +23,7 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > 15) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -39,21 +39,25 @@ export const Navbar: React.FC = () => {
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           (!isHomePage || isScrolled)
-            ? 'bg-[#FCF9F5]/90 backdrop-blur-md shadow-xs py-3.5 border-b border-[#E8DDCD]/60'
-            : 'bg-gradient-to-b from-black/60 via-black/20 to-transparent py-5'
+            ? 'bg-[#FCF9F5]/95 backdrop-blur-xl shadow-xs py-2.5 sm:py-3.5 border-b border-[#E8DDCD]'
+            : 'bg-gradient-to-b from-black/75 via-black/30 to-transparent py-3 sm:py-5'
         }`}
       >
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 flex items-center justify-between">
           {/* Brand Logo */}
           <Link href="/" className="group flex items-center space-x-2">
             <span
-              className={`font-script-accent text-3xl md:text-4xl transition-colors ${
+              className={`font-script-accent text-2xl sm:text-3xl md:text-4xl transition-colors ${
                 (!isHomePage || isScrolled) ? 'text-[#B88A44]' : 'text-white'
               }`}
             >
               Hanvi Events
             </span>
-            <span className="hidden sm:inline-block font-sans-ui text-[10px] uppercase tracking-widest text-[#B88A44] border-l border-[#B88A44]/40 pl-2">
+            <span
+              className={`hidden sm:inline-block font-sans-ui text-[10px] uppercase tracking-widest border-l pl-2 transition-colors ${
+                (!isHomePage || isScrolled) ? 'text-[#B88A44] border-[#B88A44]/40' : 'text-white/80 border-white/40'
+              }`}
+            >
               Kakinada
             </span>
           </Link>
@@ -85,7 +89,7 @@ export const Navbar: React.FC = () => {
             })}
           </nav>
 
-          {/* Right Action Buttons */}
+          {/* Desktop Right Action Buttons */}
           <div className="hidden lg:flex items-center space-x-3">
             <button
               onClick={() => setSearchOpen(true)}
@@ -138,21 +142,45 @@ export const Navbar: React.FC = () => {
             </EditorialButton>
           </div>
 
-          <div className="flex items-center gap-2 lg:hidden">
+          {/* Mobile Actions Header Bar */}
+          <div className="flex items-center gap-1.5 lg:hidden">
+            {/* Quick Call Icon Button */}
+            <a
+              href="tel:+919700929650"
+              className={`p-2 rounded-full min-h-[38px] min-w-[38px] flex items-center justify-center transition-colors ${
+                (!isHomePage || isScrolled)
+                  ? 'text-[#B88A44] bg-[#F5ECDD]/80 hover:bg-[#B88A44] hover:text-white'
+                  : 'text-white bg-black/40 border border-white/20'
+              }`}
+              aria-label="Call Studio"
+            >
+              <Phone className="w-4 h-4" />
+            </a>
+
+            {/* Quick Search Icon Button */}
             <button
               onClick={() => setSearchOpen(true)}
-              className={`p-2 rounded-full min-h-[44px] min-w-[44px] flex items-center justify-center ${(!isHomePage || isScrolled) ? 'text-[#34281F] hover:bg-[#F5ECDD]' : 'text-[#FCF9F5] hover:bg-white/10'}`}
+              className={`p-2 rounded-full min-h-[38px] min-w-[38px] flex items-center justify-center transition-colors ${
+                (!isHomePage || isScrolled)
+                  ? 'text-[#34281F] bg-[#F5ECDD]/60 hover:bg-[#B88A44] hover:text-white'
+                  : 'text-white bg-black/40 border border-white/20'
+              }`}
               aria-label="Search"
             >
-              <Search className="w-5 h-5" />
+              <Search className="w-4 h-4" />
             </button>
 
+            {/* Mobile Menu Hamburger */}
             <button
               onClick={() => setMobileNavOpen(true)}
-              className={`p-2 rounded-full min-h-[48px] min-w-[48px] flex items-center justify-center ${(!isHomePage || isScrolled) ? 'text-[#34281F] hover:bg-[#F5ECDD]' : 'text-[#FCF9F5] hover:bg-white/10'}`}
+              className={`p-2 rounded-full min-h-[42px] min-w-[42px] flex items-center justify-center transition-colors ${
+                (!isHomePage || isScrolled)
+                  ? 'text-[#34281F] bg-[#F5ECDD]/80 border border-[#E8DDCD]'
+                  : 'text-white bg-black/40 border border-white/30'
+              }`}
               aria-label="Open mobile menu"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5" />
             </button>
           </div>
         </div>

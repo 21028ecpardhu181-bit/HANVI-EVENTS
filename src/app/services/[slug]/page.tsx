@@ -10,6 +10,8 @@ import { EditorialBadge } from '@/components/ui/EditorialBadge';
 import { BreadcrumbNav } from '@/components/ui/BreadcrumbNav';
 import { ShareButton } from '@/components/ui/ShareButton';
 import { RelatedServicesSection } from '@/components/sections/RelatedServicesSection';
+import { ServiceVisualShowcase } from '@/components/sections/ServiceVisualShowcase';
+import { SITE_URL, createPageMetadata } from '@/lib/seo';
 
 interface ServiceDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -63,11 +65,12 @@ export async function generateMetadata({ params }: ServiceDetailPageProps): Prom
 
   const title = `${service.title} Services in Kakinada | Hanvi Events`;
   const description = `${service.description} Managed by Ch. Kala Prasad in Kakinada & Andhra Pradesh. Starting from ${service.startingPrice}.`;
-  const canonicalUrl = `https://hanvi-events.vercel.app/services/${service.slug}`;
 
-  return {
+  return createPageMetadata({
     title,
     description,
+    path: `/services/${service.slug}`,
+    image: service.heroImage,
     keywords: [
       service.title,
       `${service.title} Kakinada`,
@@ -75,25 +78,7 @@ export async function generateMetadata({ params }: ServiceDetailPageProps): Prom
       'Ch Kala Prasad Events',
       'Event Planning AP',
     ],
-    openGraph: {
-      title,
-      description,
-      url: canonicalUrl,
-      siteName: 'Hanvi Events',
-      images: [
-        {
-          url: service.heroImage,
-          width: 1200,
-          height: 630,
-          alt: service.title,
-        },
-      ],
-      type: 'article',
-    },
-    alternates: {
-      canonical: canonicalUrl,
-    },
-  };
+  });
 }
 
 export default async function ServiceDetailPage({ params }: ServiceDetailPageProps) {
@@ -154,9 +139,6 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-[#FCF9F5] space-y-3">
           <div className="flex items-center justify-center gap-2 flex-wrap mb-2">
-            <EditorialBadge variant="gold">
-              Starting {service.startingPrice}
-            </EditorialBadge>
             <EditorialBadge variant="muted" className="text-[#FCF9F5] bg-white/10 border-white/30">
               Ch. Kala Prasad Supervision
             </EditorialBadge>
@@ -177,7 +159,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
             <ShareButton
               title={service.title}
               description={service.shortDescription || service.description}
-              url={`https://hanvievents.com/services/${service.slug}`}
+              url={`${SITE_URL}/services/${service.slug}`}
             />
           </div>
         </div>
@@ -242,27 +224,8 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               </div>
             )}
 
-            {/* Gallery Images Preview */}
-            {service.galleryImages && service.galleryImages.length > 0 && (
-              <div className="bg-[#FCF9F5] border border-[#E8DDCD] rounded-3xl p-6 sm:p-8 space-y-4 shadow-xs">
-                <h3 className="font-serif-editorial text-2xl text-[#34281F]">
-                  Visual Gallery & Setup Inspiration
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {service.galleryImages.map((img, idx) => (
-                    <div key={idx} className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-[#E8DDCD]">
-                      <ImageWithSkeleton
-                        src={img}
-                        alt={`${service.title} Gallery Preview ${idx + 1}`}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-cover hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Visual Portfolio & Setup Gallery Showcase */}
+            <ServiceVisualShowcase service={service} />
 
             {/* FAQ Section */}
             {service.faq && service.faq.length > 0 && (
@@ -301,7 +264,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               <ShareButton
                 title={service.title}
                 description={service.shortDescription || service.description}
-                url={`https://hanvievents.com/services/${service.slug}`}
+                url={`${SITE_URL}/services/${service.slug}`}
               />
             </div>
 
@@ -316,9 +279,6 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               <h3 className="font-serif-editorial text-2xl sm:text-3xl text-[#FCF9F5] mt-2">
                 Book {service.title}
               </h3>
-              <span className="font-sans-ui text-xs text-[#B88A44] block mt-1 font-semibold">
-                Starting from {service.startingPrice}
-              </span>
             </div>
 
             <p className="font-sans-narrative text-[#FCF9F5]/80 text-xs leading-relaxed">
@@ -335,7 +295,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               </a>
 
               <a
-                href={`https://wa.me/${siteConfig.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hello Hanvi Events! I am interested in ${service.title} starting from ${service.startingPrice}. Please share package options and availability.`)}`}
+                href={`https://wa.me/${siteConfig.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hello Hanvi Events! I am interested in ${service.title}. Please share package options and availability.`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#59624C] text-[#FCF9F5] rounded-full font-semibold hover:bg-[#66785F] transition-colors focus:outline-none focus:ring-2 focus:ring-white"
@@ -356,17 +316,16 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         </div>
 
-      </div>
+        {/* Dynamic Related Services Section */}
+        <div className="mt-16">
+          <RelatedServicesSection
+            services={relatedServices}
+            title={`More Services Related to ${service.title}`}
+            subtitle="Explore complementary decor, hospitality, and event orchestration services to complete your celebration."
+          />
+        </div>
 
-      {/* Dynamic Related Services Section */}
-      <div className="mt-16">
-        <RelatedServicesSection
-          services={relatedServices}
-          title={`More Services Related to ${service.title}`}
-          subtitle="Explore complementary decor, hospitality, and event orchestration services to complete your celebration."
-        />
       </div>
-
     </div>
   );
 }

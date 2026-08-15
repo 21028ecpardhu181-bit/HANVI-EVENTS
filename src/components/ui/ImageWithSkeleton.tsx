@@ -30,9 +30,9 @@ export const ImageWithSkeleton: React.FC<ImageWithSkeletonProps> = ({
   return (
     <div
       className={cn(
-        'relative overflow-hidden bg-[#34281F]',
-        fill ? 'absolute inset-0 w-full h-full' : '',
-        wrapperClassName
+        'relative overflow-hidden',
+        wrapperClassName ? wrapperClassName : 'bg-transparent',
+        fill ? 'absolute inset-0 w-full h-full' : ''
       )}
     >
       <img

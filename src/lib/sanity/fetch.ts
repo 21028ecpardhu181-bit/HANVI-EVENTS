@@ -29,8 +29,10 @@ export function resolveImageUrl(imageField: any, fallback: string): string {
   if (typeof imageField === 'string') return imageField;
   if (imageField.asset) {
     try {
-      const url = urlForImage(imageField);
-      if (url) return url.toString();
+      const builder = urlForImage(imageField);
+      if (builder) {
+        return builder.width(1200).fit('max').auto('format').url();
+      }
     } catch {
       // Return fallback on image builder error
     }

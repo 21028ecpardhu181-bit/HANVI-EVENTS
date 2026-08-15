@@ -2,13 +2,14 @@ import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { ArrowLeft, Award, Calendar, Mail, Phone, MessageCircle, Sparkles, Video, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Award, Mail, Phone, MessageCircle, Sparkles, Video, Image as ImageIcon } from 'lucide-react';
 import { getSanityTeamMemberBySlug, getSanityTeamMembers } from '@/lib/sanity/fetch';
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton';
 import { EditorialBadge } from '@/components/ui/EditorialBadge';
 import { EditorialButton } from '@/components/ui/EditorialButton';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { getYouTubeEmbedUrl } from '@/lib/utils';
+import { SITE_URL, createPageMetadata } from '@/lib/seo';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -24,15 +25,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  return {
-    title: member.seoTitle || `${member.name} — ${member.role} | Hanvi Events`,
-    description: member.seoDescription || member.shortBio || `${member.name}, ${member.role} at Hanvi Events Kakinada.`,
-    openGraph: {
-      title: `${member.name} — ${member.role}`,
-      description: member.shortBio,
-      images: [member.profileImage],
-    },
-  };
+  const title = member.seoTitle || `${member.name} — ${member.role} | Hanvi Events`;
+  const description = member.seoDescription || member.shortBio || `${member.name}, ${member.role} at Hanvi Events Kakinada.`;
+
+  return createPageMetadata({
+    title,
+    description,
+    path: `/team/${member.slug}`,
+    image: member.profileImage,
+  });
 }
 
 export async function generateStaticParams() {
@@ -57,7 +58,7 @@ export default async function TeamMemberPage({ params }: PageProps) {
     worksFor: {
       '@type': 'Organization',
       name: 'Hanvi Events',
-      url: 'https://hanvi-events.vercel.app',
+      url: SITE_URL,
     },
     image: member.profileImage,
     description: member.shortBio,

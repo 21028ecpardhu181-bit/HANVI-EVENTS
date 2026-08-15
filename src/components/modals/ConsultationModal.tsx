@@ -198,11 +198,9 @@ Please contact me regarding planning. Thank you!`;
                 <div className="mt-4 pt-3 border-t border-[#E8DDCD] text-center space-y-2">
                   <span className="font-sans-ui text-[10px] uppercase tracking-wider text-[#6E5D4F]">Or Reach Ch. Kala Prasad Directly:</span>
                   <div className="flex flex-wrap justify-center gap-3 text-xs font-semibold text-[#B88A44]">
-                    <a href="tel:+919700929650" className="hover:underline">97009 29650</a>
+                    <a href="tel:+919700929650" className="hover:underline">+91 97009 29650</a>
                     <span>•</span>
-                    <a href="tel:+916305457612" className="hover:underline">63054 57612</a>
-                    <span>•</span>
-                    <a href="tel:+918374527954" className="hover:underline">83745 27954</a>
+                    <a href="https://wa.me/916305457612" target="_blank" rel="noopener noreferrer" className="hover:underline">WhatsApp (+91 63054 57612)</a>
                   </div>
                 </div>
               </div>

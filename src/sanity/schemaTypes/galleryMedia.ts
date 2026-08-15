@@ -48,10 +48,18 @@ export const galleryMediaType = defineType({
       initialValue: false,
     }),
     defineField({
+      name: 'isActive',
+      title: 'Active / Display in Gallery',
+      type: 'boolean',
+      initialValue: true,
+      description: 'Toggle off to hide this item from the public gallery page',
+    }),
+    defineField({
       name: 'displayOrder',
-      title: 'Display Order',
+      title: 'Display Order / Sort Order',
       type: 'number',
       initialValue: 1,
+      description: 'Lower numbers appear first in the gallery stream and grid',
     }),
     defineField({
       name: 'type',

@@ -54,18 +54,18 @@ export const OurCraftSection: React.FC = () => {
               whileInView="visible"
               viewport={{ once: true, margin: '-50px' }}
               variants={staggerContainerVariants}
-              className="space-y-4 pt-2"
+              className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4 pt-2"
             >
               {craftPillars.map((pillar, idx) => (
-                <motion.div key={idx} variants={fadeInUpVariants} className="flex items-start space-x-3 sm:space-x-4">
-                  <div className="p-2 md:p-3 rounded-2xl bg-[#F5ECDD] border border-[#E8DDCD] shrink-0 mt-0.5">
+                <motion.div key={idx} variants={fadeInUpVariants} className="flex flex-col sm:flex-row items-start gap-2 sm:space-x-4 bg-[#F5ECDD]/40 border border-[#E8DDCD] p-3 sm:p-4 rounded-xl sm:rounded-2xl">
+                  <div className="p-1.5 sm:p-2.5 rounded-xl bg-[#F5ECDD] border border-[#E8DDCD] shrink-0">
                     {pillar.icon}
                   </div>
                   <div>
-                    <h3 className="font-serif-editorial text-base md:text-xl text-[#34281F] font-medium">
+                    <h3 className="font-serif-editorial text-xs sm:text-lg text-[#34281F] font-semibold">
                       {pillar.title}
                     </h3>
-                    <p className="font-sans-narrative text-xs md:text-sm text-[#6E5D4F] leading-relaxed mt-0.5">
+                    <p className="font-sans-narrative text-[10px] sm:text-xs text-[#6E5D4F] leading-relaxed mt-0.5 line-clamp-2 sm:line-clamp-none">
                       {pillar.description}
                     </p>
                   </div>
