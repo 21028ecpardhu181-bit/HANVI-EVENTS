@@ -189,13 +189,6 @@ export function getLocalBusinessSchema() {
         closes: '21:30',
       },
     ],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '150',
-      bestRating: '5',
-      worstRating: '1',
-    },
     priceRange: '₹₹₹₹',
     sameAs: [siteConfig.social.instagram, siteConfig.social.youtube],
   };
