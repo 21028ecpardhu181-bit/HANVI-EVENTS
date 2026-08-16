@@ -17,6 +17,7 @@ export interface EventPlan {
 export interface EventTypeItem {
   id: string;
   title: string;
+  image: string;
   iconName: 'heart' | 'cake' | 'gem' | 'sparkles' | 'users' | 'building' | 'home' | 'party' | 'plus';
   description: string;
 }
@@ -44,15 +45,15 @@ export interface BudgetRangeItem {
 }
 
 export const EVENT_TYPES: EventTypeItem[] = [
-  { id: 'wedding', title: 'Wedding', iconName: 'heart', description: 'Mandap, Vedic Rituals & Muhurtham' },
-  { id: 'reception', title: 'Reception & Gala', iconName: 'sparkles', description: 'Grand Stage & Evening Banquet' },
-  { id: 'engagement', title: 'Engagement', iconName: 'gem', description: 'Ring Ceremony & Floral Canopy' },
-  { id: 'sangeet-mehendi', title: 'Sangeet & Mehendi', iconName: 'party', description: 'Dance Floor, Music & Nail Art' },
-  { id: 'birthday', title: 'Birthday Celebration', iconName: 'cake', description: 'Theme Decor, Balloon Pods & Fun' },
-  { id: 'baby-shower', title: 'Baby Shower / Cradle', iconName: 'users', description: 'Traditional Naming & Seemantham' },
-  { id: 'house-warming', title: 'House Warming', iconName: 'home', description: 'Gruhapravesam & Satyanarayana Puja' },
-  { id: 'corporate', title: 'Corporate & Annual Gala', iconName: 'building', description: 'Stage Lighting & Audio-Visuals' },
-  { id: 'other', title: 'Other Celebration', iconName: 'plus', description: 'Custom Bespoke Event' },
+  { id: 'wedding', title: 'Wedding', image: '/images/events/wedding.jpg', iconName: 'heart', description: 'Mandap & Vedic Rituals' },
+  { id: 'reception', title: 'Reception & Gala', image: '/images/events/reception.jpg', iconName: 'sparkles', description: 'Grand Stage & Banquet' },
+  { id: 'engagement', title: 'Engagement', image: '/images/events/engagement.jpg', iconName: 'gem', description: 'Ring Ceremony & Canopy' },
+  { id: 'sangeet-mehendi', title: 'Sangeet & Mehendi', image: '/images/events/sangeet.jpg', iconName: 'party', description: 'Dance Floor & Henna' },
+  { id: 'birthday', title: 'Birthday Bash', image: '/images/events/birthday.jpg', iconName: 'cake', description: 'Themed Decor & Fun' },
+  { id: 'baby-shower', title: 'Baby Shower / Cradle', image: '/images/events/babyshower.jpg', iconName: 'users', description: 'Seemantham & Naming' },
+  { id: 'house-warming', title: 'House Warming', image: '/images/events/housewarming.jpg', iconName: 'home', description: 'Gruhapravesam Puja' },
+  { id: 'corporate', title: 'Corporate Gala', image: '/images/events/corporate.jpg', iconName: 'building', description: 'Conferences & Awards' },
+  { id: 'other', title: 'Custom Celebration', image: '/images/events/bespoke.jpg', iconName: 'plus', description: 'Bespoke Private Event' },
 ];
 
 export const SERVICE_CATEGORIES: { category: ServiceItem['category']; services: ServiceItem[] }[] = [
@@ -133,7 +134,7 @@ export function getRangeFromExactCount(count: number): string {
 }
 
 export const INITIAL_EVENT_PLAN: EventPlan = {
-  eventType: 'Wedding',
+  eventType: 'wedding',
   customEventType: '',
   services: ['Vedic Mandap Setup', 'Fresh Floral Art & Stage', 'Traditional Catering Feasts'],
   guestRange: '251–500',
