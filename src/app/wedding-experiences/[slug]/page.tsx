@@ -7,7 +7,7 @@ import { weddingJourneysByReligion } from '@/lib/data/stories';
 import { culturalThemes, CulturalTheme } from '@/lib/theme/themeEngine';
 import { siteConfig } from '@/lib/data/site';
 import { TraditionExperienceClient, TraditionData } from '@/components/traditions/TraditionExperienceClient';
-import { createPageMetadata } from '@/lib/seo';
+import { createPageMetadata, SITE_URL } from '@/lib/seo';
 
 function slugify(text: string): string {
   return text
@@ -177,28 +177,42 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
     })
   );
 
-  const rawWhatsApp = siteConfig.whatsapp ? siteConfig.whatsapp.replace(/[^0-9]/g, '') : '916305457612';
-
-  // Schema.org structured data
-  const jsonLd = {
+  // Schema.org structured data (Service & BreadcrumbList)
+  const serviceJsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Event',
-    name: currentExp.title,
+    '@type': 'Service',
+    name: currentExp.title || currentExp.traditionTitle,
+    serviceType: 'Wedding Planning & Ritual Design',
     description: currentExp.description,
-    organizer: {
-      '@type': 'LocalBusiness',
-      name: siteConfig.name,
-      telephone: siteConfig.phone,
-      address: siteConfig.address,
+    provider: {
+      '@id': `${SITE_URL}/#business`,
+    },
+    areaServed: {
+      '@type': 'AdministrativeArea',
+      name: 'Andhra Pradesh',
     },
     image: currentExp.heroImage,
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Wedding Traditions', item: `${SITE_URL}/wedding-experiences` },
+      { '@type': 'ListItem', position: 3, name: currentExp.title || currentExp.traditionTitle, item: `${SITE_URL}/wedding-experiences/${currentExp.slug}` },
+    ],
   };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <TraditionExperienceClient
         initialSlug={slug}
