@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Heart,
@@ -19,8 +19,8 @@ import {
   Tent,
   Gift,
   Film,
+  RotateCcw,
   Sparkle,
-  Layers,
 } from 'lucide-react';
 import {
   EventPlan,
@@ -34,43 +34,12 @@ interface Step1Props {
   onUpdate: (updates: Partial<EventPlan>) => void;
 }
 
-// Flat list of services with short, crisp display names
-const ALL_SERVICES = [
-  { id: 'mandap', title: 'Vedic Mandap Setup', shortTitle: 'Mandap & Stage', category: 'Ceremonies', iconName: 'sparkles' },
-  { id: 'florals', title: 'Fresh Floral Art & Stage', shortTitle: 'Floral Architecture', category: 'Decor & Styling', iconName: 'palette' },
-  { id: 'entrance', title: 'Grand Royal Entrance Arch', shortTitle: 'Royal Entrance Arch', category: 'Decor & Styling', iconName: 'tent' },
-  { id: 'lighting', title: 'Intelligent Ambient Lighting', shortTitle: 'Ambient Lighting & FX', category: 'Decor & Styling', iconName: 'sparkles' },
-  { id: 'bridal', title: 'Bridal Makeup & Nail Art', shortTitle: 'Bridal Makeup & Hair', category: 'Decor & Styling', iconName: 'palette' },
-  { id: 'catering', title: 'Traditional Catering Feasts', shortTitle: 'Banquet Catering', category: 'Feasts & Stalls', iconName: 'utensils' },
-  { id: 'live-counters', title: 'Live Chaat & Dessert Counters', shortTitle: 'Live Food Counters', category: 'Feasts & Stalls', iconName: 'utensils' },
-  { id: 'mehendi-stall', title: 'Mehendi & Bangle Stall', shortTitle: 'Mehendi & Bangle Stall', category: 'Feasts & Stalls', iconName: 'gift' },
-  { id: 'photo-cinema', title: 'Candid Photography & Cinema', shortTitle: 'Photo & Cinematic Film', category: 'Media & Entertainment', iconName: 'camera' },
-  { id: 'dj-sound', title: 'DJ, Sound & Truss Lighting', shortTitle: 'DJ & Sound Production', category: 'Media & Entertainment', iconName: 'music' },
-  { id: 'drone', title: 'Drone Aerial Coverage', shortTitle: 'Drone Aerial Coverage', category: 'Media & Entertainment', iconName: 'film' },
-  { id: 'welcome', title: 'Welcome Girls & Aarti Stalls', shortTitle: 'Welcome Hostesses', category: 'Ceremonies', iconName: 'gift' },
-  { id: 'rituals', title: 'Priest & Ritual Coordination', shortTitle: 'Priest & Rituals', category: 'Ceremonies', iconName: 'sparkles' },
-] as const;
-
-const CATEGORY_TABS = ['All', 'Decor & Styling', 'Feasts & Stalls', 'Media & Entertainment', 'Ceremonies'] as const;
-
 export const Step1EventTypeServices: React.FC<Step1Props> = ({ plan, onUpdate }) => {
-  const [selectedCategoryTab, setSelectedCategoryTab] = useState<string>('All');
   const activeEventKey = plan.eventType.toLowerCase().replace(/[^a-z0-9]/g, '-');
   const recommendedList = EVENT_RECOMMENDATIONS[activeEventKey] || [];
 
   const handleSelectEventType = (typeTitle: string) => {
-    const nextKey = typeTitle.toLowerCase().replace(/[^a-z0-9]/g, '-');
-    const autoRec = EVENT_RECOMMENDATIONS[nextKey] || [];
-    
-    // Auto-select recommended services if services are currently empty
-    const nextServices = plan.services.length === 0 
-      ? autoRec 
-      : Array.from(new Set([...plan.services, ...autoRec]));
-
-    onUpdate({ 
-      eventType: typeTitle,
-      services: nextServices,
-    });
+    onUpdate({ eventType: typeTitle });
   };
 
   const handleToggleService = (serviceTitle: string) => {
@@ -90,10 +59,6 @@ export const Step1EventTypeServices: React.FC<Step1Props> = ({ plan, onUpdate })
     onUpdate({ services: [] });
   };
 
-  const filteredServices = selectedCategoryTab === 'All'
-    ? ALL_SERVICES
-    : ALL_SERVICES.filter((s) => s.category === selectedCategoryTab);
-
   const renderEventIcon = (name: string, isSelected: boolean) => {
     const iconClass = `w-4 h-4 transition-colors ${isSelected ? 'text-white' : 'text-[#6E5D4F]'}`;
     switch (name) {
@@ -110,7 +75,7 @@ export const Step1EventTypeServices: React.FC<Step1Props> = ({ plan, onUpdate })
   };
 
   const renderServiceIcon = (name: string, isSelected: boolean) => {
-    const iconClass = `w-4 h-4 transition-colors ${isSelected ? 'text-[#B88A44]' : 'text-[#6E5D4F]'}`;
+    const iconClass = `w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-[#B88A44]' : 'text-[#6E5D4F]/80'}`;
     switch (name) {
       case 'sparkles': return <Sparkles className={iconClass} />;
       case 'music': return <Music className={iconClass} />;
@@ -125,25 +90,23 @@ export const Step1EventTypeServices: React.FC<Step1Props> = ({ plan, onUpdate })
   };
 
   return (
-    <div className="space-y-6 md:space-y-8">
-      {/* ── SECTION 1: Celebration Type (Equal-Sized Symmetrical Grid) ── */}
-      <div className="space-y-2.5">
-        <div className="flex items-center justify-between">
-          <div>
-            <span className="font-sans-ui text-[10px] sm:text-[11px] uppercase tracking-widest text-[#B88A44] font-semibold block">
-              Step 1 of 4 • Celebration
-            </span>
-            <h2 className="font-serif-editorial text-xl sm:text-2xl md:text-3xl text-[#34281F] font-normal mt-0.5">
-              What are you celebrating?
-            </h2>
-          </div>
-          <span className="hidden sm:inline font-sans-narrative text-xs text-[#6E5D4F]">
-            1 Tap to select
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+      {/* ── LEFT COLUMN: Event Type Selection ── */}
+      <div className="lg:col-span-5 xl:col-span-5 space-y-4">
+        <div>
+          <span className="font-sans-ui text-[11px] uppercase tracking-widest text-[#B88A44] font-semibold block">
+            Step 1 • Event Selection
           </span>
+          <h2 className="font-serif-editorial text-2xl sm:text-3xl text-[#34281F] font-normal mt-0.5">
+            What are you celebrating?
+          </h2>
+          <p className="font-sans-narrative text-xs sm:text-sm text-[#6E5D4F] mt-1">
+            Choose your celebration type to customize styling, rituals, and services.
+          </p>
         </div>
 
-        {/* 2-Column Mobile, 4-Column Desktop Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+        {/* 2-Column Grid of Celebration Types */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-2.5">
           {EVENT_TYPES.map((type) => {
             const isSelected = plan.eventType === type.title;
 
@@ -152,28 +115,32 @@ export const Step1EventTypeServices: React.FC<Step1Props> = ({ plan, onUpdate })
                 key={type.id}
                 type="button"
                 onClick={() => handleSelectEventType(type.title)}
-                className={`p-3 rounded-2xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[78px] sm:min-h-[86px] focus-visible:ring-2 focus-visible:ring-[#B88A44] focus:outline-none ${
+                className={`p-3 rounded-2xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[86px] focus-visible:ring-2 focus-visible:ring-[#B88A44] focus:outline-none ${
                   isSelected
-                    ? 'bg-gradient-to-br from-[#FFF9F0] via-[#FDF3E3] to-[#F5E6CC] text-[#34281F] border-[#B88A44] ring-2 ring-[#B88A44]/60 shadow-[0_4px_14px_rgba(184,138,68,0.22)]'
+                    ? 'bg-gradient-to-br from-[#FFF9F0] via-[#FDF3E3] to-[#F5E6CC] text-[#34281F] border-[#B88A44] ring-2 ring-[#B88A44]/60 shadow-[0_6px_20px_rgba(184,138,68,0.22)]'
                     : 'bg-[#F5ECDD]/40 text-[#34281F] border-[#E8DDCD] hover:bg-[#F5ECDD] hover:border-[#B88A44]/60'
                 }`}
               >
                 <div className="flex items-center justify-between w-full">
-                  <div className={`p-1.5 rounded-lg transition-colors ${isSelected ? 'bg-[#B88A44] text-white shadow-xs' : 'bg-white/70'}`}>
+                  <div className={`p-1.5 rounded-lg transition-colors ${isSelected ? 'bg-[#B88A44] text-white shadow-xs' : 'bg-white/60'}`}>
                     {renderEventIcon(type.iconName, isSelected)}
                   </div>
                   {isSelected && (
-                    <span className="font-sans-ui text-[9px] font-bold text-white bg-[#B88A44] px-1.5 py-0.5 rounded-full uppercase tracking-wider">
-                      ✓
+                    <span className="font-sans-ui text-[9px] font-bold text-white bg-gradient-to-r from-[#B88A44] to-[#9E7432] px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                      Selected
                     </span>
                   )}
                 </div>
 
-                <div className="mt-1">
-                  <span className="font-serif-editorial text-sm sm:text-base font-semibold leading-tight block text-[#34281F]">
+                <div className="mt-1.5">
+                  <span className={`font-serif-editorial text-base font-semibold leading-tight block ${isSelected ? 'text-[#34281F]' : 'text-[#34281F]'}`}>
                     {type.title}
                   </span>
-                  <span className="font-sans-narrative text-[10px] text-[#6E5D4F] line-clamp-1 block">
+                  <span
+                    className={`font-sans-narrative text-[11px] line-clamp-1 block mt-0.5 ${
+                      isSelected ? 'text-[#6E5D4F]' : 'text-[#6E5D4F]'
+                    }`}
+                  >
                     {type.description}
                   </span>
                 </div>
@@ -182,54 +149,52 @@ export const Step1EventTypeServices: React.FC<Step1Props> = ({ plan, onUpdate })
           })}
         </div>
 
-        {/* Custom Event Input if Other */}
+        {/* Custom Event Name input when 'Other' is picked */}
         {plan.eventType === 'Other Celebration' && (
           <motion.div
-            initial={{ opacity: 0, y: 6 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="p-3 bg-[#F5ECDD]/50 border border-[#E8DDCD] rounded-2xl space-y-1"
+            className="p-4 bg-[#F5ECDD]/50 border border-[#E8DDCD] rounded-2xl space-y-1.5"
           >
-            <label className="block font-sans-ui text-[11px] uppercase tracking-wider text-[#34281F] font-semibold">
-              Celebration Name *
+            <label className="block font-sans-ui text-xs uppercase tracking-wider text-[#34281F] font-medium">
+              Custom Celebration Name *
             </label>
             <input
               type="text"
               value={plan.customEventType || ''}
               onChange={(e) => onUpdate({ customEventType: e.target.value })}
-              placeholder="e.g. Silver Jubilee, Housewarming Gala..."
-              className="w-full p-2.5 bg-[#FCF9F5] border border-[#E8DDCD] rounded-xl font-sans-narrative text-sm text-[#34281F] focus:outline-none focus:border-[#B88A44]"
+              placeholder="e.g. Silver Jubilee, Terrace Pool Gala, Sangeet Soiree..."
+              className="w-full p-3 bg-[#FCF9F5] border border-[#E8DDCD] rounded-xl font-sans-narrative text-sm text-[#34281F] focus:outline-none focus:border-[#B88A44]"
             />
           </motion.div>
         )}
       </div>
 
-      {/* ── SECTION 2: Symmetrical Boutique Service Cards (Equal Height Grid) ── */}
-      <div className="space-y-3 pt-2 border-t border-[#E8DDCD]">
-        {/* Header & Quick Action Helpers */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      {/* ── RIGHT COLUMN: Categorized Services Selection ── */}
+      <div className="lg:col-span-7 xl:col-span-7 space-y-5 lg:pl-6 lg:border-l lg:border-[#E8DDCD] pt-6 lg:pt-0 border-t lg:border-t-0 border-[#E8DDCD]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
-            <div className="flex items-center gap-1.5">
-              <span className="font-sans-ui text-[10px] sm:text-[11px] uppercase tracking-widest text-[#B88A44] font-semibold block">
-                Required Services & Craft
-              </span>
-              <span className="text-[10px] text-[#6E5D4F] font-sans-ui bg-[#F5ECDD] px-2 py-0.5 rounded-full font-semibold">
-                {plan.services.length} Selected
-              </span>
-            </div>
-            <h3 className="font-serif-editorial text-lg sm:text-2xl text-[#34281F] font-normal mt-0.5">
-              Choose Services for {plan.eventType}
+            <span className="font-sans-ui text-[11px] uppercase tracking-widest text-[#B88A44] font-semibold block">
+              Required Services & Craft
+            </span>
+            <h3 className="font-serif-editorial text-xl sm:text-2xl text-[#34281F] font-normal mt-0.5">
+              Select what you need for this event
             </h3>
+            <p className="font-sans-narrative text-xs text-[#6E5D4F] mt-0.5">
+              Items with <strong className="text-[#B88A44]">Recommended</strong> are curated pairings for {plan.eventType}.
+            </p>
           </div>
 
-          <div className="flex items-center gap-2 self-start sm:self-auto">
+          {/* Quick Helper Actions */}
+          <div className="flex items-center gap-2 shrink-0">
             {recommendedList.length > 0 && (
               <button
                 type="button"
                 onClick={handleSelectAllRecommended}
-                className="px-2.5 py-1 rounded-full bg-[#F5ECDD] hover:bg-[#E8DDCD] text-[#34281F] font-sans-ui text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                className="px-3 py-1.5 rounded-full bg-[#F5ECDD] hover:bg-[#E8DDCD] border border-[#E8DDCD] font-sans-ui text-xs text-[#34281F] flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <Sparkle className="w-3 h-3 text-[#B88A44]" />
-                <span>Recommended ({recommendedList.length})</span>
+                <Sparkle className="w-3.5 h-3.5 text-[#B88A44]" />
+                <span>Select Recommended</span>
               </button>
             )}
 
@@ -237,87 +202,92 @@ export const Step1EventTypeServices: React.FC<Step1Props> = ({ plan, onUpdate })
               <button
                 type="button"
                 onClick={handleClearAllServices}
-                className="px-2 py-1 rounded-full hover:bg-[#F5ECDD]/60 text-[#6E5D4F] font-sans-ui text-xs transition-colors cursor-pointer"
+                className="px-3 py-1.5 rounded-full bg-transparent hover:bg-[#F5ECDD]/60 border border-[#E8DDCD] font-sans-ui text-xs text-[#6E5D4F] flex items-center gap-1 transition-colors cursor-pointer"
               >
-                Clear
+                <RotateCcw className="w-3 h-3" />
+                <span>Clear</span>
               </button>
             )}
           </div>
         </div>
 
-        {/* Clean Category Segmented Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
-          {CATEGORY_TABS.map((tab) => {
-            const isActive = selectedCategoryTab === tab;
-            return (
-              <button
-                key={tab}
-                type="button"
-                onClick={() => setSelectedCategoryTab(tab)}
-                className={`px-3 py-1.5 rounded-full font-sans-ui text-xs whitespace-nowrap transition-all cursor-pointer border ${
-                  isActive
-                    ? 'bg-[#34281F] text-[#FCF9F5] font-semibold border-[#34281F] shadow-xs'
-                    : 'bg-[#FCF9F5] text-[#6E5D4F] border-[#E8DDCD] hover:border-[#B88A44]'
-                }`}
-              >
-                {tab}
-              </button>
-            );
-          })}
-        </div>
+        {/* Categorized Service Groups */}
+        <div className="space-y-4">
+          {SERVICE_CATEGORIES.map((group) => (
+            <div key={group.category} className="space-y-2">
+              <span className="font-sans-ui text-[10px] uppercase tracking-wider text-[#6E5D4F] font-semibold block px-1">
+                {group.category}
+              </span>
 
-        {/* Symmetrical Equal 2-Column Mobile / 3-Column Tablet / 4-Column Desktop Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-2.5">
-          {filteredServices.map((service) => {
-            const isSelected = plan.services.includes(service.title);
-            const isRecommended = recommendedList.includes(service.title);
+              <div className="flex flex-wrap gap-2">
+                {group.services.map((service) => {
+                  const isSelected = plan.services.includes(service.title);
+                  const isRecommended = recommendedList.includes(service.title);
 
-            return (
-              <button
-                key={service.id}
-                type="button"
-                onClick={() => handleToggleService(service.title)}
-                className={`p-2.5 sm:p-3 rounded-2xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[72px] sm:min-h-[82px] relative focus-visible:ring-2 focus-visible:ring-[#B88A44] focus:outline-none ${
-                  isSelected
-                    ? 'bg-gradient-to-br from-[#FFF9F0] via-[#FDF3E3] to-[#F5E6CC] text-[#34281F] border-[#B88A44] ring-2 ring-[#B88A44]/60 shadow-[0_3px_12px_rgba(184,138,68,0.18)]'
-                    : 'bg-[#F5ECDD]/35 text-[#34281F] border-[#E8DDCD] hover:bg-[#F5ECDD] hover:border-[#B88A44]/50'
-                }`}
-              >
-                <div className="flex items-center justify-between w-full">
-                  <div className={`p-1.5 rounded-lg transition-colors ${isSelected ? 'bg-[#B88A44] text-white shadow-2xs' : 'bg-white/80'}`}>
-                    {renderServiceIcon(service.iconName, isSelected)}
-                  </div>
-
-                  <div className="flex items-center gap-1">
-                    {isRecommended && !isSelected && (
-                      <span className="text-[9px] text-[#B88A44] font-sans-ui font-bold uppercase bg-[#B88A44]/15 px-1.5 py-0.5 rounded-full">
-                        Curated
-                      </span>
-                    )}
-
-                    <div
-                      className={`w-4 h-4 rounded-full flex items-center justify-center transition-all ${
+                  return (
+                    <motion.button
+                      key={service.id}
+                      type="button"
+                      onClick={() => handleToggleService(service.title)}
+                      layout
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 500,
+                        damping: 30,
+                        mass: 0.5,
+                      }}
+                      className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-xs sm:text-sm font-sans-narrative transition-all cursor-pointer border min-h-[40px] focus-visible:ring-2 focus-visible:ring-[#B88A44] focus:outline-none ${
                         isSelected
-                          ? 'bg-[#B88A44] text-white shadow-2xs'
-                          : 'border border-[#E8DDCD] bg-white/60'
+                          ? 'bg-gradient-to-r from-[#FFF9F0] via-[#FDF3E3] to-[#F5E6CC] text-[#34281F] border-[#B88A44] ring-2 ring-[#B88A44]/50 shadow-xs font-semibold'
+                          : 'bg-[#F5ECDD]/40 text-[#34281F] border-[#E8DDCD] hover:bg-[#F5ECDD] hover:border-[#B88A44]/60'
                       }`}
                     >
-                      {isSelected && <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />}
-                    </div>
-                  </div>
-                </div>
+                      {renderServiceIcon(service.iconName, isSelected)}
 
-                <div className="mt-1.5">
-                  <span className="font-sans-narrative text-xs sm:text-sm font-semibold leading-tight block text-[#34281F]">
-                    {service.shortTitle}
-                  </span>
-                  <span className="font-sans-ui text-[9px] text-[#6E5D4F] block mt-0.5 truncate">
-                    {service.category}
-                  </span>
-                </div>
-              </button>
-            );
-          })}
+                      <span className="font-medium whitespace-nowrap">{service.title}</span>
+
+                      {/* Recommended Tag */}
+                      {isRecommended && !isSelected && (
+                        <span className="px-1.5 py-0.5 rounded-full bg-[#B88A44]/15 text-[#B88A44] font-sans-ui text-[9px] uppercase tracking-wider font-semibold">
+                          Recommended
+                        </span>
+                      )}
+
+                      {/* Selected Check Badge */}
+                      <AnimatePresence>
+                        {isSelected && (
+                          <motion.span
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0, opacity: 0 }}
+                            className="w-3.5 h-3.5 rounded-full bg-[#B88A44] flex items-center justify-center shrink-0 ml-0.5 shadow-xs"
+                          >
+                            <Check className="w-2.5 h-2.5 text-white" strokeWidth={2.5} />
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Selected count footer */}
+        <div className="p-3 bg-[#F5ECDD]/50 border border-[#E8DDCD] rounded-2xl flex items-center justify-between text-xs font-sans-narrative text-[#6E5D4F]">
+          <span>
+            {plan.services.length > 0 ? (
+              <>
+                <strong className="text-[#34281F] font-semibold">{plan.services.length}</strong> services chosen
+              </>
+            ) : (
+              'Full event management assumed'
+            )}
+          </span>
+          <span className="text-[#B88A44] font-medium hidden sm:inline">Personalize details in Step 2 →</span>
         </div>
       </div>
     </div>

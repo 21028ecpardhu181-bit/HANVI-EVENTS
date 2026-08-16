@@ -106,16 +106,16 @@ export const EventWizard: React.FC<EventWizardProps> = ({ className = '' }) => {
   };
 
   return (
-    <div className={`w-full max-w-5xl mx-auto ${className}`}>
+    <div className={`w-full max-w-6xl xl:max-w-7xl mx-auto ${className}`}>
       {/* Editorial Card Canvas (Clean Ivory / Parchment, Restrained Beige Border) */}
-      <div className="bg-[#FCF9F5] border border-[#E8DDCD] rounded-3xl p-4 sm:p-7 md:p-9 shadow-sm relative">
+      <div className="bg-[#FCF9F5] border border-[#E8DDCD] rounded-3xl p-5 sm:p-8 md:p-10 shadow-sm relative">
         {/* Header Ribbon & Reset Action */}
-        <div className="flex items-center justify-between pb-3 mb-4 sm:mb-6 border-b border-[#E8DDCD]">
+        <div className="flex items-center justify-between pb-4 mb-6 border-b border-[#E8DDCD]">
           <div>
-            <span className="font-sans-ui text-[10px] uppercase tracking-widest text-[#B88A44] font-semibold block">
-              Digital Consultation Suite
+            <span className="font-sans-ui text-[11px] uppercase tracking-widest text-[#B88A44] font-semibold block">
+              Digital Consultation Assistant
             </span>
-            <h1 className="font-serif-editorial text-xl sm:text-2xl md:text-3xl text-[#34281F]">
+            <h1 className="font-serif-editorial text-2xl sm:text-3xl text-[#34281F]">
               Plan Your Celebration in 4 Steps
             </h1>
           </div>
@@ -125,9 +125,9 @@ export const EventWizard: React.FC<EventWizardProps> = ({ className = '' }) => {
             onClick={handleReset}
             title="Start Over"
             aria-label="Start over event planner"
-            className="p-2 rounded-full bg-[#F5ECDD]/60 hover:bg-[#E8DDCD] text-[#6E5D4F] transition-colors focus-visible:ring-2 focus-visible:ring-[#B88A44] focus:outline-none cursor-pointer"
+            className="p-2.5 rounded-full bg-[#F5ECDD]/60 hover:bg-[#E8DDCD] text-[#6E5D4F] transition-colors focus-visible:ring-2 focus-visible:ring-[#B88A44] focus:outline-none cursor-pointer"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-4 h-4" />
           </button>
         </div>
 
@@ -139,10 +139,10 @@ export const EventWizard: React.FC<EventWizardProps> = ({ className = '' }) => {
           {step === 1 && (
             <motion.div
               key="step-1"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
             >
               <Step1EventTypeServices plan={plan} onUpdate={updatePlan} />
             </motion.div>
@@ -151,10 +151,10 @@ export const EventWizard: React.FC<EventWizardProps> = ({ className = '' }) => {
           {step === 2 && (
             <motion.div
               key="step-2"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
             >
               <Step2EventDetails plan={plan} onUpdate={updatePlan} />
             </motion.div>
@@ -163,10 +163,10 @@ export const EventWizard: React.FC<EventWizardProps> = ({ className = '' }) => {
           {step === 3 && (
             <motion.div
               key="step-3"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
             >
               <Step3Investment plan={plan} onUpdate={updatePlan} />
             </motion.div>
@@ -175,10 +175,10 @@ export const EventWizard: React.FC<EventWizardProps> = ({ className = '' }) => {
           {step === 4 && (
             <motion.div
               key="step-4"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
             >
               <Step4ReviewConnect
                 plan={plan}
@@ -191,10 +191,10 @@ export const EventWizard: React.FC<EventWizardProps> = ({ className = '' }) => {
 
         {/* Navigation Action Buttons (Steps 1–3) */}
         {step < 4 && (
-          <div className="pt-5 sm:pt-6 mt-6 border-t border-[#E8DDCD] flex items-center justify-between gap-3">
+          <div className="pt-8 mt-8 border-t border-[#E8DDCD] flex items-center justify-between">
             {step > 1 ? (
-              <EditorialButton variant="ghost" onClick={handleBack} className="text-xs sm:text-sm px-3.5 py-2">
-                <ArrowLeft className="w-3.5 h-3.5 mr-1" />
+              <EditorialButton variant="ghost" onClick={handleBack}>
+                <ArrowLeft className="w-4 h-4 mr-1.5" />
                 <span>Back</span>
               </EditorialButton>
             ) : (
@@ -205,10 +205,10 @@ export const EventWizard: React.FC<EventWizardProps> = ({ className = '' }) => {
               variant="primary"
               onClick={handleNext}
               disabled={!canContinue}
-              className="text-xs sm:text-sm px-5 py-2.5 shadow-sm ml-auto"
+              className={!canContinue ? 'opacity-50 cursor-not-allowed' : ''}
             >
               <span>{getStepButtonLabel()}</span>
-              <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+              <ArrowRight className="w-4 h-4 ml-1.5" />
             </EditorialButton>
           </div>
         )}
