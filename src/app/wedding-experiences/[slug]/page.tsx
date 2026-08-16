@@ -177,6 +177,8 @@ export default async function WeddingExperiencePage({ params }: PageProps) {
     })
   );
 
+  const rawWhatsApp = siteConfig.whatsapp ? siteConfig.whatsapp.replace(/[^0-9]/g, '') : '916305457612';
+
   // Schema.org structured data (Service & BreadcrumbList)
   const serviceJsonLd = {
     '@context': 'https://schema.org',
