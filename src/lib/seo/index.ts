@@ -29,3 +29,11 @@ export {
   getPlannedPages,
   getPageSEOProfile,
 } from './keyword-page-map';
+
+export {
+  type EvidenceRecord,
+  type SEOEvidenceRegister,
+  EVIDENCE_REGISTER,
+  isFactVerified,
+} from './evidence-register';
+
