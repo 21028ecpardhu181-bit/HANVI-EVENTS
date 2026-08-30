@@ -3,6 +3,7 @@ import { getAllServices } from '@/lib/data/services';
 import { weddingJourneySteps } from '@/lib/data/stories';
 import { staticTeamMembers } from '@/lib/data/team';
 import { weddingExperienceTypes } from '@/lib/data/celebrations';
+import { staticProjects } from '@/lib/data/projects';
 import { SITE_URL } from '@/lib/seo';
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -11,6 +12,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticPages = [
     '',
+    '/about',
+    '/event-management-company-kakinada',
+    '/wedding-planner-kakinada',
+    '/mandap-decorators-kakinada',
+    '/projects',
     '/wizard',
     '/services',
     '/celebrations',
@@ -26,8 +32,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
-    priority: route === '' ? 1.0 : 0.9,
+    priority: route === '' || route === '/about' || route === '/event-management-company-kakinada' ? 1.0 : 0.9,
   }));
+
+  const projectPages = staticProjects
+    .filter((p) => p.published)
+    .map((p) => ({
+      url: `${baseUrl}/projects/${p.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.95,
+    }));
 
   const servicePages = services.map((s) => ({
     url: `${baseUrl}/services/${s.slug}`,
@@ -54,8 +69,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/team/${m.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
-    priority: m.slug === 'ch-kala-prasad' ? 0.95 : 0.8,
+    priority: m.slug === 'kala-prasad' ? 0.95 : 0.8,
   }));
 
-  return [...staticPages, ...servicePages, ...traditionPages, ...journeyPages, ...teamPages];
+  return [...staticPages, ...projectPages, ...servicePages, ...traditionPages, ...journeyPages, ...teamPages];
 }

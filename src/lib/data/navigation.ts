@@ -35,10 +35,11 @@ export const footerLinks = {
     { label: 'Cradle & Naming Ceremony', href: '/services/cradle-ceremony' },
   ],
   company: [
+    { label: 'About Studio', href: '/about' },
+    { label: 'Real Projects', href: '/projects' },
     { label: 'Event Planning Wizard', href: '/wizard' },
     { label: 'Visual Gallery', href: '/gallery' },
     { label: 'Studio Team', href: '/team' },
-    { label: 'Admin Portal', href: '/admin' },
     { label: 'Contact Us', href: '/contact' },
   ],
 };

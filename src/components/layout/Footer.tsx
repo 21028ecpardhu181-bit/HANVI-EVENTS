@@ -43,14 +43,9 @@ export const Footer: React.FC = () => {
               </div>
             </div>
 
-            <a
-              href={siteConfig.social.googleReview}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-2 py-0.5 rounded-full bg-[#B88A44]/20 border border-[#B88A44]/40 text-[#E6C687] text-[10px] font-sans-ui font-semibold"
-            >
-              ⭐ 4.9 (150+)
-            </a>
+            <span className="px-2 py-0.5 rounded-full bg-[#B88A44]/20 border border-[#B88A44]/40 text-[#E6C687] text-[10px] font-sans-ui font-semibold">
+              ✨ Verified Heritage
+            </span>
           </div>
 
           {/* Quick Round Touch Action Buttons Bar */}
