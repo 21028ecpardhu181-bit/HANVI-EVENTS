@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Inter, Manrope, Allura } from 'next/font/google';
 import '@/styles/globals.css';
 import { LayoutContent } from '@/components/layout/LayoutContent';
 import { PaperTexture } from '@/components/ui/PaperTexture';
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { getLocalBusinessSchema, getWebsiteSchema, getFounderPersonSchema, SITE_URL } from '@/lib/seo';
 
 const cormorant = Cormorant_Garamond({
@@ -140,6 +141,7 @@ export default function RootLayout({
         />
       </head>
       <body className="relative bg-[var(--bg-primary)] text-[var(--text-primary)] min-h-screen flex flex-col font-sans-narrative antialiased pb-[72px] md:pb-0">
+        <GoogleAnalytics />
         <PaperTexture opacity={0.3} />
         <LayoutContent>{children}</LayoutContent>
       </body>

@@ -27,7 +27,9 @@ yarn-error.log*
 next-env.d.ts
 
 # OS
-.DS_Store
-Thumbs.db
-
 .vercel
+
+# python
+__pycache__/
+*.py[cod]
+

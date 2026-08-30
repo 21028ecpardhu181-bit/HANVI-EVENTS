@@ -185,19 +185,6 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     ],
   };
 
-  const faqJsonLd = service.faq && service.faq.length > 0 ? {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: service.faq.map((f: any) => ({
-      '@type': 'Question',
-      name: f.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: f.answer,
-      },
-    })),
-  } : null;
-
   return (
     <div className="pt-16 sm:pt-20 md:pt-24 pb-16 sm:pb-20 bg-[#FCF9F5]">
       <script
@@ -208,12 +195,6 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      {faqJsonLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-        />
-      )}
 
       {/* Compact App-like Hero Banner */}
       <section className="relative w-full h-[220px] sm:h-[300px] md:h-[420px] flex items-center justify-center bg-[#1E1712] overflow-hidden">

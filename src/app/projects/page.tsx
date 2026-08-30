@@ -2,22 +2,22 @@ import React from 'react';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { staticProjects } from '@/lib/data/projects';
+import { getPublicProjects } from '@/lib/data/projects';
 import { getBreadcrumbSchema } from '@/lib/seo';
 import { Sparkles, MapPin, Calendar, Users, ArrowRight } from 'lucide-react';
 import { EditorialButton } from '@/components/ui/EditorialButton';
 
 export const metadata: Metadata = {
-  title: 'Real Event Projects & Case Studies — Hanvi Events Kakinada',
+  title: 'Event Portfolio — Hanvi Events Kakinada',
   description:
-    'Explore real event case studies managed by Hanvi Events in Kakinada and East Godavari. Documented weddings, traditional mandap setups, birthday celebrations, and corporate galas.',
+    'Explore Hanvi Events project portfolio. Client-approved case studies are published when original assets and permissions are available.',
   alternates: {
     canonical: 'https://www.hanvievents.com/projects',
   },
 };
 
 export default function ProjectsPage() {
-  const publishedProjects = staticProjects.filter((p) => p.published);
+  const publishedProjects = getPublicProjects();
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: 'Projects & Case Studies', url: '/projects' },
@@ -36,20 +36,31 @@ export default function ProjectsPage() {
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#F5ECDD] border border-[#E8DDCD]">
             <Sparkles size={14} className="text-[#B88A44]" />
             <span className="font-sans-ui text-xs uppercase tracking-widest text-[#B88A44] font-bold">
-              Documented Event Portfolio
+              Event Portfolio
             </span>
           </div>
 
           <h1 className="font-serif-editorial text-3xl sm:text-5xl font-semibold tracking-tight text-[#34281F]">
-            Real Event Projects & Case Studies
+            Event Portfolio
           </h1>
 
           <p className="font-sans-narrative text-sm sm:text-base text-[#6E5D4F] leading-relaxed">
-            Real celebrations executed in Kakinada and coastal Andhra Pradesh. Each project documents our venue setup, floral architecture, and client feedback.
+            Client-approved case studies will appear here with original photography, accurate scope, and permissioned feedback.
           </p>
         </div>
 
         {/* Projects Grid */}
+        {publishedProjects.length === 0 ? (
+          <div className="max-w-3xl mx-auto rounded-2xl border border-[#E8DDCD] bg-white p-8 text-center">
+            <h2 className="font-serif-editorial text-2xl font-semibold text-[#34281F]">Case studies are being prepared</h2>
+            <p className="mt-3 font-sans-narrative text-sm leading-relaxed text-[#6E5D4F]">
+              Hanvi Events publishes project details only after client permission and original event assets are available. Contact the studio to discuss relevant experience for your celebration.
+            </p>
+            <Link href="/contact" className="mt-5 inline-block">
+              <EditorialButton variant="gold" size="sm">Contact the Studio</EditorialButton>
+            </Link>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {publishedProjects.map((project) => (
             <div
@@ -113,6 +124,7 @@ export default function ProjectsPage() {
             </div>
           ))}
         </div>
+        )}
       </div>
     </main>
   );

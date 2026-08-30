@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { staticProjects, getProjectBySlug } from '@/lib/data/projects';
+import { getPublicProjects, getProjectBySlug } from '@/lib/data/projects';
 import { getBreadcrumbSchema } from '@/lib/seo';
 import { Sparkles, MapPin, Calendar, Users, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { EditorialButton } from '@/components/ui/EditorialButton';
@@ -13,7 +13,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return staticProjects.map((p) => ({ slug: p.slug }));
+  return getPublicProjects().map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -75,7 +75,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
           <div className="flex flex-wrap gap-4 text-xs sm:text-sm text-[#6E5D4F] font-sans-ui border-y border-[#E8DDCD] py-3">
             <span className="flex items-center gap-1">
-              <MapPin size={14} className="text-[#B88A44]" /> {project.venue}, {project.location}
+              <MapPin size={14} className="text-[#B88A44]" /> {project.venue ? `${project.venue}, ` : ''}{project.location}
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">

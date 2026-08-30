@@ -44,7 +44,7 @@ export const Footer: React.FC = () => {
             </div>
 
             <span className="px-2 py-0.5 rounded-full bg-[#B88A44]/20 border border-[#B88A44]/40 text-[#E6C687] text-[10px] font-sans-ui font-semibold">
-              ✨ Verified Heritage
+              Kakinada Studio
             </span>
           </div>
 
@@ -130,7 +130,7 @@ export const Footer: React.FC = () => {
             </div>
 
             <p className="font-sans-narrative text-[11px] sm:text-sm text-[#FCF9F5]/70 leading-relaxed max-w-sm">
-              Managed by <strong className="text-[#B88A44] font-semibold">{siteConfig.founder} (Event Manager)</strong>. Designing bespoke marriages, sangeet, cradle ceremonies & galas since 2018.
+              Led by <strong className="text-[#B88A44] font-semibold">{siteConfig.founder} ({siteConfig.founderTitle})</strong>. Contact the studio to discuss your event requirements.
             </p>
 
             {/* Quick Phone Pills */}

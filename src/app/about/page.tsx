@@ -1,16 +1,14 @@
 import React from 'react';
 import { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
-import { siteConfig } from '@/lib/data/site';
-import { getBreadcrumbSchema, getLocalBusinessSchema } from '@/lib/seo';
-import { Sparkles, MapPin, Phone, Mail, Award, CheckCircle2, ArrowRight } from 'lucide-react';
+import { getBreadcrumbSchema } from '@/lib/seo';
+import { Sparkles, CheckCircle2 } from 'lucide-react';
 import { EditorialButton } from '@/components/ui/EditorialButton';
 
 export const metadata: Metadata = {
-  title: 'About Hanvi Events — Entity Canonical Reference & Heritage',
+  title: 'About Hanvi Events — Kakinada Event Planning Studio',
   description:
-    'Learn about Hanvi Events, founded and managed by Event Director Ch. Kala Prasad in Kakinada, Andhra Pradesh. Specializing in luxury Telugu weddings, mandap architecture, birthday celebrations, and corporate galas.',
+    'Learn about Hanvi Events, a Kakinada event planning studio led by Ch. Kala Prasad. Contact the team to discuss weddings, celebrations, and event coordination.',
   alternates: {
     canonical: 'https://www.hanvievents.com/about',
   },
@@ -21,7 +19,6 @@ export default function AboutPage() {
     { name: 'Home', url: '/' },
     { name: 'About Us', url: '/about' },
   ]);
-  const businessSchema = getLocalBusinessSchema();
 
   return (
     <main className="min-h-screen bg-[#FCF9F5] text-[#34281F] pt-24 pb-16">
@@ -30,10 +27,6 @@ export default function AboutPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(businessSchema) }}
-      />
 
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-8 space-y-12">
         {/* Header Banner */}
@@ -41,7 +34,7 @@ export default function AboutPage() {
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#F5ECDD] border border-[#E8DDCD]">
             <Sparkles size={14} className="text-[#B88A44]" />
             <span className="font-sans-ui text-xs uppercase tracking-widest text-[#B88A44] font-bold">
-              Entity Canonical Source
+              About Hanvi Events
             </span>
           </div>
 
@@ -50,7 +43,7 @@ export default function AboutPage() {
           </h1>
 
           <p className="font-sans-narrative text-sm sm:text-base text-[#6E5D4F] leading-relaxed">
-            The authoritative profile of Hanvi Events: our leadership, confirmed studio headquarters, service regions across Andhra Pradesh, and event management heritage.
+            Learn how to contact Hanvi Events, where the studio is located, and the types of celebrations the team can discuss with you.
           </p>
         </div>
 
@@ -58,10 +51,10 @@ export default function AboutPage() {
         <div className="bg-white border border-[#E8DDCD] rounded-2xl p-6 sm:p-10 shadow-xs space-y-8">
           <div className="border-b border-[#E8DDCD] pb-6">
             <h2 className="font-serif-editorial text-2xl text-[#34281F] font-semibold">
-              Canonical Business Information
+              Studio Information
             </h2>
             <p className="font-sans-narrative text-xs sm:text-sm text-[#6E5D4F] mt-1">
-              Verified business metadata for clients, indexers, and search engines.
+              Current studio information for clients and visitors.
             </p>
           </div>
 
@@ -90,7 +83,7 @@ export default function AboutPage() {
 
               <div>
                 <span className="font-sans-ui text-xs uppercase text-[#B88A44] font-bold block">
-                  Confirmed Physical Studio Address
+                  Studio Address
                 </span>
                 <p className="text-sm text-[#34281F] font-medium mt-1 leading-relaxed">
                   1st Floor, Subhamasthu Showroom, D.No: 20-11-40, Majestic Street, Suryanarayana Puram, Kakinada, Andhra Pradesh 533001
@@ -166,16 +159,9 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="md:col-span-6">
-            <div className="relative h-[320px] sm:h-[400px] rounded-2xl overflow-hidden border border-[#E8DDCD] shadow-sm">
-              <Image
-                src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop"
-                alt="Hanvi Events Mandap Decoration Kakinada"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-              />
-            </div>
+          <div className="md:col-span-6 rounded-2xl border border-[#E8DDCD] bg-white p-8 sm:p-10">
+            <h2 className="font-serif-editorial text-2xl sm:text-3xl text-[#34281F] font-semibold">Planning starts with your brief</h2>
+            <p className="mt-4 font-sans-narrative text-sm leading-relaxed text-[#6E5D4F]">Share the event date, venue, guest range, traditions, and ideas you have in mind. The studio can then confirm availability and the services appropriate for your celebration.</p>
           </div>
         </div>
       </div>
