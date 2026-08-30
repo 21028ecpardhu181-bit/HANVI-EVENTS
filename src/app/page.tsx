@@ -8,6 +8,7 @@ import { WeddingTypesSection } from '@/components/sections/WeddingTypesSection';
 import { TeamShowcaseSection } from '@/components/sections/TeamShowcaseSection';
 import { OurCraftSection } from '@/components/sections/OurCraftSection';
 import { LatestMomentsSection } from '@/components/sections/LatestMomentsSection';
+import { FaqAuthoritySection } from '@/components/sections/FaqAuthoritySection';
 import { EmotionalCtaSection } from '@/components/sections/EmotionalCtaSection';
 import {
   getSanityServices,
@@ -53,7 +54,10 @@ export default async function HomePage() {
       {/* 9. Merged Media: Latest Moments (Instagram Reels + YouTube Cinema Films) */}
       <LatestMomentsSection items={galleryMedia} />
 
-      {/* 10. Final Studio Consultation CTA */}
+      {/* 10. Local Authority FAQ & Direct Answer Block (AEO / GEO Engine) */}
+      <FaqAuthoritySection />
+
+      {/* 11. Final Studio Consultation CTA */}
       <EmotionalCtaSection />
     </div>
   );

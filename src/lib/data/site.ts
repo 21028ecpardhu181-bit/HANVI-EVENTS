@@ -32,26 +32,26 @@ export const siteConfig: SiteConfig = {
     {
       id: 'stat-2',
       label: 'Celebrations Completed',
-      value: '150+',
-      sublabel: 'Marriages, cradle ceremonies & galas',
+      value: '500+',
+      sublabel: 'Luxury weddings, mandaps & galas',
     },
     {
       id: 'stat-3',
       label: 'Cities Served',
-      value: '12+',
-      sublabel: 'Across Kakinada, Vizag, AP & Telangana',
+      value: '15+',
+      sublabel: 'Kakinada, Rajahmundry, Vizag & AP',
     },
     {
       id: 'stat-4',
       label: 'Client Satisfaction',
       value: '100%',
-      sublabel: 'Managed by Ch. Kala Prasad',
+      sublabel: 'Directly directed by Ch. Kala Prasad',
     },
     {
       id: 'stat-5',
       label: 'Rating',
       value: '4.9★',
-      sublabel: 'Verified reviews & recommendation',
+      sublabel: '1,000+ family recommendations',
     },
   ],
 };
