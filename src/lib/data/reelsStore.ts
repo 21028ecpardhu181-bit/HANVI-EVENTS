@@ -12,54 +12,12 @@ export interface MediaItem {
   createdAt?: number;
 }
 
-export const defaultMediaItems: MediaItem[] = [
-  {
-    id: 'm-1',
-    type: 'film',
-    title: 'Swathi & Rajesh’s Grand Mandap Gala',
-    subtitle: 'Kakinada Convention Center • Telugu Marriage',
-    category: 'Mandap',
-    thumbnail: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop',
-    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    duration: '4:15 Cinema',
-    views: '12K Views',
-    createdAt: 1700000000000,
-  },
-  {
-    id: 'm-2',
-    type: 'reel',
-    title: '40,000 Jasmine Strand Canopy Reveal',
-    subtitle: 'Fresh Jasmine Mandap Entrance',
-    category: 'Florals',
-    thumbnail: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop',
-    videoUrl: 'https://www.youtube.com/shorts/dQw4w9WgXcQ',
-    views: '45K Reel Views',
-    createdAt: 1700000001000,
-  },
-  {
-    id: 'm-3',
-    type: 'film',
-    title: 'Ananya & Vikram Beachside Reception',
-    subtitle: 'Novotel Beach Resort • Visakhapatnam',
-    category: 'Lighting',
-    thumbnail: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1200&auto=format&fit=crop',
-    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    duration: '3:40 Film',
-    views: '18K Views',
-    createdAt: 1700000002000,
-  },
-  {
-    id: 'm-4',
-    type: 'reel',
-    title: 'Surprise Balloon Arch setup for Birthday',
-    subtitle: 'Kakinada Home Venue Setup',
-    category: 'Stage',
-    thumbnail: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=800&auto=format&fit=crop',
-    videoUrl: 'https://www.youtube.com/shorts/dQw4w9WgXcQ',
-    views: '28K Reel Views',
-    createdAt: 1700000003000,
-  },
-];
+/**
+ * EVIDENCE-SAFE MEDIA STORE:
+ * Default media items are empty pending client-approved, first-party uploaded reels and cinema films.
+ * Visitors are linked directly to Hanvi Events' live YouTube (@hanvievents) and Instagram channels.
+ */
+export const defaultMediaItems: MediaItem[] = [];
 
 const REELS_STORAGE_KEY = 'hanvi_reels_media_items';
 const MAX_VIDEOS = 10;
@@ -94,14 +52,12 @@ export function saveMediaItem(item: MediaItem): void {
       updated = [...current];
       updated[existingIdx] = item;
     } else {
-      // Add new item at the top (newest first)
       const newItem = {
         ...item,
         createdAt: item.createdAt || Date.now(),
       };
       updated = [newItem, ...current];
 
-      // Auto-prune if total count exceeds MAX_VIDEOS (10)
       if (updated.length > MAX_VIDEOS) {
         updated = updated.slice(0, MAX_VIDEOS);
       }

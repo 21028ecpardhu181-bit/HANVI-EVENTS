@@ -185,7 +185,7 @@ export const celebrationCategories: CelebrationCategory[] = [
     faq: [
       {
         question: 'Who manages the event execution at Hanvi Events?',
-        answer: 'Every event is personally supervised by Event Manager Ch. Kala Prasad to ensure 100% flawless execution.',
+        answer: 'Every event is personally supervised by Event Director Ch. Kala Prasad to ensure seamless on-site coordination and strict quality standards.',
       },
     ],
   },

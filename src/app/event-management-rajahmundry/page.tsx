@@ -201,7 +201,7 @@ export default function EventManagementRajahmundryPage() {
         <div className="bg-white border border-[#E8DDCD] rounded-2xl p-6 sm:p-10 space-y-8">
           <div>
             <h2 className="font-serif-editorial text-2xl sm:text-3xl text-[#34281F] font-semibold">
-              How We Deliver Flawless Events in Rajahmundry
+              How We Deliver High-Standard Events in Rajahmundry
             </h2>
             <p className="font-sans-narrative text-sm text-[#6E5D4F] mt-1">
               Engineered logistics connecting our Kakinada production hub to Rajahmundry venues.

@@ -20,7 +20,7 @@ export default async function TeamPage() {
     <div className="pt-28 pb-24 bg-[#FCF9F5]">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8">
         <SectionHeader
-          scriptEyebrow="Est. 2018 in Kakinada • Dedicated Directorship"
+          scriptEyebrow="Studio Leadership • Kakinada, Andhra Pradesh"
           title="Meet Our Studio Team"
           description="Every sacred wedding mandap, sangeet concert, and corporate gala is directed by our passionate team of artists and production specialists."
           align="center"

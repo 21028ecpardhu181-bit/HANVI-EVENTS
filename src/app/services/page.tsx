@@ -67,7 +67,7 @@ export default async function ServicesCatalogPage() {
           <SectionHeader
             scriptEyebrow="Single Services Collection • Managed by Ch. Kala Prasad"
             title="Services Collection"
-            description="Explore our full collection of bespoke offerings. Tap any card for full details, pricing, and visual gallery."
+            description="Explore our complete event services — combining in-house mandap fabrication and event directorship with vetted specialist partner coordination for catering, beauty, and entertainment."
             align="center"
           />
         </div>

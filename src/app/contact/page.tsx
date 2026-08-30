@@ -86,9 +86,9 @@ export default function ContactPage() {
       <div className="max-w-[1280px] mx-auto px-4 md:px-8">
 
         <SectionHeader
-          scriptEyebrow="Est. 2018 in Kakinada"
+          scriptEyebrow="Studio Consultation • Suryanarayana Puram, Kakinada"
           title="Contact & Studio Details"
-          description="Visit our studio in Jagannaickpur, Kakinada (near Netaji Park) or call our event team."
+          description="Visit our studio at Suryanarayana Puram, Kakinada or call our event management team."
           align="center"
         />
 
@@ -286,14 +286,14 @@ export default function ContactPage() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="font-serif-editorial text-2xl text-[#34281F]">Hanvi Events Studio — Kakinada</h3>
-                <p className="font-sans-narrative text-xs text-[#6E5D4F]">Jagannaickpur, near Netaji Park, Kakinada - 533002</p>
+                <p className="font-sans-narrative text-xs text-[#6E5D4F]">1st Floor, Subhamasthu Showroom, Majestic Street, Suryanarayana Puram, Kakinada - 533001</p>
               </div>
               <button onClick={() => setMapsModalOpen(false)} className="px-3 py-1 bg-[#F5ECDD] text-xs font-sans-ui uppercase rounded-full cursor-pointer">Close</button>
             </div>
             <div className="w-full aspect-video rounded-2xl overflow-hidden bg-[#F5ECDD]">
               <iframe
                 title="Hanvi Events Kakinada Google Maps"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15274.62354784777!2d82.23512322256424!3d16.945538318856272!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a38280000000001%3A0x6b876402434e320!2sJagannaickpur%2C%20Kakinada%2C%20Andhra%20Pradesh%20533002!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3816.037416399039!2d82.2355!3d16.9805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a38280000000000%3A0x0!2sSuryanarayana+Puram%2C+Kakinada%2C+Andhra+Pradesh+533001!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
                 className="w-full h-full border-0"
                 allowFullScreen
                 loading="lazy"
