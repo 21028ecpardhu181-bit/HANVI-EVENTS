@@ -1,6 +1,11 @@
 import { sanityClient } from './client';
 import {
+  servicesQuery,
   weddingTraditionsQuery,
+  storiesQuery,
+  galleryMediaQuery,
+  teamMembersQuery,
+  teamMemberBySlugQuery,
   sacredJourneyByTraditionQuery,
   allSacredJourneyStepsQuery,
 } from './queries';
@@ -51,15 +56,76 @@ async function fetchSanity<T = any>(query: string, params: Record<string, any> =
 }
 
 /**
- * 1. Services Fetcher (Evidence-Safe Canonical Registry)
+ * 1. Services Fetcher (Dyanmically retrieves all services & authentic backend images from Sanity CMS)
  */
 export async function getSanityServices(): Promise<ServiceCategory[]> {
-  return servicesData;
+  try {
+    const rawServices: any[] = await fetchSanity(servicesQuery);
+    if (!rawServices || rawServices.length === 0) return servicesData;
+
+    return rawServices.map((s, idx) => {
+      const rawSlug = typeof s.slug === 'string' ? s.slug : s.slug?.current;
+      const cleanSlug = rawSlug ? slugify(rawSlug) : s.title ? slugify(s.title) : `service-${idx}`;
+
+      const matchedStatic = servicesData.find((sd) => sd.slug === cleanSlug || slugify(sd.title) === cleanSlug);
+      const fallbackHero = matchedStatic?.heroImage || servicesData[idx % servicesData.length]?.heroImage || '/logo.png';
+
+      const heroUrl = resolveImageUrl(s.heroImage, fallbackHero);
+
+      const galleryUrls = Array.isArray(s.galleryImages) && s.galleryImages.length > 0
+        ? s.galleryImages.map((img: any) => resolveImageUrl(img, heroUrl))
+        : matchedStatic?.galleryImages || [heroUrl];
+
+      return {
+        id: s._id || `service-${cleanSlug}`,
+        slug: cleanSlug,
+        title: s.title || matchedStatic?.title || 'Event Celebration',
+        category: s.category || matchedStatic?.category || 'Celebration',
+        subtitle: s.subtitle || matchedStatic?.subtitle || '',
+        tagline: s.tagline || matchedStatic?.tagline || 'Bespoke Celebration',
+        description: s.description || matchedStatic?.description || '',
+        shortDescription: s.shortDescription || s.description || matchedStatic?.shortDescription || '',
+        startingPrice: s.startingPrice || matchedStatic?.startingPrice || 'Contact for pricing',
+        heroImage: heroUrl,
+        galleryImages: galleryUrls,
+        features: Array.isArray(s.features) && s.features.length > 0 ? s.features : (matchedStatic?.features || []),
+        relatedServices: s.relatedServices || matchedStatic?.relatedServices || ['bridal-makeup', 'weddings-receptions', 'catering-food-services'],
+        faq: Array.isArray(s.faq) && s.faq.length > 0
+          ? s.faq.map((item: any) => ({
+              question: item.question || '',
+              answer: item.answer || '',
+            }))
+          : (matchedStatic?.faq || []),
+        featured: Boolean(s.featured || matchedStatic?.featured),
+        displayOrder: typeof s.displayOrder === 'number' ? s.displayOrder : idx + 1,
+        icon: s.icon || matchedStatic?.icon || 'sparkles',
+        duration: s.duration || matchedStatic?.duration || '',
+        seoTitle: s.seoTitle || matchedStatic?.seoTitle || '',
+        seoDescription: s.seoDescription || matchedStatic?.seoDescription || '',
+      };
+    });
+  } catch (err) {
+    console.warn('Sanity services fetch warning:', err);
+    return servicesData;
+  }
 }
 
 export async function getSanityServiceBySlug(slug: string): Promise<ServiceCategory | undefined> {
+  const allServices = await getSanityServices();
   const decoded = decodeURIComponent(slug);
-  return getServiceBySlug(decoded);
+  const normalized = slugify(decoded);
+
+  let found = allServices.find((s) => slugify(s.slug) === normalized || slugify(s.title) === normalized);
+  if (found) return found;
+
+  const staticMatch = getServiceBySlug(decoded);
+  if (staticMatch) {
+    const matchedSanity = allServices.find((s) => slugify(s.slug) === staticMatch.slug);
+    if (matchedSanity) return matchedSanity;
+    return staticMatch;
+  }
+
+  return undefined;
 }
 
 /**
@@ -142,17 +208,96 @@ export async function getSanityWeddingTraditions(): Promise<any[]> {
 }
 
 /**
- * 5. Stories Fetcher (Evidence-Safe Empty Portfolio until approved projects are added)
+ * 5. Stories Fetcher (Dyanmically retrieves authentic wedding stories from Sanity CMS)
  */
 export async function getSanityStories(): Promise<StoryCaseStudy[]> {
-  return storyCaseStudies;
+  try {
+    const rawStories: any[] = await fetchSanity(storiesQuery);
+    if (!rawStories || rawStories.length === 0) return storyCaseStudies;
+
+    return rawStories.map((st, idx) => {
+      const heroUrl = resolveImageUrl(
+        st.coverImage || st.heroImage,
+        storyCaseStudies[idx % (storyCaseStudies.length || 1)]?.heroImage || '/logo.png'
+      );
+
+      return {
+        id: st._id || `story-${st.slug || idx}`,
+        slug: st.slug || `story-${idx}`,
+        title: st.title || 'Wedding Story',
+        coupleNames: st.coupleName || st.coupleNames || 'Couple Celebration',
+        celebrationType: st.eventType || st.celebrationType || 'Luxury Wedding',
+        location: st.location || 'Kakinada, AP',
+        guestCount: st.guestCount || '500 Guests',
+        heroImage: heroUrl,
+        galleryImages: Array.isArray(st.gallery || st.galleryImages)
+          ? (st.gallery || st.galleryImages).map((img: any) => resolveImageUrl(img, heroUrl))
+          : [heroUrl],
+        quote: st.quote || '',
+        narrative: Array.isArray(st.storyContent || st.narrative) ? (st.storyContent || st.narrative) : [],
+      };
+    });
+  } catch (err) {
+    console.warn('Sanity stories fetch warning:', err);
+    return storyCaseStudies;
+  }
 }
 
 /**
- * 6. Gallery Fetcher (Evidence-Safe Channel Hub linking to official channels)
+ * 6. Gallery Fetcher (Dynamically retrieves authentic gallery albums from Sanity CMS)
  */
 export async function getSanityGalleryMedia(): Promise<MediaItem[]> {
-  return defaultMediaItems;
+  try {
+    const rawMedia: any[] = await fetchSanity(galleryMediaQuery);
+    if (!rawMedia || rawMedia.length === 0) return defaultMediaItems;
+
+    const categoryFallbacks = ['Mandap', 'Florals', 'Lighting', 'Stage', 'Entrance'];
+
+    return rawMedia.map((m, idx) => {
+      const vUrl = m.videoUrl || (Array.isArray(m.videos) && m.videos[0]) || '';
+      const ytThumb = vUrl && (vUrl.includes('youtube.com') || vUrl.includes('youtu.be'))
+        ? `https://img.youtube.com/vi/${vUrl.match(/(?:shorts\/|v=|youtu\.be\/)([a-zA-Z0-9_-]+)/)?.[1] || ''}/hqdefault.jpg`
+        : null;
+
+      const coverUrl = resolveImageUrl(
+        m.coverImage || m.thumbnail,
+        ytThumb || '/logo.png'
+      );
+
+      const imagesArray = Array.isArray(m.images) && m.images.length > 0
+        ? m.images.map((img: any) => resolveImageUrl(img, coverUrl))
+        : [coverUrl];
+
+      const rawCat = (m.category || '').trim();
+      const cleanCat = (!rawCat || rawCat.toLowerCase() === 'all')
+        ? categoryFallbacks[idx % categoryFallbacks.length]
+        : rawCat;
+
+      let detectedType: 'reel' | 'film' | 'image' = m.type === 'film' ? 'film' : m.type === 'reel' ? 'reel' : 'image';
+      if (vUrl) {
+        if (vUrl.includes('shorts') || vUrl.includes('reel')) {
+          detectedType = 'reel';
+        } else if (detectedType === 'image') {
+          detectedType = 'film';
+        }
+      }
+
+      return {
+        id: m._id || `media-${idx}`,
+        type: detectedType,
+        title: m.albumTitle || m.title || 'Celebration Media',
+        subtitle: m.eventName || m.subtitle || 'Kakinada Event',
+        category: cleanCat,
+        thumbnail: coverUrl,
+        images: imagesArray,
+        videoUrl: vUrl,
+        views: m.views || (detectedType === 'reel' ? 'Short Reel' : detectedType === 'film' ? 'Cinema Film' : 'Featured'),
+      };
+    });
+  } catch (err) {
+    console.warn('Sanity gallery fetch warning:', err);
+    return defaultMediaItems;
+  }
 }
 
 /**
@@ -163,7 +308,7 @@ export async function getSanityPackages(): Promise<any[]> {
 }
 
 /**
- * 8. Testimonials Fetcher (Evidence-Safe Empty Registry)
+ * 8. Testimonials Fetcher
  */
 export async function getSanityTestimonials(): Promise<Testimonial[]> {
   return testimonials;
@@ -177,15 +322,70 @@ export async function getSanityFaqs(): Promise<Array<{ question: string; answer:
 }
 
 /**
- * 10. Team Members Fetcher (CANONICAL LEADERSHIP: Ch. Kala Prasad — Founder & Event Director)
- * Strictly grounded in the SEO Evidence Register.
+ * 10. Team Members Fetcher
+ * Founder & Event Director is strictly Ch. Kala Prasad.
+ * Welcome Girls and hospitality support teams are dynamically included from Sanity CMS.
  */
 export async function getSanityTeamMembers(): Promise<TeamMember[]> {
-  return staticTeamMembers;
+  const result: TeamMember[] = [...staticTeamMembers];
+
+  try {
+    const raw: any[] = await fetchSanity(teamMembersQuery);
+    if (Array.isArray(raw)) {
+      for (const m of raw) {
+        // Strictly filter out any conflicting founder profiles
+        if (m.name && (m.name.includes('Chitra') || m.name.includes('A.Chitra'))) {
+          continue;
+        }
+
+        const cleanSlug = typeof m.slug === 'string' ? m.slug : m.slug?.current || slugify(m.name || `team`);
+        // If it's Welcome Girls or a supporting team from Sanity, include it
+        if (m.name && !result.some((t) => slugify(t.slug) === slugify(cleanSlug) || slugify(t.name) === slugify(m.name))) {
+          const profileUrl = resolveImageUrl(m.profileImage, '/logo.png');
+          const coverUrl = resolveImageUrl(m.coverImage, profileUrl);
+          const galleryUrls = Array.isArray(m.galleryImages)
+            ? m.galleryImages.map((img: any) => resolveImageUrl(img, coverUrl))
+            : [];
+
+          result.push({
+            id: m._id || `team-${cleanSlug}`,
+            slug: cleanSlug,
+            name: m.name,
+            role: m.role || 'Guest Hospitality & Welcome Team',
+            category: m.category || 'Hospitality',
+            shortBio: m.shortBio || 'Professional hospitality team for events and wedding guest receptions.',
+            detailedBio: m.detailedBio || m.shortBio || 'Providing gracious and traditional guest welcome services across Kakinada and East Godavari.',
+            profileImage: profileUrl,
+            coverImage: coverUrl,
+            galleryImages: galleryUrls,
+            videos: [],
+            experience: 'Professional Team',
+            skills: Array.isArray(m.skills) ? m.skills : ['Guest Welcome', 'Hospitality', 'Bangle Stalls'],
+            socialLinks: Array.isArray(m.socialLinks) ? m.socialLinks : [],
+            contactInfo: m.contactInfo || { phone: '+91 97009 29650' },
+            featured: Boolean(m.featured),
+            displayOrder: typeof m.displayOrder === 'number' ? m.displayOrder : 2,
+            seoTitle: m.seoTitle || `${m.name} | Hanvi Events`,
+            seoDescription: m.seoDescription || `Hanvi Events ${m.name} in Kakinada, Andhra Pradesh.`,
+          });
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Sanity team fetch warning:', err);
+  }
+
+  return result;
 }
 
 export async function getSanityTeamMemberBySlug(slug: string): Promise<TeamMember | undefined> {
   const decoded = decodeURIComponent(slug);
+  const normalized = slugify(decoded);
+
+  const allMembers = await getSanityTeamMembers();
+  let found = allMembers.find((m) => slugify(m.slug) === normalized || slugify(m.name) === normalized || m.id === slug);
+  if (found) return found;
+
   return getTeamMemberBySlug(decoded);
 }
 
